@@ -1,0 +1,330 @@
+#set( $scriptVersion = "1.01" )
+#set( $website = $cipsConfig.getWebsite() )
+#set( $login   = $basket.getAccountLogin(true) )
+#set( $loginHasShopAccess = false )
+#if($accountLoginProperties.hasShopAccess())
+   #set( $loginHasShopAccess = true )
+#end
+#if( "$!{session.getAttribute('cips.demo.banner')}" != "" )
+  #set( $demo_banner = "$!{session.getAttribute('cips.demo.banner')}" )
+#end
+#if( "$!{session.getAttribute('cips.demo.stylesheet')}" != "" )
+  #set( $css_template = "$!{session.getAttribute('cips.demo.stylesheet')}" )
+#else
+  #set( $css_template = "$site_layout.WEBSITE_STYLESHEET" )
+#end
+## #if( "$!banner_page_id" == "" )
+##   #set( $banner_page_id = "GRE" )
+## #end
+#if($helper.isTestSystem())<!-- $!{cipsConfig.website.iD}/$!{cipsConfig.program.iD}/$!{basket.accountLogin.iD} -->
+#end
+<!DOCTYPE html>
+<html lang="$!{locale.toLanguageTag()}">
+  <head>
+    #if($page_title)
+      #set($pagetitle = $page_title)
+    #elseif($site_layout.WEBSITE_DEFAULT_PAGETITLE)
+      #set($pagetitle = $site_layout.WEBSITE_DEFAULT_PAGETITLE)
+    #else
+      #set($pagetitle = "cadooz – rewarding excellence")
+    #end
+    <title>$!pagetitle</title>
+    <meta charset="UTF-8">
+    $!meta_data
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+    
+    #if($!link.getTemplate("$site_layout.WEBSITE_STYLESHEET") != "" )
+      <style>body{opacity:0}</style> ## Prevent FOUC
+    #end
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-57x57.png" sizes="57x57"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-60x60.png" sizes="60x60"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-72x72.png" sizes="72x72"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-76x76.png" sizes="76x76"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-114x114.png" sizes="114x114"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-120x120.png" sizes="120x120"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-128x128.png" sizes="128x128"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-144x144.png" sizes="144x144"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-152x152.png" sizes="152x152"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-180x180.png" sizes="180x180"/>
+    <link rel="apple-touch-icon" href="/images/shop/redemption/d16/icons/apple-touch-icon-precomposed.png"/>
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/images/shop/redemption/d16/icons/favicon-196x196.png" sizes="196x196">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <meta name="msapplication-TileColor" content="#f6f6f6"/> 
+    <meta name="msapplication-navbutton-color" content="#ea5d0b"/> 
+    <meta name="application-name" content="$!pagetitle"/> 
+    <meta name="msapplication-tooltip" content="$!pagetitle"/> 
+    <meta name="apple-mobile-web-app-title" content="$!pagetitle"/> 
+    <meta name="msapplication-TileImage" content="/images/shop/redemption/d16/icons/win8-tile-144x144.png"/> 
+    <meta name="msapplication-square70x70logo" content="/images/shop/redemption/d16/icons/win8-tile-70x70.png"/> 
+    <meta name="msapplication-square144x144logo" content="/images/shop/redemption/d16/icons/win8-tile-144x144.png"/> 
+    <meta name="msapplication-square150x150logo" content="/images/shop/redemption/d16/icons/win8-tile-150x150.png"/> 
+    <meta name="msapplication-wide310x150logo" content="/images/shop/redemption/d16/icons/win8-tile-310x150.png"/> 
+    <meta name="msapplication-square310x310logo" content="/images/shop/redemption/d16/icons/win8-tile-310x310.png"/> 
+    #if("$!{current_website.getAttribute('SHOP_WEBSITE_META_DESCRIPTION')}" != "")
+      <meta name="description" content="$!{current_website.getAttribute("SHOP_WEBSITE_META_DESCRIPTION")}">
+    #end
+    
+    <script src="/scripts/jquery/3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="/scripts/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="/scripts/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/scripts/jqueryui/1.11.4/local/datepicker-de.js"></script>
+    <script src="/scripts/tiny_mce/4.5.5/tinymce.min.js"></script>
+    <script src="/scripts/tiny_mce/4.5.5/langs/de.js"></script>
+    <script src="/scripts/moment/2.20.1/moment.min.js"></script>
+    <script src="/scripts/jonthornton-jquery-timepicker/jquery.timepicker.min.js"></script>
+    <script src="/scripts/jquery-palette-color-picker/1.13/src/palette-color-picker.min.js"></script>
+    #if("$template_type" == "scheduler")
+    <script src="/scripts/fullcalendar/3.8.0/fullcalendar.min.js"></script>
+    <script src="/scripts/fullcalendar/3.8.0/locale/${locale}.js"></script>
+    #end
+    <link href="/scripts/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/scripts/gridstack/1.1.2/gridstack.min.css" rel="stylesheet" media="screen and (min-width: 1200px)"/>
+    <link href="/scripts/videojs/video-js.css" rel="stylesheet" type="text/css">
+    <link href="/scripts/jonthornton-jquery-timepicker/jquery.timepicker.min.css" rel="stylesheet" />
+    <link href="/scripts/jquery-palette-color-picker/1.13/src/palette-color-picker.css" rel="stylesheet" />
+    #if("$template_type" == "setup" && "$template_name" == "menu-management")
+    <link href="/scripts/fancytree/2.28.1/dist/skin-bootstrap/ui.fancytree.min.css" rel="stylesheet" />
+    #end
+    #if("$template_type" == "scheduler")
+    <link href="/scripts/fullcalendar/3.8.0/fullcalendar.min.css" rel="stylesheet" />
+    <link href="/scripts/fullcalendar/3.8.0/fullcalendar.print.min.css" rel="stylesheet" media="print" />
+    #end
+    <link rel="stylesheet" href="/scripts/slick/1.8.1/slick.css"/>
+    <link rel="stylesheet" href="$link.getTemplate("$css_template")">
+
+    <noscript>
+      <style>
+        @media (min-width: 1200px) {
+          .menu-panel:not(.open) {
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+          .main-nav-sub-list, .main-nav-inner-list {
+            max-height: unset !important;
+          }
+        }
+      </style>
+    </noscript>
+  </head>
+  <body id="body" class="$!{template_type}" onresize="vhFix();">
+    <i class="break-listener"></i>
+    #set($cookieImprintURL = ${link.getTemplate("/cips/global/imprint")})
+    #parse($helper.getTemplate("/shop/cookie.vm"))
+    <div class="main-wrapper" id="panel">
+      #if ($!site_layout.WEBSITE_TEMPLATE_HEADER)
+        #parse($helper.getTemplate($site_layout.WEBSITE_TEMPLATE_HEADER))
+      #else
+        #parse($helper.getTemplate("/cips/header.vm"))
+      #end
+      <div class="main">
+        #if ($!site_layout.CIPS_MENU_WRAPPER_TEMPLATE)
+          #parse($helper.getTemplate($site_layout.CIPS_MENU_WRAPPER_TEMPLATE)) 
+        #else
+          #parse($helper.getTemplate("/cips/menu-wrapper.vm"))
+        #end
+        <div class="remove-helper">
+          <div class="container">
+            <div class="main-content $!{template_name}">
+              <span class="main-content-helper"></span>
+              <div class="main-content-header">
+                #parse($helper.getTemplate("/cips/breadcrumbs.vm"))
+                #if( $!{hide_banner} != "true" )
+                  #parse($helper.getTemplate("/cips/banner.vm"))
+                #end
+              </div>
+              $screen_content
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="main-footer">
+        <div class="main-footer-content">
+          <nav class="legals-nav">
+            <ul class="legals-nav-list">
+              <li class="legals-nav-list-item"><a href="${link.getTemplate("/cips/global/toc")}" class="legals-nav-link">$!{messages.get('cips.labels.terms')}</a></li><!--
+           --><li class="legals-nav-list-item"><a href=$!{messages.get('shop.data_protection_url')} target="_blank" class="legals-nav-link">$!{messages.get('cips.labels.data_protection')}</a></li><!--
+           #if("$!showCookieDialogButton" == "true")--><li class="legals-nav-list-item"><a href="#" onClick="showCookieDialog();" class="legals-nav-link">$!{messages.get('shop.cookie.show_dialog_label')}</a></li><!--#end
+           --><li class="legals-nav-list-item"><a href="${link.getTemplate("/cips/global/imprint")}" class="legals-nav-link">$!{messages.get('cips.labels.imprint')}</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="copyright">
+          <div class="copyright-content clearfix">
+            <span class="copyright-company">© cadooz <script>document.write(new Date().getFullYear());</script></span>
+            <span class="copyright-addition"><span class="copyright-cadooz-text">$!{messages.get('cips.labels.prices')}</span></span>
+            <a href="https://www.cadooz.com/" class="copyright-logo-frame"><img src="/images/cadooz_Logo_weiss.svg" class="copyright-logo"/></a>
+          </div>
+        </div>
+      </footer>
+      <div class="dialog"></div>
+      <div class="loader"></div>
+    </div>
+    #if($helper.isTestSystem())<!-- $!{template_type}/$!{template_name} -->
+    #end
+    <script src="/scripts/svg4everybody/svg4everybody.min.js"></script>
+    <script src="/scripts/d3js/d3.min.js"></script>
+    <script src="/scripts/slick/1.8.1/slick.js"></script>
+    <script src="/scripts/lodash/3.10.1/lodash.min.js"></script>
+    <!-- favourable:$favourable/$favourables -->
+    #if("$template_type" == "favorites" || $favourable || $favourables)
+      <script src="/scripts/cips/common/favorites.js?$scriptVersion"></script>
+    #end
+    ## dashbord und media-library
+    #if("$template_name" == "dashboard" || "$template_name" == "media-library")
+      <script src="/scripts/videojs/video.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "shop")
+      <script src="/scripts/cips/jquery.mobile.custom.min.js"></script>
+      <script src="/scripts/cips/shop.js?$scriptVersion"></script> ## Shop Scripts
+      #if( $templateSwitch == "catalog" )
+        <script src="/scripts/jquery.lazyload.min.js"></script>  ## Shop LazyLoad
+        <script src="/scripts/cips/catalog.js?$scriptVersion"></script>
+        <script> ## for catalog.js
+          var formBeanPtg = "$!{form.bean.ptg}";
+          var formBeanShpMtd = "$!{form.bean.shpMthd}";
+          var formBeanRedMtd = "$!{form.bean.redMthd}";
+        </script>
+      #end
+      #if( "$template_name" == "basket_view" )
+        <script src="/scripts/cips/basket.js?$scriptVersion"></script>
+      #end
+      #if( "$template_name" == "order_payment" )
+        <script src="/scripts/shop/d15/payment.js?$scriptVersion"></script>
+      #end
+      #if( "$template_name" == "product" )
+        <script src="/scripts/cips/product.js?$scriptVersion"></script>
+        #if( $isPhysicalProduct == true )
+          <script src="/scripts/cips/physical_product.js?$scriptVersion"></script>
+        #end
+      #end
+    #end
+    <script src="/scripts/cips/common/scripts.js?$scriptVersion"></script>
+    <script src="/scripts/common/dialogs.js?$scriptVersion"></script>
+    <script src="/scripts/common/overlay.js?$scriptVersion"></script>
+    #if("$template_type" == "dashboard")
+      <script src="/scripts/gridstack/1.1.2/gridstack-poly.min.js"></script>
+      <script src="/scripts/gridstack/1.1.2/gridstack.min.js"></script>
+      <script src="/scripts/gridstack/1.1.2/gridstack.jQueryUI.min.js"></script>
+      <script src="/scripts/cips/common/widgets.js?$scriptVersion"></script>
+      <script src="/scripts/cips/common/graphs.js?$scriptVersion"></script>
+      <script src="/scripts/common/datepicker.js?$scriptVersion"></script>
+      <script src="/scripts/cips/dashboard.js?$scriptVersion"></script>
+    #end
+    #if("$template_name" == "transactions" && "$template_type" == "account")
+      <script src="/scripts/common/datepicker.js?$scriptVersion"></script>
+      <script src="/scripts/cips/transactions.js?$scriptVersion"></script>
+    #end
+    #if("$template_name" == "transactions" && "$template_type" == "user-management")
+      <script src="/scripts/common/datepicker.js?$scriptVersion"></script>
+      <script src="/scripts/cips/transactions-admin.js?$scriptVersion"></script>
+    #end
+    #if("$template_name" == "reportings")
+      <script src="/scripts/common/datepicker.js?$scriptVersion"></script>
+      <script src="/scripts/cips/reporting.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "media-library")
+      <script src="/scripts/common/threads.js?$scriptVersion"></script>
+    #end   
+    #if("$template_name" == "media-overview")
+      #if( "$!form.bean.mediabean.categories" != "" && $form.bean.mediabean.categories.size() > 0 ) 
+      <script src="/scripts/cips/media-library-user-categorized.js?$scriptVersion"></script>
+      #else
+      <script src="/scripts/cips/media-library.js?$scriptVersion"></script>
+      #end
+    #end
+    #if("$template_name" == "media-overview-admin")
+      <script src="/scripts/cips/media-library-admin.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "newsfeed")
+      <script src="/scripts/common/threads.js?$scriptVersion"></script>    
+    #end
+    #if("$template_name" == "newsfeed-overview")  
+      <script src="/scripts/cips/newsfeed.js?$scriptVersion"></script>
+    #end
+    #if("$template_name" == "newsfeed-admin")
+      <script src="/scripts/cips/newsfeed-admin.js?$scriptVersion"></script>
+    #end 
+    #if("$template_type" == "campaigns" && "$template_name" == "credits")
+      <script src="/scripts/cips/common/graphs.js?$scriptVersion"></script>
+      <script src="/scripts/common/threads.js?$scriptVersion"></script>
+      <script src="/scripts/cips/credits-overview.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "setup" && "$template_name" == "pages")
+      <script src="/scripts/common/datepicker.js?$scriptVersion"></script>
+      <script src="/scripts/cips/custom-pages.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "setup" && "$template_name" == "menu-management")
+      <script src="/scripts/lodash/3.10.1/lodash.min.js"></script>
+      <script src="/scripts/fancytree/2.28.1/dist/jquery.fancytree-all.min.js"></script>
+      <script src="/scripts/cips/menu-management.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "scheduler")
+      <script src="/scripts/cips/scheduler.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "favorites")
+      <script src="/scripts/cips/user-favorites.js?$scriptVersion"></script>
+    #end
+    #if("$template_type" == "favorites" || $favourable || $favourables)
+    <script type="text/template" id="favorite-edit-overlay">
+      <form class="wait-dialog clearfix">
+        <input type="hidden" name="action" value="addOrRemove" />
+        <% if (typeof(id) !== 'undefined') { %><input type="hidden" name="id" value="<%= id %>" /><% } %>
+        <% if (typeof(categoryId) !== 'undefined') { %><input type="hidden" name="categoryId" value="<%= categoryId %>" /><% } %>
+        <% if (typeof(favoredId) !== 'undefined') { %><input type="hidden" name="favoredId" value="<%= favoredId %>" /><% } %>
+        <% if (typeof(path) !== 'undefined') { %><input type="hidden" name="path" value="<%= path %>" /><% } %>
+        <% if (typeof(queryString) !== 'undefined') { %><input type="hidden" name="queryString" value="<%= queryString %>" /><% } %>
+        <% if (typeof(identifier) !== 'undefined') { %><input type="hidden" name="identifier" value="<%= identifier %>" /><% } %>
+        <h2>${messages.get('cips.labels.user.favorite.favourable.save')}</h2>
+        <div class="content">
+          <h6>${messages.get('cips.labels.user.favorite.name')}:</h6>
+          <input type="text" name="name"value="<%= name %>" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">${messages.get('cips.labels.buttons.done')}</button>
+      </form>
+    </script>
+    #end
+    <script>
+      window.addEventListener("load", function(){
+        init();
+
+        var animationEnd = 'animationend';
+        document.addEventListener(animationEnd, dispatchEvent);
+        function dispatchEvent() {
+        }
+      });
+      // new CIPSDialogs({'messageUrl': '${link.getAction("/ajax/dialog/messageDialog")}', 'templateUrl': '${link.getAction("/view")}'}).init();
+      
+      // Slick Slider
+      jQuery.when(jQuery('#special-offer-content').slick({
+        dots: true,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        pauseOnHover: false
+      }) ).then(jQuery('.special-offer-wrapper').show() );
+      #if("$template_type" == "favorites" || $favourable || $favourables)
+      var favSettings = {'updateUrl': '${link.getAction("/ajax/user/favorite/update")}', 'editUrl': '${link.getAction("/ajax/user/favorite/edit")}'};
+      #end
+   </script>
+   <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.esm-browser.min.js"
+      }
+    }
+  </script>
+  <script type="module" crossorigin src="/scripts/ebc/mfa.js"></script>
+#if("$!{site_layout.WEBSITE_DISABLE_PIWIK_ANALYSIS}" != "true" && !$helper.isTestSystem())
+  #parse($helper.getTemplate("/shop/piwik.vm"))
+#end
+  </body>
+</html> 

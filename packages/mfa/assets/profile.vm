@@ -1,0 +1,171 @@
+##################################  Testcafe ###################################
+## Page-model: ips/page-models/ips-profile-page.js
+################################################################################
+#set( $scriptVersion = "1.01" )
+#set( $template_type = "account" )
+#set( $banner_page_id = "PRF" )
+#set( $piwikCustomPageTitle = "Mein_Konto/Mein_Profil" )
+#set( $piwikCustomPageViewPath = "Mein_Konto/Mein_Profil" )
+#set( $banner_page_instance = "" )
+#set( $breadcrumbs = "<li><span>$!{messages.get('cips.labels.user.my_account')}</span></li><li><a href='${link.getAction(""/myprofile"")}'>$!{messages.get('cips.labels.profile.my')}</a></li>" )
+#set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
+<script>
+  userProfileSettings = {
+    fileUploadUrl: "${link.getAction('/myprofile/upload')}",
+    badgeUrl: "${link.getAction('/ajax/admin/badgeassignments/search')}",
+    saveUrl: #if( "$!ajaxProfileSaveUrl" != "" )"$ajaxProfileSaveUrl"#else"${link.getAction("/myprofile/save")}"#end
+  }
+</script>
+<div class="content-site">
+<div id="islogin">$mfalogin</div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <section class="site">
+        <form method="post" id="cips-profile-form" action="$link.getAction('/myprofile', 'https')" autocomplete="off" enctype="multipart/form-data">
+          <input type="hidden" id="cips-profile-form-action" name="action" value=""/>
+          <input type="hidden" id="cips-profile-form-subaction" name="subaction" value=""/>
+          <input type="hidden" id="cips-profile-form-reference" name="reference" value=""/>
+          <header>
+            <div class="row">
+              <div class="col-xs-12 col-lg-12">
+                <h1 class="site-title">$!{messages.get('cips.labels.profile.my')}</h1>
+              </div>
+            </div>
+          </header>
+          <div class="site-content">
+
+            #if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_USER').equals(true))
+              <section id="sec_name_image" class="sub-section numbered separate editable">
+                <h1>
+                  #if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_USER').equals(true))
+                    <a id="trigger_name_image" href="#0" class="right edit"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/cips/icons/icons.svg#icon-edit"></use></svg></a>
+                  #end ##end if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_USER').equals(true))
+                  $!{messages.get('cips.labels.profile.general')}
+                </h1>
+                <div id="content_name_image" class="sub-section-content form-section"></div>
+              </section>
+            #end ##end if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_USER').equals(true))
+#if($current_website.isMultifactorAuthenticationEnabled())
+<section id="sec_name_image" class="sub-section numbered separate editable" style="padding: 0;">
+<custom-mfa> </custom-mfa>
+</section>
+#end
+            ## Die if-Abfrage dient dazu, dass in keinem Programm was kaputt ist, wenn live geht.
+            ## Bitte wieder entfernen wenn die Badge-Geschichte durch ist...
+            #if(false)
+            <section id="sec_misc" class="sub-section numbered separate">
+              <h1>
+                $cipsConfig.getLocalizedPrimaryCurrencySymbol($request)#if( $!badges.size() > 0 )$!{messages.get('cips.labels.measure.and_badges')}s#end
+              </h1>
+              <div id="content_misc" class="sub-section-content form-section">
+                <div class="row">
+                  <div class="col-xs-12 col-lg-4 left-col">
+                    <h6>$!{messages.get('cips.labels.profile.balance')}</h6>
+                  </div>
+                  <div class="col-xs-12 col-lg-4">
+                    <p>$basket.getAccountLogin(true).getLoginAccount().getCurrentBalance().getHtml($request)</p>
+                  </div>
+                </div>
+                #if( $!badges.size() > 0 )
+                <div class="row">
+                  <div class="col-xs-12 col-lg-4 left-col">
+                    <h6>$!{messages.get('cips.labels.profile.badges')}</h6>
+                  </div>
+                  <div class="col-xs-12 col-lg-8 right-col participant-badges">
+                    #foreach( $badge in $badges )
+                      <div class="participant-badge"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="$badge.getIconPath()"/></svg></div>
+                    #end
+                  </div>
+                </div>
+                #end
+              </div>
+            </section>
+            #else
+              #if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_POINTS_BADGES').equals(true))
+                <section id="sec_misc" class="sub-section numbered separate">
+                  <h1>
+                    $!{messages.get('cips.labels.profile.balance_and_badges', $cipsConfig.getLocalizedPrimaryCurrencySymbol($request))}
+                  </h1>
+                  <input type="hidden" id="cips-profile-form-locked" name="isLockedToUser" value="true"/>
+                  <div id="content_misc" class="sub-section-content form-section"></div>
+                </section>
+              #end ##end if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_POINTS_BADGES').equals(true))
+            #end
+
+            #if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_ADDRESSES').equals(true))
+              <section id="sec_addresses" class="sub-section numbered separate editable">
+                <h1>
+                  #if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_ADDRESSES').equals(true))
+                    <a id="trigger_addresses" href="#0" class="right edit"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/cips/icons/icons.svg#icon-edit"></use></svg></a>
+                  #end ##end if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_ADDRESSES').equals(true))
+                  $!{messages.get('cips.labels.address.delivery_address')}
+                </h1>
+                <div id="content_addresses" class="sub-section-content form-section"></div>
+              </section>
+            #end ##end if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_ADDRESSES').equals(true))
+
+            #if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_PASSWORD').equals(true))
+              <section id="sec_password" class="sub-section numbered separate editable">
+                <h1>
+                  #if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_PASSWORD').equals(true))
+                    <a id="trigger_password" href="#0" class="right edit"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/cips/icons/icons.svg#icon-edit"></use></svg></a>
+                  #end ##end if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_PASSWORD').equals(true))
+                  $!{messages.get('cips.labels.profile.password_change')}
+                </h1>
+                <div id="content_password" class="sub-section-content form-section"></div>
+              </section>
+            #end ##end if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_PASSWORD').equals(true))
+
+            #if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_NOTIFICATIONS').equals(true))
+              <section id="sec_params" class="sub-section numbered separate editable">
+                <h1>
+                  #if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_NOTIFICATIONS').equals(true))
+                    <a id="trigger_params" href="#0" class="right edit"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/cips/icons/icons.svg#icon-edit"></use></svg></a>
+                  #end ##end if($accountLoginProperties.hasWriteRole('CIPS_MY_PROFILE_NOTIFICATIONS').equals(true))
+                  $!{messages.get('cips.labels.profile.notifications')}
+                </h1>
+                <div id="content_params" class="sub-section-content form-section"></div>
+              </section>
+            #end ##end if($accountLoginProperties.hasRole('CIPS_MY_PROFILE_NOTIFICATIONS').equals(true))
+
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="/scripts/common/threads.js?$scriptVersion"></script>
+<script src="/scripts/cips/user-profile.js?$scriptVersion"></script>
+<script async defer>
+const mfa = document.querySelector("custom-mfa");
+
+function setAttributes(el, attrs) {
+  for (var key in attrs) {
+    const attr =
+      typeof attrs[key] !== "string"
+        ? JSON.stringify(attrs[key])
+        : attrs[key];
+    el.setAttribute(key, attr);
+  }
+}
+const mfaProps = {
+  translations: {
+    #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
+      '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+    #end
+  },
+  "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
+  font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
+  "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
+  "mfa-status-url": "${link.getAction('/myprofile/mfa/checkStatus')}",
+  "mfa-activate-url": "${link.getAction('/myprofile/mfa/activate')}",
+  "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
+  "mfa-download-backup-codes-url": "${link.getAction('/myprofile/mfa/downloadBackupCodes')}",
+  "mfa-generate-qr-code-url": "${link.getAction('/myprofile/mfa/generateQrCode')}",
+  "mfa-check-verification-code-url": "${link.getAction('/myprofile/mfa/checkVerificationCode')}",
+  "mfa-generate-new-backup-codes-url": "${link.getAction('/myprofile/mfa/generateNewBackupCodes')}",
+  "from-mfa-login": document.querySelector('#islogin').innerText
+      };
+  setAttributes(mfa, mfaProps);
+</script>

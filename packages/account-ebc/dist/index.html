@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/ebc.js"></script>
+  </head>
+
+  <body>
+    <h1>EBC account details!</h1>
+    <div id="app">
+      <custom-ebc />
+    </div>
+
+    
+    <script>
+      const ebc = document.querySelector("custom-ebc");
+      function setAttributes(el, attrs) {
+        for (var key in attrs) {
+          const attr =
+            typeof attrs[key] !== "string"
+              ? JSON.stringify(attrs[key])
+              : attrs[key];
+          el.setAttribute(key, attr);
+        }
+      }
+      const ebcProps = {
+        translations: {
+          "shop.ebc.my_account.title": "account",
+          "shop.ebc.my_account.text": "text",
+          "shop.ebc.my_account.access-data": "User",
+          "shop.ebc.my_account.user-name": "name",
+          "shop.ebc.my_account.password": "pass",
+          "shop.ebc.my_account.old_password": "old password",
+          "shop.ebc.my_account.new_password": "new password",
+          "shop.ebc.my_account.repeat_new_password": "repeat new password",
+          "shop.ebc.my_account.save_changes": "save",
+          "shop.ebc.my_account.delivery-address": "email",
+          "shop.ebc.my_account.email": "email",
+          "shop.ebc.my_account.alternative_email": "altemail",
+          "shop.ebc.my_account.send_to_alternative_email": "send",
+          "shop.ebc.my_account.delete_alternative_email": "del",
+          "shop.ebc.my_account.save_email": "save",
+          "shop.ebc.my_account.delete_email": "del email",
+          "shop.ebc.my_account.no_email": "no email",
+        },
+        "primary-color": "rgb(237, 107, 125)",
+        font: "'Open Sans', sans-serif",
+        user: "Djuro spirov",
+      };
+      setAttributes(ebc, ebcProps);
+      // const showToast = () => {
+      //   search.setAttribute('is-active', 'true');
+      // };
+      const showToast = (e) => {
+        console.log('stiga', e.detail)
+      };
+      window.addEventListener('toggle-toast', showToast);
+      // const msg = {
+      //   empty: 'empty',
+      //   placeholder: 'search',
+      // };
+      // search.setAttribute('translations', JSON.stringify(msg));
+    </script>
+  </body>
+</html>

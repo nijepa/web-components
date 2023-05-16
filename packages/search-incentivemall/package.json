@@ -1,0 +1,27 @@
+{
+  "name": "search-web-component",
+  "version": "0.1.9",
+  "author": "Nikola Pavicevic <nijepa@gmail.com>",
+  "description": "Vue3 web-component search with Vite",
+  "keywords": [
+    "Vue3",
+    "web-component",
+    "vite",
+    "search"
+  ],
+  "repository": "https://git.uklo.office.eeft.com/cadooz-developers/prototypes/im-search-vue",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "sass": "^1.62.1",
+    "vite": "^4.3.6"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vue": "^3.3.2"
+  }
+}

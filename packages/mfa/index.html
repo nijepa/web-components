@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>MFA</h1>
+      <custom-mfa />
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      const mfa = document.querySelector('custom-mfa');
+      function setAttributes(el, attrs) {
+        for (var key in attrs) {
+          const attr =
+            typeof attrs[key] !== 'string'
+              ? JSON.stringify(attrs[key])
+              : attrs[key];
+          el.setAttribute(key, attr);
+        }
+      }
+      const mfaProps = {
+        translations: {
+          'cips.mfa.error_message.login_missing':
+            'Die Anmeldung fehlt in der Anfrage',
+          'cips.mfa.error_message.verification_problem':
+            'Bei der Überprüfung Ihres Codes ist ein Fehler aufgetreten',
+          'cips.mfa.error_message.enabled_mfa':
+            'Beim Versuch, die 2-Faktor-Authentifizierung zu aktivieren, ist ein Fehler aufgetreten',
+          'cips.mfa.success_message.verification_code_correct':
+            'Ihr Bestätigungscode ist gültig',
+          'cips.mfa.buttons.edit_2fa': '2-Faktor-Authentifizierung bearbeiten',
+          'cips.mfa.notes.change_device':
+            'Gerät für die Authentifizierungs-App ändern',
+          'cips.mfa.notes.backup_codes_info':
+            'Für Sie wurden einmalig nutzbare Codes generiert. Diese sollte sicher abgespeichert werden und dienen dem Fall, sollten Sie einmal nicht auf Ihre Authentifizierungs-App zugreifen können.',
+          'cips.mfa.notes.important_note':
+            'Unsere 2-Faktor-Authentifizierung bietet Ihnen die Möglichkeit, durch eine zweifache Authentifizierung beim Einloggen in den Prämienshop noch mehr Sicherheit für Ihre Daten und Gutscheine zu gewährleisten.',
+          'cips.mfa.error_message.user_blocked':
+            'Ihr Konto wurde gesperrt. Sie können Ihren Code nicht eingeben',
+          'cips.mfa.notes.download_ios': 'IOS: zum Download',
+          'cips.mfa.notes.mfa_info_021':
+            'Bei einer 2-Faktor-Authentifizierung werden Ihnen nach Eingabe Ihrer Zugangsdaten Codes in einer separaten App auf Ihrem Smartphone angezeigt, die Sie zusätzlich zu Ihrem Passwort bei der Anmeldung in diesem Shop eingeben müssen.',
+          'cips.mfa.notes.mfa_info_022':
+            'Diese mehrstufige Authentifizierung ist nicht verpflichtend, wird von uns aber als doppelt Absicherung empfohlen.',
+          'cips.mfa.error_message.codeinput_to_often':
+            'Sie haben zu oft versucht, sich zu authentifizieren. Aus Sicherheitsgründen können wir den nächsten Versuch frühestens in einer Minute zulassen. Bis dahin ist Ihre IP-Adresse gesperrt.',
+          'cips.mfa.error_message.code_incorrect':
+            'Der eingegebene Code ist nicht korrekt. Bitte prüfen Sie noch einmal, ob Sie den korrekten Code aus Ihrer Authentifizierungs-App eingegeben haben, oder scannen Sie den QR-Code erneut.',
+          'cips.mfa.notes.mfa_info_01':
+            'Unsere 2-Faktor-Authentifizierung bietet Ihnen die Möglichkeit, durch eine zweifache Authentifizierung beim Einloggen in den Prämienshop noch mehr Sicherheit für Ihre Daten und Gutscheine zu gewährleisten.',
+          'cips.mfa.notes.mfa_info_02':
+            'Unsere 2-Faktor-Authentifizierung bietet Ihnen die Möglichkeit, durch eine  zweifache Authentifizierung beim Einloggen in den Prämienshop noch mehr Sicherheit für Ihre Daten und Gutscheine zu gewährleisten.',
+          'cips.mfa.error_message.mfa_not_activated_for_webiste':
+            'Die Multifaktor-Authentifizierung ist für diese Website nicht aktiviert',
+          'cips.mfa.success_message.disabled_mfa':
+            '2-Faktor Authentifizierung wurde deaktiviert',
+          'cips.mfa.notes.installation_steps':
+            '1. Installieren Sie sich die Google Authenticator App auf Ihrem Smartphone. (Diese App wird von uns  empfohlen. Sie können aber auch andere Authentifikations-Apps verwenden.)',
+          'cips.mfa.notes.installation_steps2':
+            '2. Scannen Sie diesen QR-Code mit der Kamera in Ihrer installierten Authentifikations-App ein.',
+          'cips.mfa.buttons.abort': 'Abbrechen',
+          'cips.mfa.notes.installation_steps3':
+            '3. In Ihrer Authentifikations-App wird Ihnen nun ein 6-stelliger Code angezeigt. Bitte geben Sie diesen nachfolgend ein.',
+          'cips.mfa.notes.received_codes_info2':
+            'Bitte geben Sie den Code nachfolgend ein:',
+          'cips.mfa.notes.backup_codes': 'Backup-Codes',
+          'cips.mfa.notes.device_instructions':
+            'Deaktivieren Sie dafür Ihre bestehende 2-Faktor-Authentifizierung und aktivieren eine neue über Ihr neues Endgerät.',
+          'cips.mfa.notes.received_codes_info':
+            'Sie haben soeben in Ihrer Authentifizierungs-App auf Ihrem Smartphone einen 6-stelligen Code erhalten.',
+          'cips.mfa.buttons.download_save_codes':
+            'Codes herunterladen und speichern',
+          'cips.mfa.error_message.verification_code_empty':
+            'Ihr Bestätigungscode ist leer. Bitte geben Sie den korrekten Code aus Ihrer mobilen Anwendung ein',
+          'cips.mfa.notes.enter_code':
+            'Backup-Codes generieren für Ihre 2-Faktor-Authentifizierung',
+          'cips.mfa.success_message.received_code':
+            'Sie haben soeben in Ihrer Authentifizierungs-App auf Ihrem Smartphone einen 6-stelligen Code erhalten.',
+          'cips.mfa.error_message.qrcode_not_shown':
+            'Beim Versuch den QR-Code zu generieren ist ein Fehler aufgetreten',
+          'cips.mfa.buttons.confirm_entry': 'Eingabe bestätigen',
+          'cips.mfa.notes.inactive': 'Inaktiv',
+          'cips.mfa.success_message.enabled_mfa':
+            '2-Faktor Authentifizierung wurde aktiviert',
+          'cips.mfa.error_message.shared_secred_failed':
+            'Beim Abrufen des gemeinsamen Geheimnisses zum Validieren des Bestätigungscodes ist ein Fehler aufgetreten',
+          'cips.mfa.notes.status': 'Status',
+          'cips.mfa.notes.save_codes':
+            'Backup-Codes herunterladen und speichern für Ihre 2-Faktor Authentifizierung',
+          'cips.mfa.notes.important_note2':
+            'Bei dieser Authentifizierung werden Ihnen nach Eingabe Ihrer Zugangsdaten Codes in einer separaten App auf Ihrem Smartphone angezeigt, die Sie zusätzlich zu Ihrem  Passwort bei der Anmeldung in den Shop eingeben müssen.',
+          'cips.mfa.notes.2fa_authentication': '2-Faktor Authentifizierung',
+          'cips.mfa.error_message.backupcodes_downloading_failed':
+            'Beim Herunterladen Ihrer Backup-Codes ist ein Fehler aufgetreten',
+          'cips.mfa.error_message.disabled_mfa':
+            'Beim Versuch, die 2-Faktor-Authentifizierung zu deaktivieren, ist ein Fehler aufgetreten',
+          'cips.mfa.notes.active': 'Aktiv',
+          'cips.mfa.notes.important_note4':
+            'Sie haben auch später noch die Möglichkeit, die 2-Faktor-Authentifizierung in Ihrer Benutzerverwaltung zu aktivieren.',
+          'cips.mfa.error_message.status':
+            'Beim Überprüfen des Status ist ein Fehler aufgetreten',
+          'cips.mfa.notes.disable_2fa':
+            '2-Faktor-Authentifizierung deaktivieren',
+          'cips.mfa.notes.important_note_title':
+            'Wichtiger Hinweis zur 2-Faktor-Authentifizierung',
+          'cips.mfa.notes.important_note3':
+            'Diese 2-Faktor-Authentifizierung ist nicht verpflichtend, wird von uns aber als weitere Absicherung empfohlen.',
+          'cips.mfa.notes.download_code_info':
+            'Bitte laden Sie Ihre Backup-Codes herunter und speichern Sie diese ab, falls Sie derzeit keinen Zugriff auf Ihre Authentifizierungs-App haben.',
+          'cips.mfa.buttons.without_mfa': 'Weiter ohne Authentifizierung',
+          'cips.mfa.success_message.new_backupcodes_loaded':
+            'Ihr Backup-Codes wurde erfolgreich geladen',
+          'cips.mfa.buttons.2fa_disable':
+            '2-Faktor Authentifizierung deaktivieren',
+          'cips.mfa.success_message.new_backupcodes_generated':
+            'Ihre Backup-Codes wurden erfolgreich generiert',
+          'cips.mfa.notes.link_device_info':
+            'Sie können ein anderes Smartphone oder ein anderes mobiles Endgerät mit Ihrem Zugang zum Shop verknüpfen und darüber die 2-Faktor-Authentifizierung durchführen.',
+          'cips.mfa.success_message.backupcodes_downloaded':
+            'Sie haben Ihre Backup-Code erfolgreich heruntergeladen.',
+          'cips.mfa.success_message.received_code2':
+            'Bitte geben Sie den Code nachfolgend ein:',
+          'cips.mfa.error_message.code_not_correct':
+            'Der eingegebene Code ist nicht korrekt. Bitte prüfen Sie noch einmal, ob Sie den korrekten Code aus Ihrer Authentifizierungs-App oder nutzen Sie Ihre Backup-Codes.',
+          'cips.mfa.notes.important_codes_info':
+            'Backup-Codes können jeweils einmalig verwendet werden.',
+          'cips.mfa.error_message.new_backupcodes_generating_failed':
+            'Beim generieren neuer Sicherungscodes ist ein Fehler aufgetreten',
+          'cips.mfa.notes.deactivate':
+            'Deaktivierung Ihrer 2-Faktor-Authentifizierung',
+          'cips.mfa.notes.mfa_info_013':
+            'Sie haben auch später noch die Möglichkeit, die 2-Faktor-Authentifizierung in Ihrer Benutzerverwaltung zu aktivieren.',
+          'cips.mfa.notes.download_android': 'Android: zum Download',
+          'cips.mfa.notes.mfa_info_014':
+            'Möchten Sie die 2-Faktor-Authentifizierung aktivieren?',
+          'cips.mfa.notes.backup_codes_info2':
+            'Wichtig: Laden Sie diese Backup-Codes herunter und speichern Sie diese sicher ab',
+          'cips.mfa.notes.important_codes_info2':
+            'Codes herunter und speichern Sie diese sicher ab.',
+          'cips.mfa.notes.generate_codes':
+            'Bitte geben Sie den 6-stelligen Code aus Ihrer Authentifizierungs-App ein.',
+          'cips.mfa.error_message.new_codes2':
+            'Codes generiert. Sie können diese Funktion wieder ab dem {0} um {1} Uhr nutzen.',
+          'cips.mfa.notes.note': 'Hinweis',
+          'cips.mfa.buttons.generate_codes': 'Backup-Codes generieren',
+          'cips.mfa.notes.confirm_disable_2fa':
+            'Sind Sie sich sicher, dass Sie die 2-Faktor-Authentifizierung deaktivieren möchten?',
+          'cips.mfa.notes.instalation_instruction':
+            'Führen Sie folgende Schritte zur Einrichtung Ihrer 2-Faktor-Authentifizierung durch:',
+          'cips.mfa.notes.mfa_info_011':
+            'Bei dieser Authentifizierung werden Ihnen nach der Eingabe Ihrer Zugangsdaten Codes in einer separaten App auf Ihrem Smartphone angezeigt, die Sie zusätzlich vor der Anmeldung in den Prämienshop eingeben müssen.',
+          'cips.mfa.buttons.activate_2fa':
+            '2-Faktor Authentifizierung aktivieren',
+          'cips.mfa.buttons.not_now': 'Abbrechen',
+          'cips.mfa.notes.mfa_info_012':
+            'Diese 2-Faktor-Authentifizierung ist nicht verpflichtend, wird von uns aber als weitere Absicherung empfohlen.',
+          'cips.mfa.error_message.new_codes':
+            'Sie können nur ein mal innerhalb von sieben Tagen neue Backup-Codes erstellen lassen. Sie haben zuletzt am {0} um {1} Uhr neue',
+          'cips.mfa.error_message.new_backupcodes_loading_failed':
+            'Beim Laden verwendbarer Backup-Codes ist ein Fehler aufgetreten',
+        },
+        'primary-color': 'rgb(237, 107, 125)',
+        'logo-url': '../assets/Ullapopken_logo_new.svg',
+      };
+      setAttributes(mfa, mfaProps);
+      //mfa.setAttribute("translations", JSON.stringify(translationMap));
+      //mfa.setAttribute("primary-color", ts);
+    </script>
+    <!-- <custom-mfa translations='{"cips.mfa.backup_codes.download.redeemed":";Eingelöst","cips.mfa.backup_codes.download.file_name":"BackUp-Codes","cips.mfa.error_message.disabled_mfa":"Beim Versuch, die mehrstufige Authentifizierung zu deaktivieren, ist ein Fehler aufgetreten",";cips.mfa.success_message.disabled_mfa":";Multifaktor-Authentifizierung wurde deaktiviert","cips.mfa.error_message.enabled_mfa":"Beim Versuch, die mehrstufige Authentifizierung zu aktivieren, ist ein Fehler aufgetreten","cips.mfa.success_message.enabled_mfa":"Multifaktor-Authentifizierung wurde aktiviert"}' primary-color="rgb(237, 107, 125)"> </custom-mfa> -->
+  </body>
+</html>
