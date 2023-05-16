@@ -1,6 +1,10 @@
-# *`custom-ebc`*
+::: raw
+<h1 class="heading">custom-ebc</h1>
+:::
 
-(standalone web component made with Vue3 & Vite)
+::: tip
+used in `EBC` portal for acount details management
+:::
 
 # Usage
 

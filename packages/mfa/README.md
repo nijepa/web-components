@@ -1,6 +1,10 @@
-# *`custom-mfa`*
+::: raw
+<h1 class="heading">custom-mfa</h1>
+:::
 
-(standalone web-component for multi factor authentication)
+::: tip
+used in `CIPS` aps for multi factor authentication
+:::
 
 # Usage
 
@@ -48,15 +52,15 @@
     }
   }
 ```
+### Passing data in velocity templates examples:
+::: code-group
+```js [profile.vm]
 
-### passing data example (`profile.vm` velocity template):
-
-```js
   const mfa = document.querySelector('custom-mfa')
 
   const mfaProps = {
     translations: {
-      #foreach($resource i $(messages.getResourcesWithPrefix('cips.mfa')))
+      #foreach($resource in $(messages.getResourcesWithPrefix('cips.mfa')))
         '$!{resource.getKey()' : '$!{resource.getValue().replace("'", "")}',
       #end
     },
@@ -75,10 +79,7 @@
 
   setAttributes(mfa, mfaProps)
 ```
-
-### passing data example (`mfa_activate_login.vm` velocity template):
-
-```js
+```js [mfa_activate_login.vm]
   const mfa = document.querySelector("custom-mfa");
 
   const mfaProps = {
@@ -101,10 +102,9 @@
   };
   setAttributes(mfa, mfaProps);
 ```
+:::
 
-<hr>
-
-### Props
+## Props
 
 #### There is 3 types of props:
 
@@ -185,15 +185,12 @@
 
     - Type: String
     - Default: ""
-    
-<br/>
-<hr>
+
 
 ## Deployment
 
 - build app
-- rename compiled file to **`mfa.js`**
-- upload file to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`mfa.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
 <hr>
 

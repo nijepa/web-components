@@ -1,8 +1,13 @@
-# *`custom-toast`*
+::: raw
+<h1 class="heading">custom-toast</h1>
+:::
 
-(standalone web component made with Vue3 & Vite)
+::: tip
+default component, can be used anywhere in `old world` apps
+:::
 
 # Usage
+
 ## Import component
 #### In HTML header:
 ```html

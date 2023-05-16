@@ -1,6 +1,10 @@
-# *`custom-search`*
+::: raw
+<h1 class="heading">custom-search</h1>
+:::
 
-(standalone web component made with Vue3 & Vite)
+::: tip
+used in `Incentivemall` for global search
+:::
 
 # Usage
 
@@ -46,7 +50,7 @@
 ### Header navbar elemet with search icon to init component:
 
 ```html
-  <li class="nav-item d-flex align-items-center" onclick="showSearch()">  
+  <li class="nav-item d-flex align-items-center" onclick="showSearch()">
     <svg id="search" class="search__icon svg-icon ml-0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1"><use xlink:href="/images/icons/all_in_one.svg#search"></use></svg>
   </li>
 ```
@@ -83,7 +87,7 @@
 
 ## Deployment
 
-- build app 
+- build app
 - rename compiled file to **`search.js`**
 - upload file to **`Doocroot-Explorer -> scripts/path/for/app`**
 

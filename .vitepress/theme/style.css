@@ -89,3 +89,15 @@
   --docsearch-primary-color: var(--vp-c-brand) !important;
 }
 
+.VPImage {
+  height: auto !important;
+  width: 150px !important;
+}
+
+.heading {
+  font-size: 3em;
+  background-color: var(--vp-c-brand-lighter);
+  padding: .2em;
+  width: fit-content;
+  border-radius: .2em;
+}
