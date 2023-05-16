@@ -1,6 +1,3 @@
-# WEB-Components
+# cadooz - Web Components
 
-[Account details - EBC](packages/account-ebc/README.md)
-[MFA](packages/mfa/README.md)
-[Search - Incetivemall](packages/search-incentivemall/README.md)
-[Toast](packages/toast/README.md)
+## [![Generic badge](https://img.shields.io/badge/DOCUMENTATION-4FC08D.svg?style=for-the-badge&logo=vuedotjs&logoColor=fff)](https://nijepa.github.io/web-components/)
