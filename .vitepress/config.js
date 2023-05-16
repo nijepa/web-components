@@ -16,10 +16,10 @@ export default defineConfig({
       {
         text: 'Examples',
         items: [
-          { text: 'MFA', link: '/packages/mfa/readme' },
-          { text: 'Toast', link: '/packages/toast/readme' },
-          { text: 'Search', link: '/packages/search-incentivemall/readme' },
-          { text: 'Account', link: '/packages/account-ebc/readme' }
+          { text: 'MFA', link: '/packages/mfa/README' },
+          { text: 'Toast', link: '/packages/toast/README' },
+          { text: 'Search', link: '/packages/search-incentivemall/README' },
+          { text: 'Account', link: '/packages/account-ebc/README' }
         ]
       }
     ],

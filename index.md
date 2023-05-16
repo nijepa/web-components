@@ -9,16 +9,16 @@ hero:
   actions:
     - theme: brand
       text: MFA
-      link: /packages/mfa/readme
+      link: /packages/mfa/README
     - theme: alt
       text: Toast
-      link: /packages/toast/readme
+      link: /packages/toast/README
     - theme: alt
       text: Search
-      link: /packages/search-incentivemall/readme
+      link: /packages/search-incentivemall/README
     - theme: alt
       text: Account
-      link: /packages/account-ebc/readme
+      link: /packages/account-ebc/README
 
 features:
   - title: MFA
