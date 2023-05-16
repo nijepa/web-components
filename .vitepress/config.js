@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "WEB Components - Vue",
   description: "Vite & Vue3",
+  base: '/web-components/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -22,8 +23,6 @@ export default defineConfig({
         ]
       }
     ],
-    
-    base: '/web-components/',
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
