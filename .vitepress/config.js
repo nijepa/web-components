@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "WEB Components - Vue",
+  title: "cadooz - WEB Components",
   description: "Vite & Vue3",
   base: '/web-components/',
   themeConfig: {
@@ -23,9 +23,16 @@ export default defineConfig({
         ]
       }
     ],
+    
+    lastUpdated: true,
+    
+    footer: {
+      message: 'cadooz',
+      copyright: 'Copyright © 2023'
+    },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+    ],
   }
 })

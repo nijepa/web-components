@@ -1,14 +1,10 @@
-# custom-ebc
-
-## Vite, Vue3 web-component *`custom-ebc`*
+# *`custom-ebc`*
 
 (standalone web component made with Vue3 & Vite)
 
-<hr>
+# Usage
 
-## Usage
-
-### Import component
+## Import component
 
 #### in HTML header in `structure.vm` velocity template
 
@@ -16,7 +12,7 @@
   <script type="module" crossorigin src="/scripts/path/to/ebc.js"></script>
 ```
 
-### Place component
+## Place component
 
 #### in velocity template `account_details.vm`
 

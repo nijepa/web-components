@@ -1,14 +1,10 @@
-# custom-mfa
-
-## Vite, Vue3 web-component *`custom-mfa`*
+# *`custom-mfa`*
 
 (standalone web-component for multi factor authentication)
 
-<hr>
+# Usage
 
-## Usage
-
-### Import component
+## Import component
 
 #### in HTML header in `structure.vm` velocity template
 
@@ -17,7 +13,7 @@
 
 ```
 
-### Place component
+## Place component
 
 #### in velocity templates `profile.vm` and `mfa_activate_login.vm`
 

@@ -10,24 +10,32 @@ hero:
     - theme: brand
       text: MFA
       link: /packages/mfa/README
-    - theme: alt
+    - theme: brand
       text: Toast
       link: /packages/toast/README
-    - theme: alt
+    - theme: brand
       text: Search
       link: /packages/search-incentivemall/README
-    - theme: alt
+    - theme: brand
       text: Account
       link: /packages/account-ebc/README
 
 features:
-  - title: MFA
+  - icon: 
+      src: https://img.shields.io/badge/-Lerna-red.svg?style=flat&logo=Lerna)
+    title: MFA
     details: Multi Factor Authentication
-  - title: Toast
+  - icon: 
+      src: https://img.shields.io/badge/-Vite-blue.svg?style=flat&logo=Vite)
+    title: Toast
     details: Toast
-  - title: Search
+  - icon: 
+      src: https://img.shields.io/badge/-Vue-green.svg?style=flat&logo=Vue)
+    title: Search
     details: Global search component for Incentivemall
   - title: Account
     details: Account details component for EBC portal
+
+footer: Copyright © 2022 Etc
 ---
 

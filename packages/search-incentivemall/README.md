@@ -1,14 +1,10 @@
-# custom-search
-
-## Vite, Vue3 web-component *`custom-search`*
+# *`custom-search`*
 
 (standalone web component made with Vue3 & Vite)
 
-<hr>
+# Usage
 
-## Usage
-
-### Import component
+## Import component
 
 #### in HTML header in `structure.vm` velocity template
 
