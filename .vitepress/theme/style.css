@@ -90,8 +90,8 @@
 }
 
 .VPImage {
-  height: auto !important;
-  width: 150px !important;
+  height: 50 !important;
+  width: fit-content !important;
 }
 
 .heading {

@@ -8,7 +8,7 @@ hero:
     alt: cadooz
   name: "WEB Components"
   text: "Vue3"
-  tagline: used in old world apps
+  tagline: used in 'old world' apps
   actions:
     - theme: brand
       text: MFA (CIPS)
