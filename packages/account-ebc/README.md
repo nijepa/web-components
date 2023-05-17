@@ -3,7 +3,7 @@
 :::
 
 ::: tip
-used in `EBC` portal for acount details management
+used in `EBC` portal for account details management
 :::
 
 # Usage

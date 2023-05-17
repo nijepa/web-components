@@ -3,9 +3,12 @@
 layout: home
 
 hero:
+  image:
+    src: /cadooz_logo.svg
+    alt: cadooz
   name: "WEB Components"
-  text: "Vue3 & Vite"
-  tagline: Standalone web components made with Vue3
+  text: "Vue3"
+  tagline: used in old world apps
   actions:
     - theme: brand
       text: MFA (CIPS)

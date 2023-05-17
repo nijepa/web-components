@@ -70,29 +70,44 @@ default component, can be used anywhere in `old world` apps
 ```
 
 ## Props
-#####   Set component attribute `toast-data` as JSON with following properties:
-- ***`title`*** (String)
-- ***`message`*** (String - *can be used html*)
-- ***`type`*** (String - *info, success, error*)
 
-#### - *passing content example*
-```js
+- #### ***Used for component state (show/hide):***
+
+  ### **`isActive`**
+
+    - Type: String
+    - Default: 'false'
+<br><br>
+- #####   ***Used for component content:***
+
+  ### **`toast-data`**
+
+  - ***`title`*** (String)
+  - ***`message`*** (String - *can be used html*)
+  - ***`type`*** (String - *info, success, error*)
+<br><br>
+- #####   ***Used for component styles:***
+
+  ### **`toast-style`**
+
+  - ***`position`*** (String - *center, left-top, right-top, left-bottom, right-bottom*)
+  - ***`decoration`*** (Boolean)
+  - ***`backdrop`*** (Boolean)
+  - ***`colorized`*** (Boolean)
+  - ***`color`*** (String - *any color*)
+  - ***`font`*** (String - *any font-family*)
+
+#### *example*
+
+:::code-group 
+```js [passing content]
   const td = { title: 'some title',
               message: 'some message',
               type: 'info' }
 
   toast.setAttribute('toast-data', JSON.stringify(td))
 ```
-##### Styles can be set by setting attribute `toast-style` as JSON with following properties:
- - ***`position`*** (String - *center, left-top, right-top, left-bottom, right-bottom*)
- - ***`decoration`*** (Boolean)
- - ***`backdrop`*** (Boolean)
- - ***`colorized`*** (Boolean)
- - ***`color`*** (String - *any color*)
- - ***`font`*** (String - *any font-family*)
-
-#### - ***passing styles example:***
-```js
+```js [passing styles]
   const ts = { position: 'center',
               decoration: false,
               colorized: false,
@@ -102,7 +117,28 @@ default component, can be used anywhere in `old world` apps
 
   toast.setAttribute('toast-style', JSON.stringify(ts))
 ```
+:::
+- #### ***Used for component action:***
 
+  ### **`fixed`**
+
+    - Type: String
+    - Default: 'false'
+  
+  ### **`actionUrl`**
+
+    - Type: String
+    - Default: ''
+  
+  ### **`actionTitle`**
+
+    - Type: String
+    - Default: ''
+
+  ### **`actionBtn`**
+
+    - Type: String
+    - Default: ''
 ## Deployment
 
 - build app
