@@ -16,7 +16,7 @@ used in `Incentivemall` for global search
   <script type="module" crossorigin src="/scripts/path/to/search.js"></script>
 ```
 
-### Place component
+## Place component
 
 #### in velocity template `header.vm`
 
@@ -26,7 +26,7 @@ used in `Incentivemall` for global search
 
 ## Interacting with component
 
-### Script for *emmiting/listening* event *to/from* component and getting required translations, app context name:
+#### Script for *emmiting/listening* event *to/from* component and getting required translations, app context name:
 
 ```js
   <script async defer>
@@ -51,13 +51,15 @@ used in `Incentivemall` for global search
 
 ```html
   <li class="nav-item d-flex align-items-center" onclick="showSearch()">
-    <svg id="search" class="search__icon svg-icon ml-0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1"><use xlink:href="/images/icons/all_in_one.svg#search"></use></svg>
+    <svg id="search" class="search__icon svg-icon ml-0" 
+      xmlns:xlink="http://www.w3.org/1999/xlink" 
+      xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <use xlink:href="/images/icons/all_in_one.svg#search"></use>
+    </svg>
   </li>
 ```
 
-<hr>
-
-### Props
+## Props
 
 - #### ***Used for component state (show/hide):***
 
@@ -83,13 +85,10 @@ used in `Incentivemall` for global search
     - Type: String
     - Default: '/mall'
 
-<hr>
-
 ## Deployment
 
 - build app
-- rename compiled file to **`search.js`**
-- upload file to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`search.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
 <hr>
 

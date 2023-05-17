@@ -17,9 +17,9 @@ export default defineConfig({
         text: 'Examples',
         items: [
           { text: 'MFA', link: '/packages/mfa/README' },
-          { text: 'Toast', link: '/packages/toast/README' },
           { text: 'Search', link: '/packages/search-incentivemall/README' },
-          { text: 'Account', link: '/packages/account-ebc/README' }
+          { text: 'Account', link: '/packages/account-ebc/README' },
+          { text: 'Toast', link: '/packages/toast/README' }
         ]
       }
     ],

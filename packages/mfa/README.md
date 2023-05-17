@@ -29,15 +29,14 @@ used in `CIPS` aps for multi factor authentication
 
 ### Some sessions keys are required for optional/mandatory mfa:
 
-##### in `mfa_activate_login.vm` template:
-```html
+::: code-group
+```html [mfa_activate_login.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
 ```
-
-##### in `profile.vm` template:
-```html
+```html [profile.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
 ```
+:::
 
 ### We can use helper function to pass all the attributes
 
@@ -60,7 +59,7 @@ used in `CIPS` aps for multi factor authentication
 
   const mfaProps = {
     translations: {
-      #foreach($resource in $(messages.getResourcesWithPrefix('cips.mfa')))
+      #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
         '$!{resource.getKey()' : '$!{resource.getValue().replace("'", "")}',
       #end
     },

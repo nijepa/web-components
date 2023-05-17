@@ -26,7 +26,7 @@ used in `EBC` portal for acount details management
 
 ## Interacting with component
 
-### Script for getting required translations & styles and *listening* to event:
+#### Script for getting required translations & styles and *listening* to event:
 
 ```js
   <script async defer>
@@ -59,9 +59,7 @@ used in `EBC` portal for acount details management
   </script>
 ```
 
-<hr>
-
-### Props
+## Props
 
 - #### ***Translations are recived from velocity action as object, need to use JSON.parse:***
 
@@ -94,13 +92,10 @@ used in `EBC` portal for acount details management
     - Type: String
     - Default: ''
 
-<hr>
-
 ## Deployment
 
 - build app
-- rename compiled file to **`ebc.js`**
-- upload file to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`ebc.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
 <hr>
 

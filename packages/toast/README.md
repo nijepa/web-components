@@ -9,7 +9,7 @@ default component, can be used anywhere in `old world` apps
 # Usage
 
 ## Import component
-#### In HTML header:
+#### in HTML header in `structure.vm` velocity template
 ```html
   <script type="module" crossorigin src="/scripts/path/to/toast.js"></script>
 ```
@@ -68,10 +68,8 @@ default component, can be used anywhere in `old world` apps
 
   setAttributes(toast, td)
 ```
-<hr>
 
-
-### With props
+## Props
 #####   Set component attribute `toast-data` as JSON with following properties:
 - ***`title`*** (String)
 - ***`message`*** (String - *can be used html*)
@@ -104,6 +102,12 @@ default component, can be used anywhere in `old world` apps
 
   toast.setAttribute('toast-style', JSON.stringify(ts))
 ```
+
+## Deployment
+
+- build app
+- upload file **`toast.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+
 <hr>
 
 ### Project setup
