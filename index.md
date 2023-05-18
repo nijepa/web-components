@@ -42,3 +42,26 @@ features:
 
 footer: Copyright © 2022 Etc
 ---
+
+<div class="tip-wrapper">
+
+::: tip COMMANDS
+Update dependencies for all components:
+
+`npm run bootstrap`
+
+Compile, build all components:
+
+`npm run lerna`
+
+Localy develop docs:
+
+`npm run docs:dev`
+
+Build docs:
+
+`npm run docs:build`
+
+:::
+
+</div>

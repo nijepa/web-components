@@ -105,3 +105,9 @@
 .image-src {
   width: 220px !important;
 }
+
+.tip-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}

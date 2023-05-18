@@ -3,7 +3,7 @@
 :::
 
 ::: tip
-default component, can be used anywhere in ***old world*** apps
+default component, can be used anywhere in ***old world** apps
 :::
 
 ## Import component

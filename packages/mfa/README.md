@@ -31,10 +31,12 @@ used in ***CIPS*** aps for multi factor authentication
 
 ```html [mfa_activate_login.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
+  <div id="islogin" style="display: none;">$mfalogin</div>
 ```
 
 ```html [profile.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
+  <div id="islogin" style="display: none;">$mfalogin</div>
 ```
 
 :::
@@ -188,21 +190,3 @@ used in ***CIPS*** aps for multi factor authentication
 
 - build app
 - upload file **`mfa.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
-
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
