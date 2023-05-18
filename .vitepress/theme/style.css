@@ -97,7 +97,7 @@
 .heading {
   font-size: 3em;
   background-color: var(--vp-c-brand-lighter);
-  padding: .2em;
+  padding: .2em .4em;
   width: fit-content;
   border-radius: .2em;
 }
@@ -110,4 +110,8 @@
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+}
+
+.VPHome {
+  padding-bottom: 2em !important;
 }

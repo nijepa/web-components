@@ -40,7 +40,6 @@ features:
     details: An approachable, performant and versatile framework for building web user interfaces.
     link: https://vuejs.org/
 
-footer: Copyright © 2022 Etc
 ---
 
 <div class="tip-wrapper">
