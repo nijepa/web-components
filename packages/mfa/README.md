@@ -2,8 +2,8 @@
 <h1 class="heading">custom-mfa</h1>
 :::
 
-::: tip
-used in ***CIPS*** aps for multi factor authentication
+::: tip usage
+in ***CIPS*** apps for multi factor authentication
 :::
 
 ## Import component

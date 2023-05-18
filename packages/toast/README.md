@@ -2,8 +2,8 @@
 <h1 class="heading">custom-toast</h1>
 :::
 
-::: tip
-default component, can be used anywhere in ***old world** apps
+::: tip usage
+default component, can be used anywhere in ***old world*** apps
 :::
 
 ## Import component

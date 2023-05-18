@@ -2,8 +2,8 @@
 <h1 class="heading">custom-ebc</h1>
 :::
 
-::: tip
-used in ***EBC*** portal for account details management
+::: tip usage
+in ***EBC*** portal for account details management
 :::
 
 ## Import component

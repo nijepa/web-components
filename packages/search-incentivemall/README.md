@@ -2,8 +2,8 @@
 <h1 class="heading">custom-search</h1>
 :::
 
-::: tip
-used in ***Incentivemall*** for global search
+::: tip usage
+in ***Incentivemall*** for global search
 :::
 
 ## Import component
