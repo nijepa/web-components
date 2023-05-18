@@ -3,14 +3,12 @@
 :::
 
 ::: tip
-used in `Incentivemall` for global search
+used in ***Incentivemall*** for global search
 :::
-
-# Usage
 
 ## Import component
 
-#### in HTML header in `structure.vm` velocity template
+### in HTML header in `structure.vm` velocity template
 
 ```html
   <script type="module" crossorigin src="/scripts/path/to/search.js"></script>
@@ -18,7 +16,7 @@ used in `Incentivemall` for global search
 
 ## Place component
 
-#### in velocity template `header.vm`
+### in velocity template `header.vm`
 
 ```html
   <custom-search></custom-search>
@@ -26,7 +24,7 @@ used in `Incentivemall` for global search
 
 ## Interacting with component
 
-#### Script for *emmiting/listening* event *to/from* component and getting required translations, app context name:
+### Script for *emmiting/listening* event *to/from* component and getting required translations, app context name
 
 ```js
   <script async defer>
@@ -47,7 +45,7 @@ used in `Incentivemall` for global search
   </script>
 ```
 
-### Header navbar elemet with search icon to init component:
+### Header navbar elemet with search icon to init component
 
 ```html
   <li class="nav-item d-flex align-items-center" onclick="showSearch()">
@@ -61,50 +59,44 @@ used in `Incentivemall` for global search
 
 ## Props
 
-- #### ***Used for component state (show/hide):***
+### ***Used for component state (show/hide):***
 
-  ### **`isActive`**
+### **`isActive`**
 
-    - Type: String
-    - Default: 'false'
+- Type: String
+- Default: 'false'
 
-<br/>
+### ***Used for text resources (recived from velocity action):***
 
-- #### ***Used for text resources (recived from velocity template as object, need to use `JSON.parse`):***
+### **`translations`**
 
-  ### **`translations`**
+- Type: String
 
-    - Type: String
+### ***Used for API call and generation of links to outer pages:***
 
-<br/>
+### **`context`**
 
-- #### ***Used for API call and generation of links to outer pages:***
-
-  ### **`context`**
-
-    - Type: String
-    - Default: '/mall'
+- Type: String
+- Default: '/mall'
 
 ## Deployment
 
 - build app
 - upload file **`search.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
-<hr>
-
-### Project setup
+## Project setup
 
 ```
 npm install
 ```
 
-#### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development
 
 ```
 npm run serve
 ```
 
-#### Compiles and minifies for production
+### Compiles and minifies for production
 
 ```
 npm run build

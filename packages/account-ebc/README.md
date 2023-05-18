@@ -3,14 +3,12 @@
 :::
 
 ::: tip
-used in `EBC` portal for account details management
+used in ***EBC*** portal for account details management
 :::
-
-# Usage
 
 ## Import component
 
-#### in HTML header in `structure.vm` velocity template
+### in HTML header in `structure.vm` velocity template
 
 ```html
   <script type="module" crossorigin src="/scripts/path/to/ebc.js"></script>
@@ -18,7 +16,7 @@ used in `EBC` portal for account details management
 
 ## Place component
 
-#### in velocity template `account_details.vm`
+### in velocity template `account_details.vm`
 
 ```html
   <custom-ebc></custom-ebc>
@@ -26,7 +24,7 @@ used in `EBC` portal for account details management
 
 ## Interacting with component
 
-#### Script for getting required translations & styles and *listening* to event:
+### Script for getting required translations & styles and *listening* to event
 
 ```js
   <script async defer>
@@ -61,57 +59,51 @@ used in `EBC` portal for account details management
 
 ## Props
 
-- #### ***Translations are recived from velocity action as object, need to use JSON.parse:***
+### ***Translations are recived from velocity action:***
 
-  ### **`translations`**
+### **`translations`**
 
-    - Type: String
+- Type: String
 
-<br/>
+### ***Styles are received from site elements:***
 
-- #### ***Styles are received from site elements:***
+### **`primaryColor`**
 
-  ### **`primaryColor`**
+- Type: String
 
-    - Type: String
+### **`hoverColor`**
 
-  ### **`hoverColor`**
+- Type: String
 
-    - Type: String
+### **`font`**
 
-  ### **`font`**
+- Type: String
 
-    - Type: String
+### ***Action url are received from velocity action:***
 
-<br/>
+### **`actionUrl`**
 
-- #### ***Action url are received from velocity action:***
-
-  ### **`actionUrl`**
-
-    - Type: String
-    - Default: ''
+- Type: String
+- Default: ''
 
 ## Deployment
 
 - build app
 - upload file **`ebc.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
-<hr>
-
-### Project setup
+## Project setup
 
 ```
 npm install
 ```
 
-#### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development
 
 ```
 npm run serve
 ```
 
-#### Compiles and minifies for production
+### Compiles and minifies for production
 
 ```
 npm run build

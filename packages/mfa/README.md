@@ -3,14 +3,12 @@
 :::
 
 ::: tip
-used in `CIPS` aps for multi factor authentication
+used in ***CIPS*** aps for multi factor authentication
 :::
-
-# Usage
 
 ## Import component
 
-#### in HTML header in `structure.vm` velocity template
+### in HTML header in `structure.vm` velocity template
 
 ```html
   <script type="module" crossorigin src="/scripts/path/to/mfa.js"></script>
@@ -19,7 +17,7 @@ used in `CIPS` aps for multi factor authentication
 
 ## Place component
 
-#### in velocity templates `profile.vm` and `mfa_activate_login.vm`
+### in velocity templates `profile.vm` and `mfa_activate_login.vm`
 
 ```html
   <custom-mfa></custom-mfa>
@@ -27,15 +25,18 @@ used in `CIPS` aps for multi factor authentication
 
 ## Passing data to component
 
-### Some sessions keys are required for optional/mandatory mfa:
+### Some sessions keys are required for optional/mandatory mfa
 
 ::: code-group
+
 ```html [mfa_activate_login.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
 ```
+
 ```html [profile.vm]
   #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
 ```
+
 :::
 
 ### We can use helper function to pass all the attributes
@@ -51,16 +52,19 @@ used in `CIPS` aps for multi factor authentication
     }
   }
 ```
-### Passing data in velocity templates examples:
+
+### Passing data in velocity templates examples
+
 ::: code-group
+
 ```js [profile.vm]
 
-  const mfa = document.querySelector('custom-mfa')
+  const mfa = document.querySelector('custom-mfa');
 
   const mfaProps = {
     translations: {
       #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
-        '$!{resource.getKey()' : '$!{resource.getValue().replace("'", "")}',
+        '$!{resource.getKey()': '$!{resource.getValue().replace("'", "")}',
       #end
     },
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
@@ -74,138 +78,130 @@ used in `CIPS` aps for multi factor authentication
     "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
     "mfa-generate-new-backup-codes-url": "${link.getAction('/myprofile/mfa/generateNewBackupCodes')}",
     "from-mfa-hint": document.querySelector('#islogin').innerText
-  }
+  };
 
-  setAttributes(mfa, mfaProps)
+  setAttributes(mfa, mfaProps);
 ```
+
 ```js [mfa_activate_login.vm]
   const mfa = document.querySelector("custom-mfa");
 
   const mfaProps = {
     translations: {
       #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
-        '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+        '$!{resource.getKey()': '$!{resource.getValue().replace("'", "")}',
       #end
     },
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
     font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
     "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
     "mfa-status-url": "${link.getAction('/myprofile/mfa/checkStatus')}",
-    "mfa-activate-url": "${link.getAction('/login/mfa/activate')}",
-    "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
-    "mfa-download-backup-codes-url": "${link.getAction('/login/mfa/downloadBackupCodes')}",
     "mfa-generate-qr-code-url": "${link.getAction('/login/mfa/generateQrCode')}",
     "mfa-check-verification-code-url": "${link.getAction('/login/mfa/checkVerificationCode')}",
+    "mfa-activate-url": "${link.getAction('/login/mfa/activate')}",
+    "mfa-download-backup-codes-url": "${link.getAction('/login/mfa/downloadBackupCodes')}",
+    "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
     "mfa-generate-new-backup-codes-url": "${link.getAction('/myprofile/mfa/generateNewBackupCodes')}",
     "from-mfa-login": document.querySelector('#islogin').innerText
   };
+
   setAttributes(mfa, mfaProps);
 ```
+
 :::
 
 ## Props
 
-#### There is 3 types of props:
+### ***Translations are recived from velocity action:***
 
-- #### ***Translations are recived from velocity action as object, need to use `JSON.parse`:***
+### **`translations`**
 
-  ### **`translations`**
+- Type: String
 
-    - Type: String
+### ***Styles are received from site elements:***
 
-<br/>
+### **`primaryColor`**
 
-- #### ***Styles are received from site elements:***
+- Type: String
+- Default: "#000"
 
-  ### **`primaryColor`**
+### **`font`**
 
-    - Type: String
-    - Default: "#000"
+- Type: String
+- Default: "'Open Sans', sans-serif"
 
-  ### **`font`**
+### **`logoUrl`**
 
-    - Type: String
-    - Default: "'Open Sans', sans-serif"
+- Type: String
+- Default: ""
 
-  ### **`logoUrl`**
+### ***Actions url's are received from velocity actions:***
 
-  - Type: String
-  - Default: ""
+### **`mfaStatusUrl`**
 
-<br/>
+- Type: String
+- Default: ""
 
-- #### ***Actions url's are received from velocity actions:***
+### **`mfaGenerateQrCodeUrl`**
 
-  ### **`mfaStatusUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### **`mfaCheckVerificationCodeUrl`**
 
-  ### **`mfaGenerateQrCodeUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### **`mfaActivateUrl`**
 
-  ### **`mfaCheckVerificationCodeUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### **`mfaDownloadBackupCodesUrl`**
 
-  ### **`mfaActivateUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### **`mfaDeactivateUrl`**
 
-  ### **`mfaDownloadBackupCodesUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### **`mfaGenerateNewBackupCodesUrl`**
 
-  ### **`mfaDeactivateUrl`**
+- Type: String
+- Default: ""
 
-    - Type: String
-    - Default: ""
+### ***Session keys if user comes from mfa login/hint page:***
 
-  ### **`mfaGenerateNewBackupCodesUrl`**
+### **`fromMfaHint`**
 
-    - Type: String
-    - Default: ""
+- Type: String
+- Default: ""
 
-<br/>
+### **`fromMfaLogin`**
 
-- #### ***Session keys if user comes form mfa login/hint page:***
-
-  ### **`fromMfaHint`**
-
-    - Type: String
-    - Default: ""
-
-  ### **`fromMfaLogin`**
-
-    - Type: String
-    - Default: ""
-
+- Type: String
+- Default: ""
 
 ## Deployment
 
 - build app
 - upload file **`mfa.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
-<hr>
-
-### Project setup
+## Project setup
 
 ```
 npm install
 ```
 
-#### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development
 
 ```
 npm run serve
 ```
 
-#### Compiles and minifies for production
+### Compiles and minifies for production
 
 ```
 npm run build

@@ -3,19 +3,21 @@
 :::
 
 ::: tip
-default component, can be used anywhere in `old world` apps
+default component, can be used anywhere in ***old world*** apps
 :::
 
-# Usage
-
 ## Import component
-#### in HTML header in `structure.vm` velocity template
+
+### in HTML header in `structure.vm` velocity template
+
 ```html
   <script type="module" crossorigin src="/scripts/path/to/toast.js"></script>
 ```
 
 ## Place component
-#### with or without attributes (named slot can be passed):
+
+### with or without attributes (named slot can be passed)
+
 ```html
   <custom-toast></custom-toast>
   // OR
@@ -26,17 +28,23 @@ default component, can be used anywhere in `old world` apps
     </span>
   </custom-toast>
 ```
-## Reference and activate component
+
+## Reference and activate
+
 ```js
   const toast = document.querySelector('custom-toast')
 ```
-#### Set `is-active` attribute to `true` to show toast:
+
+### Set `is-active` attribute to `true` to show toast
+
 ```js
   const showToast = () => {
     toast.setAttribute('is-active', 'true')
   }
 ```
+
 ## Listen to event `close-toast`
+
 ```js
   window.addEventListener('close-toast', toastClosed)
 
@@ -44,70 +52,101 @@ default component, can be used anywhere in `old world` apps
     toast.setAttribute('is-active', 'false')
   }
 ```
-## Passing data to component
-### With attributes
-#### We can use some helper function to pass all the attributes:
-```js
-  const setAttributes = (el, attrs) => {
-    for(var key in attrs) {
-      el.setAttribute(key, attrs[key]);
-    }
-  }
-```
-#### - *passing attributes example:*
-```js
-  const td = { title: 'some title',
-              message: 'some message',
-              type: 'info',
-              position: 'center',
-              decoration: false,
-              colorized: false,
-              backdrop: false,
-              color: "#ffffff",
-              font: "'Open Sans', sans-serif" }
 
-  setAttributes(toast, td)
+## Passing data/action
+
+```js
+  const td = {} 
+  // get translations with velocity function
+  const messages = {
+    success: "$!{messages.get('shop.ebc.messages.success')}",
+    error: "$!{messages.get('shop.ebc.messages.error')}"
+  }
+  // get translations and action path with velocity function
+  const logout = {
+    url: "${link.getAction('/taxfreenoncashbenefit/logout')}",
+    msg: "$!{messages.get('shop.ebc.login.logged_out')}",
+    btn: "$!{messages.get('shop.ebc.login.relogin')}"
+  }
+  // function for component init
+  function showToast(msg, type, fixed = false) {
+    td.message = JSON.parse(JSON.stringify(msg))
+    td.title = messages[type]
+    td.type = type
+    toast.setAttribute("toast-data", JSON.stringify(td));
+    if(fixed) {
+      toast.setAttribute("fixed", JSON.stringify(fixed))
+      toast.setAttribute("action-url", JSON.stringify(logout.url))
+      toast.setAttribute("action-title", JSON.stringify(logout.msg))
+      toast.setAttribute("action-btn", JSON.stringify(logout.btn))
+    }
+    toast.setAttribute("is-active", "true");
+  }
 ```
 
 ## Props
 
-- #### ***Used for component state (show/hide):***
+### ***Component state (show/hide):***
 
-  ### **`isActive`**
+### **`isActive`**
 
-    - Type: String
-    - Default: 'false'
-<br><br>
-- #####   ***Used for component content:***
+- Type: String
+- Default: 'false'
 
-  ### **`toast-data`**
+### ***Component content:***
 
-  - ***`title`*** (String)
-  - ***`message`*** (String - *can be used html*)
-  - ***`type`*** (String - *info, success, error*)
-<br><br>
-- #####   ***Used for component styles:***
+### **`toast-data`**
 
-  ### **`toast-style`**
+- ***`title`*** (String)
+- ***`message`*** (String - *can be used html*)
+- ***`type`*** (String - *info, success, error*)
 
-  - ***`position`*** (String - *center, left-top, right-top, left-bottom, right-bottom*)
-  - ***`decoration`*** (Boolean)
-  - ***`backdrop`*** (Boolean)
-  - ***`colorized`*** (Boolean)
-  - ***`color`*** (String - *any color*)
-  - ***`font`*** (String - *any font-family*)
+### ***Component styles:***
 
-#### *example*
+### **`toast-style`**
 
-:::code-group 
-```js [passing content]
+- ***`position`*** (String - *center, left-top, right-top, left-bottom, right-bottom*)
+- ***`decoration`*** (Boolean)
+- ***`backdrop`*** (Boolean)
+- ***`colorized`*** (Boolean)
+- ***`color`*** (String - *any color*)
+- ***`font`*** (String - *any font-family*)
+
+### ***Component action:***
+
+### **`fixed`**
+
+- Type: String
+- Default: 'false'
+  
+### **`actionUrl`**
+
+- Type: String
+- Default: ''
+  
+### **`actionTitle`**
+
+- Type: String
+- Default: ''
+
+### **`actionBtn`**
+
+- Type: String
+- Default: ''
+
+#### *passing props example*
+
+:::code-group
+
+```js [content]
   const td = { title: 'some title',
               message: 'some message',
               type: 'info' }
 
   toast.setAttribute('toast-data', JSON.stringify(td))
 ```
-```js [passing styles]
+
+```js [styles]
   const ts = { position: 'center',
               decoration: false,
               colorized: false,
@@ -117,46 +156,40 @@ default component, can be used anywhere in `old world` apps
 
   toast.setAttribute('toast-style', JSON.stringify(ts))
 ```
+
+```js [action]
+  const ta = { fixed: true,
+              actionUrl: 'path for action',
+              actionTitle: 'title for action',
+              actionBtn: 'text for button' }
+
+  toast.setAttribute("fixed", JSON.stringify(ta.fixed))
+  toast.setAttribute("action-url", JSON.stringify(ta.actionUrl))
+  toast.setAttribute("action-title", JSON.stringify(ta.actionTitle))
+  toast.setAttribute("action-btn", JSON.stringify(ta.actionBtn))
+```
+
 :::
-- #### ***Used for component action:***
 
-  ### **`fixed`**
-
-    - Type: String
-    - Default: 'false'
-  
-  ### **`actionUrl`**
-
-    - Type: String
-    - Default: ''
-  
-  ### **`actionTitle`**
-
-    - Type: String
-    - Default: ''
-
-  ### **`actionBtn`**
-
-    - Type: String
-    - Default: ''
 ## Deployment
 
 - build app
 - upload file **`toast.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
 
-<hr>
+## Project setup
 
-### Project setup
 ```
 npm install
 ```
 
-#### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
-#### Compiles and minifies for production
+### Compiles and minifies for production
+
 ```
 npm run build
 ```
