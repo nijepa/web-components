@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "cadooz - WEB Components",
   description: "Vite & Vue3",
-  base: '/PrototypeWebComponentsVue/',
+  base: '/web-components/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
