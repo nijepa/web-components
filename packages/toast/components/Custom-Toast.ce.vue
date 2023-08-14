@@ -196,7 +196,7 @@ const setAttrs = (prop) => {
 const actionTitleName = computed(() => {
   return props.actionTitle ? JSON.parse(props.actionTitle) : ""
 })
-const actionButName = computed(() => {
+const actionBtnName = computed(() => {
   return props.actionBtn ? JSON.parse(props.actionBtn) : ""
 })
 const defaultData = ref({
