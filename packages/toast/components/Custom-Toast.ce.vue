@@ -350,7 +350,7 @@ const hideToast = () => {
   column-gap: 0.5em;
   text-align: left;
   padding-top: 2em;
-  word-break: break-all;
+  word-break: break-word;
 }
 .btn {
   background-color: transparent;
