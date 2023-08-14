@@ -127,8 +127,8 @@
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <div v-if="isFixed" class="">
-          <p>{{ JSON.parse(actionTitle) }}</p>
-          <a :href="handleAction" class="btn">{{ JSON.parse(actionBtn) }}</a>
+          <p>{{ actionTitleName }}</p>
+          <a :href="handleAction" class="btn">{{ actionBtnName }}</a>
         </div>
         <slot name="additionalData" />
       </div>
@@ -193,6 +193,12 @@ const setAttrs = (prop) => {
   });
 };
 // setting up default data & applying them with prop or data attributes
+const actionTitleName = computed(() => {
+  return props.actionTitle ? JSON.parse(props.actionTitle) : ""
+})
+const actionButName = computed(() => {
+  return props.actionBtn ? JSON.parse(props.actionBtn) : ""
+})
 const defaultData = ref({
   title: 'set custom title',
   message: `message`,
