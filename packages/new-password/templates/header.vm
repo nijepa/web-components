@@ -1,0 +1,444 @@
+#set( $forbidLanguageSwitch = false )
+#set( $selectableLanguages = $current_website.getAttribute('WEBSITE_ATTRIBUTE_SELECTABLE_LANGUAGES').toString().split(','))
+#set( $taxFreeNonCashBenefitAccess = $!{session.getAttribute('com.cadooz.TAX_FREE_NON_CASH_BENEFIT_ACCESS')})
+#set( $custom_logo_path = "$!{session.getAttribute('cadooz.customized.customer_logo')}")
+#if("$!custom_logo_path" != "")
+  #set( $logo_path = "/$!custom_logo_path")
+#end
+#set( $isSuperMasterLogin = "$!{session.getAttribute('com.cadooz.MALL_SUPERMASTERLOGIN')}")
+#if($isSuperMasterLogin == "")
+  #set( $isSuperMasterLogin = false )
+#end
+#set( $filePath = $!{torque.getOrderProcessingAgreementFilePath("$!{messages.get('incentivemall.avv.link')}")})
+#set( $avv_link = " <a href='https://$current_website.getHostnameByEnvironment()/$filePath' class='text-link' target='_blank'><span class='link-text'>$!{messages.get('incentivemall.avv.link')}</span></a> " )
+#set ($context =  "$request.getContextPath()")
+#if( $session.getAttribute($constants.get('SESSION_KEY_REMOTE_USER')) )
+  #set($login = $session.getAttribute($constants.get('SESSION_KEY_REMOTE_USER')))
+#end
+
+<script>
+
+  ## Currently we have a problem with the mixed state of using a cookie and the url for the sessionid. 
+  ## The CadoozLinkTool doesn't append the session anymore if the user has the session in a cookie. 
+  ## That's why we need to make sure of it, by appending it manually instead. 
+  ## The function is needed again because of the sequential loading of the JavaScript.
+  function appendSessionIdSafe(url) {
+    if(url.indexOf('jsessionid') == -1 && "$!{session.getId()}" != "") {
+      url = url + ";jsessionid=$!{session.getId()}";
+    }
+    return url;
+  }
+
+  ## initialize order processing agreement with true because of handling of not logged in users
+  var isOrderProcessingAgreementConfirmed = true;
+  #if($login)
+    #if($isOrderProcessingAgreementConfirmed)
+      isOrderProcessingAgreementConfirmed = $!{isOrderProcessingAgreementConfirmed};
+    #else
+      ## fallback, if the page was redirected we lost the isOrderProcessingAgreementConfirmed value 
+      isOrderProcessingAgreementConfirmed = $!{isSuperMasterLogin} || $login.isOrderProcessingAgreementConfirmed();
+    #end
+  #end
+  
+  var multifactorHintSettings = {
+    multifactorHintJsonUrl: appendSessionIdSafe("${link.getAction('/json/mfa')}")
+  };
+</script>
+
+
+<header class="header sticky-top pr-0 mr-0">
+  <div class="header__main">
+    <div class="header__first-line">
+      <div class="main-content">
+        <div class="row no-gutters flex-row align-items-center">
+          <div class="col-2 col-sm-4">
+            <div class="header__first-line__user d-flex align-items-center flex-row justify-content-between">
+              #if($login)
+                #set($maxUsernameLength = 35)
+                <div class="user-main-info d-xl-flex flex-wrap">              
+                  #set( $loginName = "$login.Name" )
+                  #if( $loginName && $loginName != "")
+                    #set($username = $loginName)
+                    #if($username.length() > $maxUsernameLength)
+                      #set($username = $helper.cutStringForDisplayTextLength($username, $maxUsernameLength))
+                      #set($username = $username +"...")
+                    #end
+                  #else
+                    #set( $username = "$login.Firmname" )
+                    #if($username.length() > $maxUsernameLength)
+                      #set($username = $helper.cutStringForDisplayTextLength($username, $maxUsernameLength))
+                      #set($username = $username +"...")
+                    #end
+                  #end
+                  <span class="user-main-info__user">
+                    $messages.get("incentivemall.header.hello", "$username")
+                  </span>             
+                  #if(${session.getAttribute($constants.get('SESSION_KEY_REMOTE_USER'))} && $accountBalance)
+                    <div id="user-info-account-balance-id" class="user-main-info__account-balance">$messages.get("incentivemall.header.account_balance", "$!accountBalance")</div>
+                  #end
+                </div>
+              #else
+                <ul class="header__first-line__user__links list-inline m-0 d-xl-block">
+                  <li class="list-inline-item">
+                    <a href="${link.getAction("/register")}">
+                      <span class="link-underlined">$messages.get("incentivemall.link.register")</span>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                  #if( "$!template_name" == "register" )
+                    <a href="${link.getQueryAction('/index','action=login_required')}" class="login-link login-activate text-link"><span class="link-underlined link-underlined--orange">$messages.get("incentivemall.link.login")</span><span class="magic-arrow">&#8250;</span></a>
+                  #else
+                    <button class="login-link login-activate text-link" id="login-activate" data-toggle="modal" data-target="#login-modal"><span class="link-underlined link-underlined--orange">$messages.get("incentivemall.link.login")</span><span class="magic-arrow">&#8250;</span></button>
+                  #end
+                  </li>
+                </ul>
+              #end
+              <div class="mobile-menu-activate d-xl-none">
+                #if($login)
+                 <div id="mobile-menu-activate">
+                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#profile_logged"></use></svg>
+                 </div>
+                #else 
+                  #if( "$!template_name" == "register" )
+                   <a href="${link.getQueryAction('/index','action=login_required')}" class="login-activate">
+                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#profile"></use></svg>
+                   </a>
+                  #else
+                   <div class="login-activate" data-toggle="modal" data-target="#login-modal">           
+                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#profile"></use></svg>
+                   </div>
+                  #end
+                #end
+              </div>
+            </div>
+          </div>
+          <div class="col-8 col-sm-4">
+            <div class="header__first-line__logo #if($template_name == 'index') hidden_object #end">
+              <a href="${link.getAction("/index")}">
+                <img src="/images/incentivemall/IncentiveMall_Logo_2020.svg" alt="incentivemall logo" width="auto" height="45px">
+              </a>
+            </div>
+          </div>    
+          <div class="col-2 col-sm-4">
+            <div class="menu-item-box sub-menu d-flex flex-row align-items-center justify-content-between">
+              <div class="sub-menu__item account-box mr-4">
+                #if($login)
+                <div class="sub-menu__item-link account flex-column align-items-center">
+                  <div>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#profile_logged"></use></svg>
+                    <span class="link-underlined #if("$template_name" == "account-overview" || "$template_name" == "admin_container" || "$template_name" == "logo_management" || "$template_name" == "addresses" || "$template_name" == "history") link-underlined--active #end">$!{messages.get('incentivemall.link.account')}</span>
+                  </div>
+                  <div id="account-dropdown" class="account-dropdown">
+                    <ul>
+                      <li>
+                        <a href="${link.getAction('/preferences')}" class="d-flex align-items-center text-link">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#settings_gear_2"></use></svg>
+                          $!{messages.get('incentivemall.link.account_management')}<span class="magic-arrow">&#8250;</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="${link.getQueryAction('/history','action=LOAD')}" class="d-flex align-items-center text-link">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#orders"></use></svg>
+                          $!{messages.get('incentivemall.link.order_history')} <span class="magic-arrow">&#8250;</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="${link.getAction('/logout')}" class="d-flex align-items-center text-link">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#logout"></use></svg>
+                          $!{messages.get('incentivemall.link.logout')} <span class="magic-arrow">&#8250;</span>
+                        </a>
+                     </li>
+                    </ul>
+                  </div>
+                </div>
+                #end
+              </div>
+              <div class="sub-menu__item quickorder mr-4">
+                #if($login)
+                  <a href="$link.getQueryAction('/quickorder','action=init')" class="sub-menu__item-link quickorder-link" id="quickorder-header-link" #if($basketCreatedByQuickorder == true) data-toggle="modal" data-target="#delete-quickorder-header-modal" #end>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#quickorder"></use></svg>
+                    <span class="link-underlined #if("$template_name" == "quickorder") link-underlined--active #end">$!{messages.get('incentivemall.link.quickorder')}</span>
+                  </a>
+                #else
+                  <a href="#" class="sub-menu__item-link login-activate quickorder-link" id="quickorder-header-link" data-toggle="modal" data-target="#login-modal">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon"><use xlink:href="/images/icons/all_in_one.svg#quickorder"></use></svg>
+                    <span class="link-underlined">$!{messages.get('incentivemall.link.quickorder')}</span>
+                  </a>              
+                #end
+              </div>
+              <div class="sub-menu__item minibasket d-flex justify-content-end">
+                <a href="${link.getAction('/basket')}" class="#if("$template_name" == "basket") link-underlined link-underlined--active #end">
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon mr-0"><use xlink:href="/images/icons/all_in_one.svg#basket"></use></svg>
+                  #if($!basketItemCount >= 1)
+                    <div id="minibasket-item-count-id" class="minibasket-item-count d-flex flex-column align-items-center justify-content-center #if($!basketItemCount > 99) minibasket-item-count-big #end">
+                      $!basketItemCount
+                    </div>
+                  #else
+                    <div id="minibasket-item-count-id" class="d-flex flex-column align-items-center justify-content-center #if($!basketItemCount > 99) minibasket-item-count-big #end"></div>
+                  #end
+                </a>
+              </div>
+            </div>      
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="header__second-line">
+      <div class="main-content d-flex align-items-center justify-content-between">
+        <ul class="nav flex-row">
+          <li class="nav-item">
+            <a href="${link.getQueryAction('/cat/view.do','liArt=&lht=')}" class="nav-link">
+              <span class="link-underlined link-underlined--white #if("$template_name" == "catalog") link-underlined--active #end">$!{messages.get('incentivemall.link.voucher')}</span>
+            </a>
+          </li>
+
+          <li class="nav-item d-flex align-items-center" onclick="showToast()">  
+            <svg id="search" class="search__icon svg-icon ml-0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1"><use xlink:href="/images/icons/all_in_one.svg#search"></use></svg>
+          </li>
+
+          #if($login && $taxFreeNonCashBenefitAccess)
+          <li class="nav-item">
+            <a href="${link.getQueryAction('/ebc.do','')}" class="nav-link">
+              <span class="link-underlined link-underlined--white #if("$template_name" == "incentivemall_ebc") link-underlined--active #end">
+                Employee Benefit Club
+              </span>
+            </a>
+          </li>
+          #end
+          
+          <li class="nav-item">
+            <a href="${link.getQueryAction('/info','action=faq')}" class="nav-link">
+              <span class="link-underlined link-underlined--white #if("$template_name" == "faq") link-underlined--active #end">$!{messages.get('incentivemall.link.faq')}</span>
+            </a>
+          </li>
+        </ul>
+        <div class="d-flex flex-row">
+           <div class="header__phonenumber d-none d-md-block">
+              $!{messages.get('incentivemall.navigation.phone')}
+           </div>
+           #if($login && $taxFreeNonCashBenefitAccess)
+           <div class="language-dropdown d-none d-sm-flex flex-row ml-sm-5">
+       #else
+           <div class="language-dropdown d-flex flex-row ml-sm-5">
+       #end
+           <label class="language-dropdown__label mb-0 mr-3">$!{messages.get('incentivemall.navigation.language')}</label>
+            <div class="language-dropdown__wrapper">
+              <div class="language-dropdown__box d-flex flex-row align-items-center justify-content-between" aria-haspopup="true">
+                <div class="language-dropdown__box-current-language">$!{locale.toLanguageTag().toUpperCase()}</div>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-icon icon-arrow"><use xlink:href="/images/cips/icons/icons.svg#icon-arrow-down"></use></svg>
+              </div>  
+              <ul class="language-dropdown__list">
+                 #set($currentLangTag = $!{locale.toLanguageTag()})
+                  #foreach($selectableLanguage in $selectableLanguages)
+                 #set($selectableLanguageLabel = $!{selectableLanguage.toUpperCase()})
+                 #if("$!selectableLanguageLabel" == "")
+                   #set($selectableLanguageLabel = "$!{selectableLanguage.toUpperCase()}")
+                 #end
+                  #if($selectableLanguage.equalsIgnoreCase($currentLangTag))
+                    #else
+                      <li class="d-flex align-items-center"><a href="${link.getQueryAction("/language","lang=$!selectableLanguage")}" alt="$selectableLanguageLabel">$selectableLanguageLabel</a></li>
+                    #end
+                 #end
+               </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>    
+  </div>
+  
+  ## General Error Messages
+  <div id="alert" class="alert-container">
+    <div id="alert-type" class="alert-general #if($messages.getAll().containsErrors()) alert-error #elseif($messages.getAll().containsWarnings()) alert-warning #elseif($messages.getAll().containsInfos()) alert-info #end flex-row justify-content-between align-items-baseline" role="alert">
+      <span id="alert-content" class="alert-content">
+        #if($messages.getAll())
+          $!messages.getAll().toString($locale, "<br/>", false)
+        #end
+      </span>
+      <button type="button" class="close close-alert" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  
+  ## id is used for ajax success
+  <div id="ajax-success"></div>
+ <custom-search />
+#parse($helper.getTemplate("/incentivemall/menu.vm"))
+
+</header>
+
+<div class="modal fade disabled-ie-modal" id="disabled-ie-modal" tabindex="-1" role="dialog" aria-labelledby="disabled-ie-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">$!{messages.get('incentivemall.quickorder.modal_disable_IE.headline')}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-body--alert">
+        <div class="modal-body__text">
+          $!{messages.get('incentivemall.quickorder.modal_disable_IE.text')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade delete-quickorder-modal" id="delete-quickorder-header-modal" tabindex="-1" role="dialog" aria-labelledby="delete-quickorder-header-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">$!{messages.get('incentivemall.quickorder.modal_existing_quickorder.headline')}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-body--alert">
+        <div class="modal-body__icon">
+          <svg class="svg-icon info-icon"><use xlink:href="/images/icons/all_in_one.svg#alert"></use></svg> 
+        </div>
+        <div class="modal-body__text">
+          $!{messages.get('incentivemall.quickorder.modal_existing_quickorder.text')}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row justify-content-between clearfix">
+          <div class="col-md-6">
+            <a href="$link.getQueryAction('/checkout','action=RESET_BASKET&force=true')" type="button" class="btn btn--back"><span class="magic-arrow">‹</span> $!{messages.get('incentivemall.button.add.new_order_file')}</a>
+          </div>
+          <div class="col-md-6">
+            <a href="${link.getAction('/basket')}" type="button" class="btn btn--primary float-right">$!{messages.get('incentivemall.button.forward.complete_order')} <span class="magic-arrow">›</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade locked-debitor-modal" id="locked-debitor-modal" tabindex="-1" role="dialog" aria-labelledby="locked-debitor-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">$!{messages.get('incentivemall.login_overlay.warning.headline')}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-body--alert">
+        <div class="modal-body__icon">
+          <svg class="svg-icon info-icon"><use xlink:href="/images/icons/all_in_one.svg#alert"></use></svg> 
+        </div>
+        <div class="modal-body__text">
+          $!{messages.get('incentivemall.login_overlay.warning.text')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade mfa-hint-modal" id="mfa-hint-modal" tabindex="-1" role="dialog" aria-labelledby="mfa-hint-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">$!{messages.get('incentivemall.mfa.hint')}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body__text">
+          <p>$!{messages.get('incentivemall.mfa.hint_modal.part1')}</p>
+          <p>$!{messages.get('incentivemall.mfa.hint_modal.part2')}</p>
+          <p>$!{messages.get('incentivemall.mfa.hint_modal.part3')}</p>
+          <p>$!{messages.get('incentivemall.mfa.hint_modal.part4')}</p>
+          <p><b>$!{messages.get('incentivemall.mfa.hint_modal.part5')}</b></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn--back float-left" data-dismiss="modal" id="close-mfa-hint"><span class="magic-arrow">‹</span> $!{messages.get('incentivemall.button.not_now')}</a> 
+        <a href="${link.getQueryAction('/admin/users', 'action=view')}" id="enable-mfa-link" class="btn btn--primary float-right">$!{messages.get('incentivemall.button.activate_mfa')} <span class="magic-arrow">›</span></a> 
+      </div>
+    </div>
+  </div>
+</div>
+
+#if($current_website.isMultifactorAuthenticationEnabled())
+  <div class="modal fade mfa-modal-profile" id="mfa-modal" tabindex="-1" role="dialog" aria-labelledby="mfa-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      ## content of title line is set by JavaScript
+      <div class="modal-header">
+        <h3 id="mfa-modal-header" class="modal-title"></h3>
+      </div>
+      ## id is used for ajax update of multifactor authentication management modal
+      <div id="edit-mfa" class="modal-content"></div>
+    </div>
+  </div>
+#end
+
+## only offer order processing agreement modal if user not yet confirmed
+#if(!$login.isOrderProcessingAgreementConfirmed())
+  <div class="modal fade order-processing-agreement-modal" id="order-processing-agreement-modal" tabindex="-1" role="dialog" aria-labelledby="order-processing-agreement-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">$!{messages.get('incentivemall.avv.headline')}</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-body__text">
+            <p>$!{messages.get('incentivemall.avv.text')}</p>
+          </div>
+          <div class="highlight-box highlight-box--orange">
+            <div class="checkbox d-flex align-items-center">
+              <input id="order-processing-agreement-checkbox" class="checkbox__selection" name="orderProcessingAgreement" type="checkbox" value="" />
+              <label class="checkbox__checkfield" for="y" style="--d: 200px;">
+                <svg class="checkbox__checkfield-svg" viewBox="0,0,50,50">
+                <path d="M5 30 L 20 45 L 45 5"></path>
+                </svg>
+              </label>
+              <div class="checkbox__desc">
+                <p>$!{messages.get('incentivemall.avv.selecttext', $avv_link)}</p>
+              </div>
+            </div>
+          </div>  
+        </div>
+        <div class="modal-footer">
+        <a href="#" id="confirm-order-processing-agreement-button" data-file-name="$!{messages.get('incentivemall.avv.link')}" class="btn btn--primary disabled float-right">$!{messages.get('incentivemall.avv.button')} <span class="magic-arrow">›</span></a> 
+        </div>
+      </div>
+      
+    </div>
+  </div>
+#end
+
+<script async defer>
+  const search = document.querySelector("custom-search");
+  const showToast = () => {
+    search.setAttribute("is-active", "true");
+  };
+  const searchClosed = () => {
+    search.setAttribute("is-active", "false");
+  };
+  window.addEventListener("close-search", searchClosed);
+  const msg = {
+    empty: "$!{messages.get('incentivemall.productoverview.empty')}",
+    placeholder: "$!{messages.get('incentivemall.productoverview.search')}"
+  }
+  search.setAttribute("translations", JSON.stringify(msg))
+  search.setAttribute("context", "$request.getContextPath()")
+</script>
+
+<style>
+#search {
+  fill: white;
+  cursor: pointer;
+  width: 1.7em;
+  stroke: white;
+  stroke-width: 0.1;
+}
+#search:hover {
+  stroke-width: 2px;
+}
+</style>

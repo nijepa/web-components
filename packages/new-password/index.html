@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: 'Open Sans', sans-serif;
+      }
+      header {
+        display: flex;
+        background-color: darkslategrey;
+        padding: .5em;
+      }
+      #search {
+        fill: white;
+        cursor: pointer;
+        width: 1.7em;
+        stroke: white;
+        stroke-width: 0.1;
+      }
+      #search:hover {
+        stroke-width: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>New Password Component!</h1>
+
+    <div id="app">
+      <custom-new-password />
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      // const search = document.querySelector('custom-search');
+      // const showToast = () => {
+      //   search.setAttribute('is-active', 'true');
+      // };
+      // const searchClosed = () => {
+      //   search.setAttribute('is-active', 'false');
+      // };
+      // window.addEventListener('close-search', searchClosed);
+      // const msg = {
+      //   empty: 'empty',
+      //   placeholder: 'search',
+      // };
+      // search.setAttribute('translations', JSON.stringify(msg));
+    </script>
+  </body>
+</html>
