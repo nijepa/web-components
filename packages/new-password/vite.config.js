@@ -39,7 +39,7 @@ export default defineConfig({
         name: "search",
         format: "esm",
         dir: "dist/",
-        entryFileNames: "search.js",
+        entryFileNames: "new-password.js",
       }]
     }
   }

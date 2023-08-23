@@ -4,14 +4,16 @@
     <div :class="classes.fields">
       <input type="text" :class="classes.field" v-model="newPassword" />
       <input type="text" :class="classes.field" v-model="repeatNewPassword" />
-      <div :class="classes.captcha" v-if="hasCaptcha">captcha</div>
+      <span :class="classes.captcha" >
+        <slot name="captcha"></slot>
+      </span>
       <button type="submit" :class="classes.btn" @click="">submit</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, useSlots } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { resolveUrl } from '../utils/resolveUrl';
 
@@ -48,6 +50,11 @@ const props = defineProps({
   },
 });
 
+const slots = useSlots();
+console.log(slots)
+const hasSlot = (name) => {
+  return !!slots[name];
+};
 // prepare translations
 // const $t = JSON.parse(props.translations);
 
@@ -57,7 +64,8 @@ const repeatNewPassword = ref(null);
 const fieldValidation = () => {};
 
 const hasCaptcha = computed(() => {
-  return JSON.parse(props.hasCaptcha);
+  console.log(3, hasSlot('captcha'))
+  return slots.captcha;
 });
 
 const classes = ref({
@@ -70,7 +78,6 @@ const classes = ref({
 });
 const applyStyles = () => {
   classes.value = appClasses.get(props.appType);
-  console.log(classes.value.field);
 };
 onMounted(() => {
   applyStyles();
@@ -160,7 +167,7 @@ const hideSearch = () => {
   // background-clip: padding-box;
   // border: 1px solid #ced4da;
   // border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   &:focus {
     box-shadow: none;
     outline: none;
@@ -171,23 +178,22 @@ const hideSearch = () => {
   }
 }
 .im-btn {
-    padding: 0.6em 2em;
-    min-height: 3em;
-    border: 2px solid transparent;
-    border-radius: 0;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+  padding: 0.6em 2em;
+  min-height: 3em;
+  border: 2px solid transparent;
+  border-radius: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
-
 </style>

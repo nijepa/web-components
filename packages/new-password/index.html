@@ -36,7 +36,14 @@
     <h1>New Password Component!</h1>
 
     <div id="app">
-      <custom-new-password />
+      <custom-new-password>
+        <span slot="captcha">
+          <div>
+            <h3>additional info in slot</h3>
+            <i>tandar mandara broc</i>
+          </div>
+        </span>
+      </custom-new-password>
     </div>
     <script type="module" src="/main.js"></script>
     <script>
