@@ -1,12 +1,12 @@
 <template>
-  <div class="" v-if="componentType === 'neww'">
-    <div :class="classes.wrapper" style="display: block">
+  <div class="" v-if="componentType === 'new'">
+    <div class="wrapper" style="display: block">
       <form class="header-loginbox-content" autocomplete="off">
         <div class="form-group">
           <label for="username">Username</label>
           <input
             id="username"
-            :class="classes.field"
+            class="field"
             autofocus="autofocus"
             type="text"
           />
@@ -14,14 +14,14 @@
         </div>
         <div class="form-group">
           <label for="email">Email address</label>
-          <input id="email" :class="classes.field" type="text" />
+          <input id="email" class="field" type="text" />
           <div id="password-forgotten-email-error" class="alert"></div>
         </div>
         <div id="reset-password-validation-error" class="alert pt-0"></div>
-        <span :class="classes.captcha" v-if="hasProperty('hasCaptcha')">
+        <span class="captcha" v-if="hasProperty('hasCaptcha')">
           <slot name="captcha"></slot>
         </span>
-        <button type="button" :class="[classes.button, 'button-cust']">
+        <button type="button" class="button button-cust">
           Send <span class="magic-arrow" v-if="appType === 'im'">›</span>
         </button>
       </form>
@@ -101,10 +101,6 @@ const props = defineProps({
     type: String,
     default: '#fac884',
   },
-  context: {
-    type: String,
-    default: '/mall',
-  },
 });
 
 // prepare translations
@@ -125,7 +121,7 @@ const fieldValidation = () => {
   ) {
     return true;
   }
-  isError.value = 'form-field-error';
+  isError.value = 'field-error';
   return false;
 };
 
@@ -136,17 +132,17 @@ const hasProperty = (prop) => {
   return appConfig.get(props.appType)[prop];
 };
 
-const classes = ref({
-  wrapper: '',
-  title: '',
-  fields: '',
-  field: '',
-  captcha: '',
-  button: '',
-});
-const applyStyles = () => {
-  classes.value = appConfig.get(props.appType).classes;
-};
+// const classes = ref({
+//   wrapper: '',
+//   title: '',
+//   fields: '',
+//   field: '',
+//   captcha: '',
+//   button: '',
+// });
+// const applyStyles = () => {
+//   classes.value = appConfig.get(props.appType).classes;
+// };
 
 const onSubmit = () => {
   console.log('submited', newPassword.value, repeatNewPassword.value);
@@ -164,18 +160,18 @@ const loadStyle = async () => {
   );
   return response.text();
 };
-(async () => {
-  const cssData = await loadStyle();
-  const el = document.querySelector('custom-new-password');
-  el.shadowRoot.querySelector('style').innerHTML = cssData;
-})();
+// (async () => {
+//   const cssData = await loadStyle();
+//   const el = document.querySelector('custom-new-password');
+//   el.shadowRoot.querySelector('style').innerHTML = cssData;
+// })();
 
 onMounted(async () => {
-  applyStyles();
+  //applyStyles();
 });
 </script>
 <style lang="scss">
-//@import '../assets/im.scss';
+@import '../assets/im.scss';
 
 * {
   font-family: 'Open Sans', sans-serif;
