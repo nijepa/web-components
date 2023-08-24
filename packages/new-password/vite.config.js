@@ -14,6 +14,11 @@ export default defineConfig({
       }
     })
   ],
+  // resolve: {
+  //   alias: {
+  //     '@': path.resolve(__dirname, 'src'),
+  //   }
+  // },
   // build: {
   //   rollupOptions: {
   //     // make sure to externalize deps that shouldn't be bundled

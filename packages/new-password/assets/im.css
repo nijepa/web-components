@@ -1,0 +1,116 @@
+.form-field-error {
+  border: solid 1px #c31a19;
+}
+.alert {
+  padding: 0.5em 0 0 0;
+  font-size: 0.8889rem;
+  background: none;
+  color: #c31a19;
+  border: none;
+  margin-bottom: 0;
+}
+.alert::before {
+  display: inline-block;
+  position: relative;
+  content: ' ';
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  height: 25px;
+  width: 25px;
+  top: 0.1em;
+  padding-right: 1.67em;
+}
+.im-wraper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.im-field {
+  background: #ffffff;
+  color: v-bind(primaryColor);
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  font-size: 1rem;
+  padding: 0 0.5em;
+  position: relative;
+  text-overflow: ellipsis;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: block;
+  width: 100%;
+  height: 3em;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 1rem;
+}
+.im-field:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: #cccccc;
+}
+.im-field:hover {
+  outline: none;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.im-button {
+  padding: 0.6em 2em;
+  min-height: 3em;
+  border: 2px solid transparent;
+  border-radius: 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background: #ca7900;
+  outline: none;
+  cursor: pointer;
+  color: #ffffff;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.im-button:hover,
+.im-button:active {
+  background: #ca7900;
+  outline: none;
+  border: 2px solid transparent;
+}
+.im-button:disabled {
+  background: #fac884;
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+.im-button:hover .magic-arrow,
+.im-button:active .magic-arrow {
+  left: 0.75em;
+}
+
+.im-button .magic-arrow {
+  position: relative;
+  left: 0.4em;
+  top: -1px;
+  font-size: 1.23rem;
+  line-height: 1rem;
+  -webkit-transition: left 0.3s ease-out;
+  -o-transition: left 0.3s ease-out;
+  transition: left 0.3s ease-out;
+}
