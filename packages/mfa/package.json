@@ -16,12 +16,12 @@
     "serve": "vite preview"
   },
   "devDependencies": {
-    "sass": "^1.62.1",
-    "vite": "^4.3.6"
+    "sass": "^1.66.1",
+    "vite": "^4.4.9"
   },
   "dependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^4.3.3",
     "jspdf": "^2.5.1",
-    "vue": "^3.3.2"
+    "vue": "^3.3.4"
   }
 }
