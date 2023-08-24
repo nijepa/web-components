@@ -1,9 +1,9 @@
 ::: raw
-<h1 class="heading">custom-search</h1>
+<h1 class="heading">custom-new-password</h1>
 :::
 
 ::: tip usage
-in ***Incentivemall*** for global search
+in ***cadooz*** for new password
 :::
 
 ## Import component

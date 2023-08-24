@@ -17,5 +17,8 @@ features:
   - title: Toast
     details: default component, anywhere in `old world` apps
     link: /packages/toast/README
+  - title: New password
+    details: default component, anywhere in `old world` apps
+    link: /packages/new-password/README
 
 ---

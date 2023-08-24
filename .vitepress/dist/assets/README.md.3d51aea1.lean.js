@@ -1,1 +1,0 @@
-import{_ as e,o,c as t,O as a}from"./chunks/framework.868813b5.js";const b=JSON.parse('{"title":"cadooz - Web Components","description":"","frontmatter":{},"headers":[],"relativePath":"README.md","filePath":"README.md"}'),s={name:"README.md"},n=a("",2),r=[n];function i(c,d,l,p,_,h){return o(),t("div",null,r)}const f=e(s,[["render",i]]);export{b as __pageData,f as default};

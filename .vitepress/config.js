@@ -19,7 +19,8 @@ export default defineConfig({
           { text: 'MFA', link: '/packages/mfa/README' },
           { text: 'Search', link: '/packages/search-incentivemall/README' },
           { text: 'Account', link: '/packages/account-ebc/README' },
-          { text: 'Toast', link: '/packages/toast/README' }
+          { text: 'Toast', link: '/packages/toast/README' },
+          { text: 'NewPassword', link: '/packages/new-password/README' }
         ]
       }
     ],

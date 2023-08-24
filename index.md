@@ -22,6 +22,9 @@ hero:
     - theme: brand
       text: Toast
       link: /packages/toast/README
+    - theme: brand
+      text: New password
+      link: /packages/new-password/README
 
 features:
   - icon:
