@@ -1,71 +1,76 @@
 <template>
-  <div class="" v-if="componentType === 'new'">
-    <div class="wrapper" style="display: block">
-      <form class="header-loginbox-content" autocomplete="off">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            id="username"
-            class="field"
-            autofocus="autofocus"
-            type="text"
-          />
-          <div id="password-forgotten-username-error" class="alert"></div>
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input id="email" class="field" type="text" />
-          <div id="password-forgotten-email-error" class="alert"></div>
-        </div>
-        <div id="reset-password-validation-error" class="alert pt-0"></div>
+  <div class="center-screen" v-if="loading">
+    <span class="spinner-border"></span>
+  </div>
+  <div v-else>
+    <div class="" v-if="componentType === 'neww'">
+      <div class="wrapper" style="display: block">
+        <form class="header-loginbox-content" autocomplete="off">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              id="username"
+              class="field"
+              autofocus="autofocus"
+              type="text"
+            />
+            <div id="password-forgotten-username-error" class="alert"></div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input id="email" class="field" type="text" />
+            <div id="password-forgotten-email-error" class="alert"></div>
+          </div>
+          <div id="reset-password-validation-error" class="alert pt-0"></div>
+          <span class="captcha" v-if="hasProperty('hasCaptcha')">
+            <slot name="captcha"></slot>
+          </span>
+          <button type="button" class="button button-cust">
+            Send <span class="magic-arrow" v-if="appType === 'im'">›</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div v-else class="wraper">
+      <h1 class="title">{{ $t.en.Headline }}</h1>
+      <form class="fields">
+        <label for="newPassword" v-if="hasProperty('hasLabels')">{{
+          $t.en.Formfield1
+        }}</label>
+        <input
+          id="newPassword"
+          type="password"
+          :class="['field', isError]"
+          :placeholder="hasProperty('hasPlaceholders') && $t.en.Formfield1"
+          v-model="newPassword"
+        />
+        <div v-if="isError" class="alert"></div>
+        <label for="repeatNewPassword" v-if="hasProperty('hasLabels')">{{
+          $t.en.Formfield2
+        }}</label>
+        <input
+          id="repeatNewPassword"
+          type="password"
+          class="field"
+          :placeholder="hasProperty('hasPlaceholders') && $t.en.Formfield2"
+          v-model="repeatNewPassword"
+        />
+        <div v-if="isError" class="error"></div>
         <span class="captcha" v-if="hasProperty('hasCaptcha')">
           <slot name="captcha"></slot>
         </span>
-        <button type="button" class="button button-cust">
-          Send <span class="magic-arrow" v-if="appType === 'im'">›</span>
+        <button
+          type="submit"
+          :disabled="!isReady"
+          class="button button-cust"
+          @click.prevent="onSubmit"
+        >
+          {{ $t.en.Button }}
+          <span class="magic-arrow" v-if="appType === 'im'">›</span>
         </button>
       </form>
     </div>
-  </div>
-
-  <div v-else :class="classes.wrapper">
-    <h1 :class="classes.title">{{ $t.en.Headline }}</h1>
-    <form :class="classes.fields">
-      <label for="newPassword" v-if="hasProperty('hasLabels')">{{
-        $t.en.Formfield1
-      }}</label>
-      <input
-        id="newPassword"
-        type="password"
-        :class="[classes.field, isError]"
-        :placeholder="hasProperty('hasPlaceholders') && $t.en.Formfield1"
-        v-model="newPassword"
-      />
-      <span class="alert"></span>
-      <label for="repeatNewPassword" v-if="hasProperty('hasLabels')">{{
-        $t.en.Formfield2
-      }}</label>
-      <input
-        id="repeatNewPassword"
-        type="password"
-        :class="classes.field"
-        :placeholder="hasProperty('hasPlaceholders') && $t.en.Formfield2"
-        v-model="repeatNewPassword"
-      />
-      <span class="classes.error"></span>
-      <span :class="classes.captcha" v-if="hasProperty('hasCaptcha')">
-        <slot name="captcha"></slot>
-      </span>
-      <button
-        type="submit"
-        :disabled="!isReady"
-        :class="[classes.button, 'button-cust']"
-        @click.prevent="onSubmit"
-      >
-        {{ $t.en.Button }}
-        <span class="magic-arrow" v-if="appType === 'im'">›</span>
-      </button>
-    </form>
   </div>
 </template>
 
@@ -105,7 +110,7 @@ const props = defineProps({
 
 // prepare translations
 // const $t = JSON.parse(props.translations);
-
+const loading = ref(false)
 const newPassword = ref(null);
 const repeatNewPassword = ref(null);
 
@@ -164,6 +169,7 @@ const loadStyle = async () => {
 //   const cssData = await loadStyle();
 //   const el = document.querySelector('custom-new-password');
 //   el.shadowRoot.querySelector('style').innerHTML = cssData;
+//   loading.value = false
 // })();
 
 onMounted(async () => {
@@ -171,7 +177,7 @@ onMounted(async () => {
 });
 </script>
 <style lang="scss">
-@import '../assets/im.scss';
+@import '../assets/im.css';
 
 * {
   font-family: 'Open Sans', sans-serif;
@@ -181,5 +187,44 @@ onMounted(async () => {
 }
 .button-cust:disabled {
   background: v-bind(secondayColor) !important;
+}
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.125em;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner-border;
+}
+.form-field-error {
+  border: solid 1px #c31a19;
+}
+.alert {
+  padding: 0.5em 0 0 0;
+  font-size: 0.8889rem;
+  background: none;
+  color: #c31a19;
+  border: none;
+  margin-bottom: 0;
+}
+.alert::before {
+  display: inline-block;
+  position: relative;
+  content: ' ';
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  height: 25px;
+  width: 25px;
+  top: 0.1em;
+  padding-right: 1.67em;
 }
 </style>

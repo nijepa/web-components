@@ -14,34 +14,10 @@ export default defineConfig({
       }
     })
   ],
-  // resolve: {
-  //   alias: {
-  //     '@': path.resolve(__dirname, 'src'),
-  //   }
-  // },
-  // build: {
-  //   rollupOptions: {
-  //     // make sure to externalize deps that shouldn't be bundled
-  //     // into your library
-  //     external: ['vue'],
-  //     output: {
-  //       // Provide global variables to use in the UMD build
-  //       // for externalized deps
-  //       globals: {
-  //         vue: 'Vue'
-  //       }
-  //     }
-  //   }
-  // }
-  // build: {
-  //   rollupOptions: {
-  //     target: "./assets/toast.js"
-  //   }
-  // }
   build: {
     rollupOptions: {
       output: [{
-        name: "search",
+        name: "new-password",
         format: "esm",
         dir: "dist/",
         entryFileNames: "new-password.js",

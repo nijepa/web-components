@@ -1,25 +1,3 @@
-.form-field-error {
-  border: solid 1px #c31a19;
-}
-.alert {
-  padding: 0.5em 0 0 0;
-  font-size: 0.8889rem;
-  background: none;
-  color: #c31a19;
-  border: none;
-  margin-bottom: 0;
-}
-.alert::before {
-  display: inline-block;
-  position: relative;
-  content: ' ';
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
-  height: 25px;
-  width: 25px;
-  top: 0.1em;
-  padding-right: 1.67em;
-}
 .wraper {
   display: flex;
   justify-content: space-evenly;
