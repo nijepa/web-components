@@ -7,34 +7,6 @@ export const COMP_TYPES = {
   FORGOT: 'forgot',
   NEW: 'new',
 };
-export const COMP_CONFIG = new Map([
-  [
-    'forgot',
-    {
-      config: {
-        inputOne: 'text',
-        labelOne: 'Username',
-        inputTwo: 'email',
-        labelTwo: 'Email',
-        button: 'Send',
-        title: 'Headline',
-      },
-    },
-  ],
-  [
-    'new',
-    {
-      config: {
-        inputOne: 'password',
-        labelOne: 'Formfield1',
-        inputTwo: 'password',
-        labelTwo: 'Formfield2',
-        button: 'Button',
-        title: 'Headline',
-      },
-    },
-  ],
-]);
 export const API_TYPES = {
   FORGOT: 'forgotPassword',
   VALIDATE: 'validateEmailLink',

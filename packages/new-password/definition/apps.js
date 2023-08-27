@@ -12,14 +12,6 @@ export const appConfig = new Map([
   [
     'cips',
     {
-      // classes: {
-      //   wrapper: 'cips-wraper',
-      //   title: 'cips-title',
-      //   fields: 'cips-fields',
-      //   field: 'cips-field',
-      //   captcha: 'cips-captcha',
-      //   button: 'cips-button',
-      // },
       hasCaptcha: true,
       hasLabels: false,
       hasPlaceholders: true,

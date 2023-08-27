@@ -21,9 +21,7 @@
               for="username"
               v-if="hasProperty(constants.CONDITIONS.LABELS)"
               >{{
-                $t[language][
-                  constants.COMP_CONFIG.get(componentType).config.labelOne
-                ]
+                $t[language][compDefinition.get(componentType).config.labelOne]
               }}</label
             >
             <input
@@ -37,11 +35,11 @@
                   : '',
               ]"
               autofocus="autofocus"
-              :type="constants.COMP_CONFIG.get(componentType).config.inputOne"
+              :type="compDefinition.get(componentType).config.inputOneType"
               :placeholder="
                 hasProperty(constants.CONDITIONS.PLACEHOLDERS)
                   ? $t[language][
-                      constants.COMP_CONFIG.get(componentType).config.labelOne
+                      compDefinition.get(componentType).config.labelOne
                     ]
                   : ''
               "
@@ -58,9 +56,7 @@
               for="email"
               v-if="hasProperty(constants.CONDITIONS.LABELS)"
               >{{
-                $t[language][
-                  constants.COMP_CONFIG.get(componentType).config.labelTwo
-                ]
+                $t[language][compDefinition.get(componentType).config.labelTwo]
               }}</label
             >
             <input
@@ -73,11 +69,11 @@
                     : ''
                   : '',
               ]"
-              :type="constants.COMP_CONFIG.get(componentType).config.inputOne"
+              :type="compDefinition.get(componentType).config.inputTwoType"
               :placeholder="
                 hasProperty(constants.CONDITIONS.PLACEHOLDERS)
                   ? $t[language][
-                      constants.COMP_CONFIG.get(componentType).config.labelTwo
+                      compDefinition.get(componentType).config.labelTwo
                     ]
                   : ''
               "
@@ -104,11 +100,7 @@
             :disabled="!isReady"
             @click.prevent="onSubmit"
           >
-            {{
-              $t[language][
-                constants.COMP_CONFIG.get(componentType).config.button
-              ]
-            }}
+            {{ $t[language][compDefinition.get(componentType).config.button] }}
             <span class="magic-arrow" v-if="appType === 'im'">›</span>
           </button>
         </form>
@@ -121,8 +113,9 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { getAttr, resolveUrl } from '../utils/resolveUrl';
-import { appConfig } from '../config/apps';
-import { endPoints } from '../config/endPoints';
+import { appConfig } from '../definition/apps';
+import { endPoints } from '../definition/endPoints';
+import { compDefinition } from '../definition/comps';
 import * as constants from '../config/constants';
 import { translations as $t } from '../utils/translations';
 

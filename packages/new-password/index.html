@@ -23,15 +23,18 @@
       .types {
         display: flex;
         margin: 1rem;
-        justify-content: center;
+        justify-content: space-evenly;
         flex-wrap: wrap;
         gap: 1rem;
+        border: 1px solid gray;
+        padding: 1rem;
+        background: lightgrey;
       }
     </style>
   </head>
 
   <body>
-    <h1>New Password Standalone Web Component!</h1>
+    <h1>&#9784; New Password - Web Component &#9728;</h1>
     <div class="types">
       <div class="">
         <div class="">
@@ -75,23 +78,31 @@
       </div>
       <div class="">
         <div>
-          <input type="color" id="primary" name="primary" value="#ca7900" oninput="selectPrimary(this);" />
+          <input
+            type="color"
+            id="primary"
+            name="primary"
+            value="#ca7900"
+            oninput="selectPrimary(this);"
+          />
           <label for="primary">Primary</label>
         </div>
-        
+
         <div>
-          <input type="color" id="secondary" name="secondary" value="#fac884" oninput="selectSecondary(this);" />
+          <input
+            type="color"
+            id="secondary"
+            name="secondary"
+            value="#fac884"
+            oninput="selectSecondary(this);"
+          />
           <label for="secondary">Secondary</label>
         </div>
       </div>
     </div>
 
     <div id="app">
-      <custom-new-password
-        app-type="im"
-        component-type="new"
-        language="en"
-      >
+      <custom-new-password app-type="im" component-type="new" language="en">
         <h1 slot="captcha">hCAPTCHA</h1>
       </custom-new-password>
     </div>
@@ -116,10 +127,10 @@
       };
       const selectPrimary = (e) => {
         pass.setAttribute('primary-color', e.value);
-      }
+      };
       const selectSecondary = (e) => {
         pass.setAttribute('secondary-color', e.value);
-      }
+      };
     </script>
   </body>
 </html>
