@@ -14,26 +14,92 @@
       * {
         font-family: 'Open Sans', sans-serif;
       }
-     #app {
+      #app {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         border: 1px solid red;
         padding: 1rem;
+      }
+      .types {
+        display: flex;
+        margin: 1rem;
+        justify-content: center;
+        gap: 1rem;
       }
     </style>
     <script type="module" crossorigin src="/new-password.js"></script>
   </head>
 
   <body>
-    <h1>New Password Component!</h1>
+    <h1>New Password Standalone Web Component!</h1>
+    <div class="types">
+      <div class="">
+        <div class="">
+          <input
+            type="radio"
+            id="new"
+            name="component_type"
+            value="new"
+            checked
+          />
+          <label for="new">NEW</label><br />
+        </div>
+        <div class="">
+          <input
+            type="radio"
+            id="forgot"
+            name="component_type"
+            value="forgot"
+          />
+          <label for="forgot">FORGOT</label><br />
+        </div>
+      </div>
+      <div class="">
+        <div class="">
+          <input type="radio" id="en" name="language" value="en" checked />
+          <label for="en">EN</label><br />
+        </div>
+        <div class="">
+          <input type="radio" id="de" name="language" value="de" />
+          <label for="de">DE</label><br />
+        </div>
+      </div>
+      <div class="">
+        <label for="app_type">APPS</label><br />
+        <select id="app_type" onchange="selectApp(this);">
+          <option value="im">IM</option>
+          <option value="cips">CIPS</option>
+          <option value="oip">OIP</option>
+          <option value="sd">Service desk</option>
+        </select>
+      </div>
+    </div>
 
     <div id="app">
-      <custom-new-password>
-<h1 slot="captcha">CAPTCHA</h1>
+      <custom-new-password app-type="im" component-type="new" language="de">
+        <h1 slot="captcha">CAPTCHA</h1>
       </custom-new-password>
     </div>
+
     
     <script>
+      const pass = document.querySelector('custom-new-password');
+      const radio = document.querySelectorAll("[name='component_type']");
+      radio.forEach((r) => {
+        r.addEventListener('change', () => {
+          pass.setAttribute('component-type', r.value);
+        });
+      });
+      const lang = document.querySelectorAll("[name='language']");
+      lang.forEach((l) => {
+        l.addEventListener('change', () => {
+          pass.setAttribute('language', l.value);
+        });
+      });
+      const selectApp = (e) => {
+        console.log(e.value);
+        pass.setAttribute('app-type', e.value);
+      };
       // const search = document.querySelector('custom-search');
       // const showToast = () => {
       //   search.setAttribute('is-active', 'true');

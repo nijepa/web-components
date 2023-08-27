@@ -2,9 +2,11 @@ export const appConfig = new Map([
   [
     'im',
     {
-      hasCaptcha: true,
+      hasCaptcha: false,
       hasLabels: true,
-      hasPlaceholders: true,
+      hasPlaceholders: false,
+      hasUsername: true,
+      hasErrorBorder: true
     },
   ],
   [
@@ -21,6 +23,8 @@ export const appConfig = new Map([
       hasCaptcha: true,
       hasLabels: false,
       hasPlaceholders: true,
+      hasUsername: true,
+      hasErrorBorder: false
     },
   ],
 ]);

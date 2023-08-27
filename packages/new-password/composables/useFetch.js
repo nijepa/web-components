@@ -1,16 +1,18 @@
-import { resolveUrl } from '../utils/resolveUrl';
-export const useFetch = async (method, context) => {
+import { PREFIX, GLOBALS } from '../config/constants';
+export const useFetch = async (endPoint) => {
   try {
-    const URL = resolveUrl(context, 'rest/catalog/getitems');
     const JSON_HEADER = 'application/json';
     const headers = [['Accept', JSON_HEADER]];
     const requestInit = {
-      method,
+      method: endPoint.method,
       headers: new Headers(headers),
+      body: JSON.stringify(endPoint.payload),
     };
-    const response = await fetch(URL, requestInit);
+    const url = import.meta.env[PREFIX + GLOBALS.BASE] + endPoint.url;
+    const response = await fetch(url, requestInit);
+    // TODO handle errors
     if (response.status !== 200) {
-      return { error: true, errorMessage: response.statusText };
+      return response;
     }
     return response.json();
   } catch (error) {
