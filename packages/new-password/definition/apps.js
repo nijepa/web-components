@@ -1,3 +1,4 @@
+// TODO add definitions for all apps
 export const appConfig = new Map([
   [
     'im',

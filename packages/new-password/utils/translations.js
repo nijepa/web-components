@@ -1,4 +1,4 @@
-// TODO update all translations
+// TODO update all translations (if we are using them from here)
 export const translations = {
   de: {
     Headline: 'Neues Passwort vergeben',

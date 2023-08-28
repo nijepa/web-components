@@ -150,10 +150,9 @@ const props = defineProps({
   },
 });
 
-// TODO prepare translations
+// TODO prepare translations if needed
 // const $t = JSON.parse(props.translations);
 
-// FIXME replace done with init iwhen live/testing
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
 const inputTwo = ref(null);
@@ -288,10 +287,10 @@ const applyCss = async () => {
     lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
   }
   el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
-
+  // FIXME uncomment when live/testing
   //loading.value = constants.LOADING.DONE;
 };
-// FIXME uncomment when live/testing
+
 (async () => {
   await applyCss();
 })();
