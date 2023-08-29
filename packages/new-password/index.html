@@ -70,10 +70,11 @@
       <div class="">
         <label for="app_type">APPS</label><br />
         <select id="app_type" onchange="selectApp(this);">
-          <option value="im">IM</option>
+          <option value="mall">IM</option>
           <option value="cips">CIPS</option>
           <option value="oip">OIP</option>
           <option value="sd">Service desk</option>
+          <option value="ebc">EBC</option>
         </select>
       </div>
       <div class="">
@@ -102,7 +103,7 @@
     </div>
 
     <div id="app">
-      <custom-new-password app-type="im" component-type="new" language="en">
+      <custom-new-password app-type="mall" component-type="new" language="en">
         <h1 slot="captcha">hCAPTCHA</h1>
       </custom-new-password>
     </div>

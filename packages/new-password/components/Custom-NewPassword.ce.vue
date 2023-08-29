@@ -5,7 +5,12 @@
   <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR">
     error
   </div>
-  <Transition name="slide-fade">
+  <Transition name="slide-fade" mode="out-in">
+    <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS">
+      <h1>{{ getSuccessMsg }}</h1>
+    </div>
+  </Transition>
+  <Transition name="slide-fade" mode="out-in">
     <div key="3" v-if="loading === constants.LOADING.DONE">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
@@ -19,32 +24,51 @@
           >
             <label
               for="username"
-              v-if="hasProperty(constants.CONDITIONS.LABELS)"
+              v-if="
+                hasProperty(constants.CONDITIONS.LABELS) &&
+                hasProperty(constants.CONDITIONS.USERNAME)
+              "
               >{{
                 $t[language][compDefinition.get(componentType).config.labelOne]
               }}</label
             >
-            <input
-              id="username"
-              :class="[
-                'field',
-                hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                  ? isError
+            <div class="field-icon">
+              <input
+                id="username"
+                v-if="hasProperty(constants.CONDITIONS.USERNAME)"
+                :class="[
+                  'field',
+                  hasProperty(constants.CONDITIONS.ERROR_BORDER)
                     ? isError
+                      ? isError
+                      : ''
+                    : '',
+                ]"
+                autofocus="autofocus"
+                :type="
+                  inputTypes.fieldOneType ||
+                  compDefinition.get(componentType).config.inputOneType
+                "
+                :placeholder="
+                  hasProperty(constants.CONDITIONS.PLACEHOLDERS)
+                    ? $t[language][
+                        compDefinition.get(componentType).config.labelOne
+                      ]
                     : ''
-                  : '',
-              ]"
-              autofocus="autofocus"
-              :type="compDefinition.get(componentType).config.inputOneType"
-              :placeholder="
-                hasProperty(constants.CONDITIONS.PLACEHOLDERS)
-                  ? $t[language][
-                      compDefinition.get(componentType).config.labelOne
-                    ]
-                  : ''
-              "
-              v-model="inputOne"
-            />
+                "
+                v-model="inputOne"
+              />
+              <eye
+                v-if="
+                  componentType === constants.COMP_TYPES.NEW &&
+                  hasProperty(constants.CONDITIONS.ICONS)
+                "
+                :field="constants.INPUTS.ONE"
+                :field-type="'password'"
+                :app-type="appType"
+                @checked="handleInputType"
+              />
+            </div>
             <Transition name="slide-fade">
               <div class="alert" v-if="errors.fieldOne">
                 {{ errors.fieldOne }}
@@ -59,26 +83,41 @@
                 $t[language][compDefinition.get(componentType).config.labelTwo]
               }}</label
             >
-            <input
-              id="email"
-              :class="[
-                'field',
-                hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                  ? isError
+            <div class="field-icon">
+              <input
+                id="email"
+                :class="[
+                  'field',
+                  hasProperty(constants.CONDITIONS.ERROR_BORDER)
                     ? isError
+                      ? isError
+                      : ''
+                    : '',
+                ]"
+                :type="
+                  inputTypes.fieldTwoType ||
+                  compDefinition.get(componentType).config.inputTwoType
+                "
+                :placeholder="
+                  hasProperty(constants.CONDITIONS.PLACEHOLDERS)
+                    ? $t[language][
+                        compDefinition.get(componentType).config.labelTwo
+                      ]
                     : ''
-                  : '',
-              ]"
-              :type="compDefinition.get(componentType).config.inputTwoType"
-              :placeholder="
-                hasProperty(constants.CONDITIONS.PLACEHOLDERS)
-                  ? $t[language][
-                      compDefinition.get(componentType).config.labelTwo
-                    ]
-                  : ''
-              "
-              v-model="inputTwo"
-            />
+                "
+                v-model="inputTwo"
+              />
+              <eye
+                v-if="
+                  componentType === constants.COMP_TYPES.NEW &&
+                  hasProperty(constants.CONDITIONS.ICONS)
+                "
+                :field="constants.INPUTS.TWO"
+                :field-type="'password'"
+                :app-type="appType"
+                @checked="handleInputType"
+              />
+            </div>
             <Transition name="slide-fade">
               <div class="alert" v-if="errors.fieldTwo">
                 {{ errors.fieldTwo }}
@@ -97,11 +136,11 @@
           <button
             type="button"
             class="button button-cust"
-            :disabled="!isReady"
+            :disabled="!isButtonReady"
             @click.prevent="onSubmit"
           >
             {{ $t[language][compDefinition.get(componentType).config.button] }}
-            <span class="magic-arrow" v-if="appType === 'im'">›</span>
+            <span class="magic-arrow" v-if="appType === 'mall'">›</span>
           </button>
         </form>
       </div>
@@ -110,9 +149,15 @@
 </template>
 
 <script setup>
+import eye from '../components/Eye.vue';
 import { ref, computed, watch, onMounted } from 'vue';
 import { useFetch } from '../composables/useFetch';
-import { getAttr, resolveUrl } from '../utils/resolveUrl';
+import {
+  getAttr,
+  resolveUrl,
+  getAppID,
+  genarateRedirectUrl,
+} from '../utils/resolveUrl';
 import { appConfig } from '../definition/apps';
 import { endPoints } from '../definition/endPoints';
 import { compDefinition } from '../definition/comps';
@@ -127,11 +172,11 @@ const props = defineProps({
   },
   appType: {
     type: String,
-    default: 'cips',
+    default: 'mall',
   },
   appUrl: {
     type: String,
-    default: 'https://ullapopkenclub-de.cadooztest.de',
+    default: 'https://ullapopkenclub-de.cadooztest.de/cips/login.do',
   },
   translations: {
     type: String,
@@ -152,7 +197,7 @@ const props = defineProps({
 
 // TODO prepare translations if needed
 // const $t = JSON.parse(props.translations);
-
+console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
 const inputTwo = ref(null);
@@ -171,6 +216,11 @@ const resetErrors = () => {
     fieldTwo: '',
   };
 };
+const getSuccessMsg = computed(() => {
+  return props.componentType === constants.COMP_TYPES.NEW
+    ? $t[props.language]['NewSuccess']
+    : $t[props.language]['ForgotSuccess'];
+});
 
 const fieldValidation = () => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
@@ -200,38 +250,65 @@ const fieldValidation = () => {
   }
 };
 
-const isReady = computed(() => {
-  return fieldValidation();
+const inputTypes = ref({
+  fieldOneType: '',
+  fieldTwoType: '',
 });
+const handleInputType = (e) => {
+  inputTypes.value[e.field] = e.type;
+};
+const isButtonReady = computed(() => {
+  if (props.componentType === constants.COMP_TYPES.FORGOT) {
+    return inputOne.value || inputTwo.value;
+  } else {
+    return inputOne.value && inputTwo.value;
+  }
+});
+
 const hasProperty = (prop) => {
   return appConfig.get(props.appType)[prop];
 };
 
 const onSubmit = () => {
-  const endPoint = endPoints.get(
-    constants.API_TYPES[props.componentType.toUpperCase()]
-  );
-  if (props.componentType === constants.COMP_TYPES.NEW) {
-    endPoint.payload.password = inputOne.value;
-    endPoint.payload.repeat_password = inputTwo.value;
-    endPoint.payload.attr = getAttr();
-    endPoint.payload.user_uuid = userUuid.value;
+  const validated = fieldValidation();
+  if (validated) {
+    const endPoint = endPoints.get(
+      constants.API_TYPES[props.componentType.toUpperCase()]
+    );
+    if (props.componentType === constants.COMP_TYPES.NEW) {
+      endPoint.payload.password = inputOne.value;
+      endPoint.payload.repeat_password = inputTwo.value;
+      endPoint.payload.attr = getAttr();
+      endPoint.payload.user_uuid = userUuid.value;
+    } else {
+      endPoint.payload.username = inputOne.value;
+      endPoint.payload.email = inputTwo.value;
+      endPoint.payload.language_id = props.language;
+    }
+    endPoint.payload.website_uuid = import.meta.env[
+      constants.PREFIX + props.appType.toUpperCase()
+    ];
+    console.log(`submited ${props.componentType} : `, endPoint);
+    // TODO handle response/errors
+    //useFetch(endPoint);
+    // errors.value = {
+    //   general: 'general error',
+    //   fieldOne: '1 error',
+    //   fieldTwo: '2 error',
+    // };
+    loading.value = constants.LOADING.SUCCESS;
+    if (props.componentType === constants.COMP_TYPES.NEW) {
+      setTimeout(() => {
+        window.location.href = props.appUrl;
+      }, 5000);
+    }
   } else {
-    endPoint.payload.username = inputOne.value;
-    endPoint.payload.email = inputTwo.value;
-    endPoint.payload.language_id = props.language;
+    errors.value = {
+      general: 'general error',
+      fieldOne: '1 error',
+      fieldTwo: '2 error',
+    };
   }
-  endPoint.payload.website_uuid = import.meta.env[
-    constants.PREFIX + props.appType.toUpperCase()
-  ];
-  console.log(`submited ${props.componentType} : `, endPoint);
-  // TODO handle response/errors
-  //useFetch(endPoint);
-  errors.value = {
-    general: 'general error',
-    fieldOne: '1 error',
-    fieldTwo: '2 error',
-  };
 };
 
 // FIXME uncomment when live/testing
@@ -301,24 +378,28 @@ const getInitData = () => {
   endPoint.payload.website_uuid = import.meta.env[
     constants.PREFIX + props.appType.toUpperCase()
   ];
-  useFetch(endPoint).then((response) => {
-    if (response.status === 200) {
-      userUuid.value = response.user_uuid;
-      passwordLength.value.min = response.minimum_length;
-      passwordLength.value.max = response.maximum_length;
-    }
-    if (response.status >= 400) {
-      loading.value = constants.LOADING.ERROR;
-    }
-  });
+  // FIXME replace when live/testing
+  userUuid.value = '12345';
+  passwordLength.value.min = 7;
+  passwordLength.value.max = 10;
+
+  // useFetch(endPoint).then((response) => {
+  //   if (response.status === 200) {
+  //     userUuid.value = response.user_uuid;
+  //     passwordLength.value.min = response.minimum_length;
+  //     passwordLength.value.max = response.maximum_length;
+  //   }
+  //   if (response.status >= 400) {
+  //     loading.value = constants.LOADING.ERROR;
+  //   }
+  // });
   loading.value = constants.LOADING.DONE;
 };
 
 onMounted(() => {
   resetErrors();
-  if (props.componentType === constants.COMP_TYPES.FORGOT) {
-    // FIXME uncomment when live/testing
-    //getInitData();
+  if (props.componentType === constants.COMP_TYPES.NEW) {
+    getInitData();
   }
   // FIXME remove when live/testing
   setTimeout(() => {
@@ -326,7 +407,7 @@ onMounted(() => {
   }, 1500);
 });
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 * {
   font-family: 'Open Sans', sans-serif;
 }
@@ -362,6 +443,31 @@ onMounted(() => {
   100% {
     transform: rotate(360deg);
   }
+}
+.field-icon {
+  display: flex;
+  gap: 0.5rem;
+  position: relative;
+}
+.eye {
+  cursor: pointer;
+  /* stroke: v-bind(props.primaryColor); */
+  /* stroke-width: .2; */
+  height: 3rem;
+}
+.eye-im {
+  padding: 0 1em;
+  position: absolute;
+  top: 40%;
+  right: 0;
+  transform: translateY(-50%);
+  cursor:pointer;
+}
+.eye path {
+  stroke: v-bind(primaryColor);
+}
+.eye:hover path {
+  stroke: v-bind(secondaryColor);
 }
 .field-error {
   border: solid 1px #c31a19;

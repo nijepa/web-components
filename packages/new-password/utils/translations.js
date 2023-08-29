@@ -8,7 +8,9 @@ export const translations = {
     Button: 'Speichern',
     Username: 'Benutzername',
     Email: 'E-Mail-Adresse',
-    Send: 'Absenden'
+    Send: 'Absenden',
+    ForgotSuccess: 'Forgot Success!',
+    NewSuccess: 'New Success!'
   },
   en: {
     Headline: 'Assign new password',
@@ -18,6 +20,8 @@ export const translations = {
     Button: 'Save',
     Username: 'Username',
     Email: 'Email address',
-    Send: 'Send'
+    Send: 'Send',
+    ForgotSuccess: 'Forgot Success!',
+    NewSuccess: 'New Success!'
   },
 };

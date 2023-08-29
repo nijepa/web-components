@@ -53,7 +53,7 @@ label {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  background: red;
+  background: #ca7900;
   outline: none;
   cursor: pointer;
   color: #ffffff;
@@ -67,13 +67,39 @@ label {
 }
 .button:hover,
 .button:active {
-  background: red;
+  background: #ca7900;
   outline: none;
   border: 2px solid transparent;
 }
 .button:disabled {
-  background: purple;
+  background: #fac884;
   cursor: not-allowed !important;
   opacity: 0.65;
 }
 
+.button:hover .magic-arrow,
+.button:active .magic-arrow {
+  left: 0.75em;
+}
+
+.button .magic-arrow {
+  position: relative;
+  left: 0.4em;
+  top: -1px;
+  font-size: 1.23rem;
+  line-height: 1rem;
+  -webkit-transition: left 0.3s ease-out;
+  -o-transition: left 0.3s ease-out;
+  transition: left 0.3s ease-out;
+}
+.alert::before {
+  display: inline-block;
+  position: relative;
+  content: ' ';
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  height: 25px;
+  width: 25px;
+  top: 0.1em;
+  padding-right: 1.67em;
+}
