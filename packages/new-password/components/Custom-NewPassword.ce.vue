@@ -411,7 +411,7 @@ onMounted(() => {
 * {
   font-family: 'Open Sans', sans-serif;
 }
-// FIXME uncoment when live/testing
+// FIXME add all classes for custom colors, uncoment when live/testing
 // .button-cust {
 //   background: v-bind(primaryColor) !important;
 // }
@@ -461,7 +461,7 @@ onMounted(() => {
   top: 40%;
   right: 0;
   transform: translateY(-50%);
-  cursor:pointer;
+  cursor: pointer;
 }
 .eye path {
   stroke: v-bind(primaryColor);
@@ -480,15 +480,12 @@ onMounted(() => {
   border: none;
   margin-bottom: 0;
 }
-
 .slide-fade-enter-active {
   transition: all 0.5s ease;
 }
-
 .slide-fade-leave-active {
   transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
-
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: scaleY(0);

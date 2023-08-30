@@ -12,11 +12,12 @@ export const appConfig = new Map([
     },
   ],
   [
-    'ebc',
+    'taxfreenoncashbenefit',
     {
       hasCaptcha: true,
       hasPlaceholders: true,
       hasUsername: true,
+      hasErrorBorder: true,
       hasAppTypeUrl: true,
       hasFrontendUrl: true,
       hasInputIcons: true
