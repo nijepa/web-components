@@ -1,4 +1,4 @@
-// TODO add definitions for all apps
+// TODO finish definitions for all apps
 export const appConfig = new Map([
   [
     'mall',
@@ -16,7 +16,6 @@ export const appConfig = new Map([
     {
       hasCaptcha: true,
       hasPlaceholders: true,
-      hasUsername: true,
       hasErrorBorder: true,
       hasAppTypeUrl: true,
       hasFrontendUrl: true,

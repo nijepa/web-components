@@ -18,8 +18,7 @@
             class="form-group"
             v-if="
               componentType === constants.COMP_TYPES.NEW ||
-              (componentType === constants.COMP_TYPES.FORGOT &&
-                hasProperty(constants.CONDITIONS.USERNAME))
+              hasProperty(constants.CONDITIONS.USERNAME)
             "
           >
             <label
@@ -35,7 +34,6 @@
             <div class="field-icon">
               <input
                 id="username"
-                v-if="hasProperty(constants.CONDITIONS.USERNAME)"
                 :class="[
                   'field',
                   hasProperty(constants.CONDITIONS.ERROR_BORDER)
@@ -86,6 +84,7 @@
             <div class="field-icon">
               <input
                 id="email"
+                autofocus="autofocus"
                 :class="[
                   'field',
                   hasProperty(constants.CONDITIONS.ERROR_BORDER)
@@ -133,6 +132,11 @@
           >
             <slot name="captcha"></slot>
           </span>
+          <vue-hcaptcha
+              sitekey="10000000-ffff-ffff-ffff-000000000001"
+              size="compact"
+              theme="dark"
+            ></vue-hcaptcha>
           <button
             type="button"
             class="button button-cust"
@@ -163,7 +167,8 @@ import { endPoints } from '../definition/endPoints';
 import { compDefinition } from '../definition/comps';
 import * as constants from '../config/constants';
 import { translations as $t } from '../utils/translations';
-
+import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+getAppID();
 // setting props
 const props = defineProps({
   componentType: {
@@ -299,7 +304,7 @@ const onSubmit = () => {
     loading.value = constants.LOADING.SUCCESS;
     if (props.componentType === constants.COMP_TYPES.NEW) {
       setTimeout(() => {
-        window.location.href = props.appUrl;
+        //window.location.href = props.appUrl;
       }, 5000);
     }
   } else {
