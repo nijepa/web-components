@@ -126,17 +126,21 @@
           <Transition name="slide-fade">
             <div class="alert" v-if="errors.general">{{ errors.general }}</div>
           </Transition>
+
           <span
             class="captcha"
             v-if="hasProperty(constants.CONDITIONS.CAPTCHA)"
           >
-            <slot name="captcha"></slot>
+            <VueHcaptcha
+              ref="hcaptcha"
+              :sitekey="hcaptchaKey"
+              @error="onError"
+              @verify="onSuccess"
+              @expired="onExpired"
+            />
+            <!-- <slot name="captcha"></slot> -->
           </span>
-          <vue-hcaptcha
-              sitekey="10000000-ffff-ffff-ffff-000000000001"
-              size="compact"
-              theme="dark"
-            ></vue-hcaptcha>
+
           <button
             type="button"
             class="button button-cust"
@@ -168,6 +172,7 @@ import { compDefinition } from '../definition/comps';
 import * as constants from '../config/constants';
 import { translations as $t } from '../utils/translations';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+
 getAppID();
 // setting props
 const props = defineProps({
@@ -181,7 +186,7 @@ const props = defineProps({
   },
   appUrl: {
     type: String,
-    default: 'https://ullapopkenclub-de.cadooztest.de/cips/login.do',
+    default: '',
   },
   translations: {
     type: String,
@@ -200,7 +205,7 @@ const props = defineProps({
   },
 });
 
-// TODO prepare translations if needed
+// TODO prepare translations
 // const $t = JSON.parse(props.translations);
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
@@ -273,6 +278,8 @@ const isButtonReady = computed(() => {
 const hasProperty = (prop) => {
   return appConfig.get(props.appType)[prop];
 };
+// TODO remove for live
+const environment = import.meta.env['VITE_ENV'];
 
 const onSubmit = () => {
   const validated = fieldValidation();
@@ -316,61 +323,66 @@ const onSubmit = () => {
   }
 };
 
-// FIXME uncomment when live/testing
-// const loadStyle = async () => {
-//   const response = await fetch(
-//     `${props.appUrl}${
-//       import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
-//     }${props.appType}.css`,
-//     {
-//       method: 'GET',
-//       headers: {
-//         'Content-type': 'text',
-//       },
-//     }
-//   );
-//   return response.text();
-// };
-
-// FIXME comment when live/testing
-const css = ref(`../assets/${props.appType}.css`);
 const loadStyle = async () => {
-  const response = await fetch(css.value, {
-    method: 'GET',
-    headers: {
-      'Content-type': 'text',
-    },
-  });
-  return response.text();
-};
-watch(
-  () => props.appType,
-  (newValue) => {
-    css.value = `../assets/${props.appType}.css`;
-    applyCss();
+  if (environment === 'production') {
+    const response = await fetch(
+      `${props.appUrl}${
+        import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
+      }${props.appType}.css`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-type': 'text',
+        },
+      }
+    );
+    return response.text();
+  } else {
+    // TODO remove for live
+    const css = ref(`../assets/${props.appType}.css`);
+    const response = await fetch(css.value, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'text',
+      },
+    });
+    return response.text();
   }
-);
+};
+if (environment === 'local') {
+  watch(
+    () => props.appType,
+    (newValue) => {
+      css.value = `../assets/${props.appType}.css`;
+      applyCss();
+    }
+  );
+}
 
 const applyCss = async () => {
   const cssData = await loadStyle();
-  // FIXME remove partCss thing when live/testing
-  let partCss = cssData.split(/\r\n|\n/)[2];
-  partCss = partCss
-    .slice(partCss.search('"'), partCss.length)
-    .replace(/(?:\\[rn])+/g, '')
-    .replaceAll('"', '');
-
-  const el = document.querySelector('custom-new-password');
-  // FIXME replace when live/testing
-  // el.shadowRoot.querySelector('style').innerHTML =
-  //   el.shadowRoot.querySelector('style').innerHTML + cssData;
-  let lastCss = el.shadowRoot.querySelector('style').innerHTML;
-  if (lastCss.search('wrapper') >= 0) {
-    lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
+  // TODO remove partCss thing when live
+  let partCss = null;
+  if (environment === 'local') {
+    partCss = cssData.split(/\r\n|\n/)[2];
+    partCss = partCss
+      .slice(partCss.search('"'), partCss.length)
+      .replace(/(?:\\[rn])+/g, '')
+      .replaceAll('"', '');
   }
-  el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
-  // FIXME uncomment when live/testing
-  //loading.value = constants.LOADING.DONE;
+  const el = document.querySelector('custom-new-password');
+  // FIXME remove when live
+  if (environment === 'production') {
+    el.shadowRoot.querySelector('style').innerHTML =
+      el.shadowRoot.querySelector('style').innerHTML + cssData;
+  } else {
+    let lastCss = el.shadowRoot.querySelector('style').innerHTML;
+    if (lastCss.search('wrapper') >= 0) {
+      lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
+    }
+    el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
+    loading.value = constants.LOADING.DONE;
+  }
 };
 
 (async () => {
@@ -399,6 +411,24 @@ const getInitData = () => {
   //   }
   // });
   loading.value = constants.LOADING.DONE;
+};
+
+const hcaptchaKey = import.meta.env[constants.PREFIX + constants.HCAPTCHA_KEY];
+const hcaptcha = ref(null);
+const captchaToken = ref(null);
+const onError = (error) => {
+  if (!error.handled) {
+    //this.toast(this.$t('form.error.hcaptcha', { error }));
+  }
+};
+const onSuccess = (token) => {
+  captchaToken.value = token;
+  console.log(555, captchaToken.value);
+};
+const onExpired = async () => {
+  console.log('captcha expired');
+  captchaToken.value = null;
+  await hcaptcha.value.reset();
 };
 
 onMounted(() => {

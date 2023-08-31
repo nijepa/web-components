@@ -1,8 +1,9 @@
 export const PREFIX = 'VITE_';
+export const HCAPTCHA_KEY = 'HCAPTCHA_KEY';
 export const GLOBALS = {
   BASE: 'BASE_URL',
-  PART: 'PART_URL'
-}
+  PART: 'PART_URL',
+};
 export const COMP_TYPES = {
   FORGOT: 'forgot',
   NEW: 'new',
@@ -16,12 +17,12 @@ export const LOADING = {
   INIT: 'init',
   ERROR: 'error',
   DONE: 'done',
-  SUCCESS: 'success'
+  SUCCESS: 'success',
 };
 export const INPUTS = {
   ONE: 'fieldOneType',
-  TWO: 'fieldTwoType'
-}
+  TWO: 'fieldTwoType',
+};
 export const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
@@ -39,12 +40,12 @@ export const CONDITIONS = {
   INDEX: 'hasIndexUrl',
   FRONTEND: 'hasFrontendUrl',
   APP_TYPE: 'hasAppTypeUrl',
-  ICONS: 'hasInputIcons'
+  ICONS: 'hasInputIcons',
 };
 export const REDIRECTION = {
   INDEX: 'INDEX_URL',
   LOGIN: 'LOGIN_URL',
-}
+};
 export const CLASSES = {
   FIELD_ERROR: 'field-error',
 };
