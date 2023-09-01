@@ -1,0 +1,13 @@
+#set ($captcha = $torque.getCaptchaTypeByName($!{current_website.getAttributeOptionValue('CAPTCHA_TYPE')}) )
+
+<div style="max-width: 24rem; margin: 0 auto;">
+  <custom-new-password app-type="taxfreenoncashbenefit" component-type="forgot" language="de" class="login-container">
+  </custom-new-password>
+</div>
+
+<script>
+const capchaType = '$captcha';
+const lang = "$!{locale.toLanguageTag()}";
+const pass = document.querySelector("custom-new-password");
+pass.setAttribute("language", lang);
+</script>

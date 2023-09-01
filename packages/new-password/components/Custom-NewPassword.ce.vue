@@ -134,6 +134,7 @@
             <VueHcaptcha
               ref="hcaptcha"
               :sitekey="hcaptchaKey"
+              :language="language"
               @error="onError"
               @verify="onSuccess"
               @expired="onExpired"
@@ -269,9 +270,9 @@ const handleInputType = (e) => {
 };
 const isButtonReady = computed(() => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
-    return inputOne.value || inputTwo.value;
+    return captchaToken.value && (inputOne.value || inputTwo.value);
   } else {
-    return inputOne.value && inputTwo.value;
+    return captchaToken.value && inputOne.value && inputTwo.value;
   }
 });
 
@@ -412,7 +413,7 @@ const getInitData = () => {
   // });
   loading.value = constants.LOADING.DONE;
 };
-
+// handling hCaptcha
 const hcaptchaKey = import.meta.env[constants.PREFIX + constants.HCAPTCHA_KEY];
 const hcaptcha = ref(null);
 const captchaToken = ref(null);
