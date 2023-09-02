@@ -323,7 +323,7 @@ const onSubmit = () => {
     };
   }
 };
-
+const css = ref(null)
 const loadStyle = async () => {
   if (environment === 'production') {
     const response = await fetch(
@@ -340,7 +340,7 @@ const loadStyle = async () => {
     return response.text();
   } else {
     // TODO remove for live
-    const css = ref(`../assets/${props.appType}.css`);
+    css.value = `../assets/${props.appType}.css`;
     const response = await fetch(css.value, {
       method: 'GET',
       headers: {

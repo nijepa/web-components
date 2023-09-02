@@ -6,10 +6,10 @@
 .field {
   background: #ffffff;
   color: v-bind(primaryColor);
-  border: 1px solid #cccccc;
+  border: 1px solid #5d5d5d;
   border-radius: 0;
   font-size: 1rem;
-  padding: 0 0.5em;
+  padding: 0 0.62em;
   position: relative;
   text-overflow: ellipsis;
   -webkit-box-shadow: none;
@@ -24,21 +24,29 @@
 }
 .field:focus {
   box-shadow: none;
-  outline: none;
-  border-color: #cccccc;
+  outline: 0px none;
+  border-color: #005896;
+  box-shadow: 0 0 0 1px rgb(0, 88, 150);
 }
 .field:hover {
   outline: none;
 }
+.field::placeholder {
+  font-style: italic;
+}
 
 label {
   display: inline-block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #005896;
+  line-height: 1.2rem;
 }
 .button {
   padding: 0.6em 2em;
   min-height: 3em;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 0;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -53,7 +61,7 @@ label {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  background: red;
+  background: #005896;
   outline: none;
   cursor: pointer;
   color: #ffffff;
@@ -67,13 +75,13 @@ label {
 }
 .button:hover,
 .button:active {
-  background: red;
+  font-weight: 600;
+  background: #005896;
   outline: none;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 .button:disabled {
-  background: purple;
+  background: #005896;
   cursor: not-allowed !important;
   opacity: 0.65;
 }
-
