@@ -1,4 +1,4 @@
 import { defineCustomElement } from "vue";
-import Search from "./components/Custom-NewPassword.ce.vue";
-const CustomNewPassword = defineCustomElement(Search);
+import Pass from "./components/Custom-NewPassword.ce.vue";
+const CustomNewPassword = defineCustomElement(Pass);
 customElements.define("custom-new-password", CustomNewPassword);

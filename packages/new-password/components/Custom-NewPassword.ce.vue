@@ -3,7 +3,7 @@
     <span class="loader"></span>
   </div>
   <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR">
-    error
+    {{ apiError.message }}
   </div>
   <Transition name="slide-fade" mode="out-in">
     <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS">
@@ -11,7 +11,7 @@
     </div>
   </Transition>
   <Transition name="slide-fade" mode="out-in">
-    <div key="3" v-if="loading === constants.LOADING.DONE">
+    <div key="4" v-if="loading === constants.LOADING.DONE">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
           <div
@@ -37,7 +37,7 @@
                 :class="[
                   'field',
                   hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                    ? isError
+                    ? errors.fieldOne
                       ? isError
                       : ''
                     : '',
@@ -69,7 +69,7 @@
             </div>
             <Transition name="slide-fade">
               <div class="alert" v-if="errors.fieldOne">
-                {{ errors.fieldOne }}
+                <pre>{{ errors.fieldOne }}</pre>
               </div>
             </Transition>
           </div>
@@ -88,7 +88,7 @@
                 :class="[
                   'field',
                   hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                    ? isError
+                    ? errors.fieldTwo
                       ? isError
                       : ''
                     : '',
@@ -119,7 +119,7 @@
             </div>
             <Transition name="slide-fade">
               <div class="alert" v-if="errors.fieldTwo">
-                {{ errors.fieldTwo }}
+                <pre>{{ errors.fieldTwo }}</pre>
               </div>
             </Transition>
           </div>
@@ -132,14 +132,22 @@
             v-if="hasProperty(constants.CONDITIONS.CAPTCHA)"
           >
             <VueHcaptcha
+              v-if="capchaType === constants.CAPCHA_TYPE.HCAPCHA"
               ref="hcaptcha"
               :sitekey="hcaptchaKey"
               :language="language"
-              @error="onError"
-              @verify="onSuccess"
-              @expired="onExpired"
+              @error="onCapchaError"
+              @verify="onCapchaSuccess"
+              @expired="onCapchaExpired"
             />
-            <!-- <slot name="captcha"></slot> -->
+            <VueRecaptcha
+              v-if="capchaType === constants.CAPCHA_TYPE.RECAPCHA"
+              sitekey="recaptchaKey"
+              :load-recaptcha-script="true"
+              @verify="handleSuccess"
+              @error="handleError"
+              @expired="onExpired"
+            ></VueRecaptcha>
           </span>
 
           <button
@@ -173,6 +181,7 @@ import { compDefinition } from '../definition/comps';
 import * as constants from '../config/constants';
 import { translations as $t } from '../utils/translations';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+import { VueRecaptcha } from 'vue-recaptcha';
 
 getAppID();
 // setting props
@@ -203,6 +212,10 @@ const props = defineProps({
   language: {
     type: String,
     default: 'en',
+  },
+  capchaType: {
+    type: String,
+    default: 'HCAPCHA',
   },
 });
 
@@ -243,8 +256,10 @@ const fieldValidation = () => {
       resetErrors();
       return true;
     }
-    isError.value = constants.CLASSES.FIELD_ERROR;
-    return false;
+    if (!inputOne.value) errors.value.fieldOne = 'error 1';
+    if (!inputTwo.value) errors.value.fieldTwo = 'error 2';
+    if (!inputTwo.value.match(constants.EMAIL_REGEX))
+      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 regex';
   } else {
     if (
       inputOne.value &&
@@ -256,9 +271,19 @@ const fieldValidation = () => {
       isError.value = '';
       return true;
     }
-    isError.value = constants.CLASSES.FIELD_ERROR;
-    return false;
+    if (!inputOne.value) errors.value.fieldOne = 'error 1';
+    if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
+      errors.value.fieldOne = errors.value.fieldOne + '\n' + 'error 1 regex';
+    if (!inputTwo.value) errors.value.fieldTwo = 'error 2';
+    if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
+      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 regex';
+    if (inputOne.value !== inputTwo.value)
+      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 same';
   }
+  if (hasProperty(constants.CONDITIONS.ERROR_BORDER)) {
+    isError.value = constants.CLASSES.FIELD_ERROR;
+  }
+  return false;
 };
 
 const inputTypes = ref({
@@ -270,9 +295,18 @@ const handleInputType = (e) => {
 };
 const isButtonReady = computed(() => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
-    return captchaToken.value && (inputOne.value || inputTwo.value);
+    return (
+      hasProperty(constants.CONDITIONS.CAPTCHA) &&
+      captchaToken.value &&
+      (inputOne.value || inputTwo.value)
+    );
   } else {
-    return captchaToken.value && inputOne.value && inputTwo.value;
+    return (
+      hasProperty(constants.CONDITIONS.CAPTCHA) &&
+      captchaToken.value &&
+      inputOne.value &&
+      inputTwo.value
+    );
   }
 });
 
@@ -303,7 +337,7 @@ const onSubmit = () => {
     ];
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
-    //useFetch(endPoint);
+    // useFetch(endPoint);
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
@@ -316,14 +350,14 @@ const onSubmit = () => {
       }, 5000);
     }
   } else {
-    errors.value = {
-      general: 'general error',
-      fieldOne: '1 error',
-      fieldTwo: '2 error',
-    };
+    // errors.value = {
+    //   general: 'general error',
+    //   fieldOne: '1 error',
+    //   fieldTwo: '2 error',
+    // };
   }
 };
-const css = ref(null)
+const css = ref(null);
 const loadStyle = async () => {
   if (environment === 'production') {
     const response = await fetch(
@@ -382,7 +416,7 @@ const applyCss = async () => {
       lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
     }
     el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
-    loading.value = constants.LOADING.DONE;
+    //loading.value = constants.LOADING.DONE;
   }
 };
 
@@ -390,10 +424,11 @@ const applyCss = async () => {
   await applyCss();
 })();
 
+const apiError = ref(null)
 const getInitData = () => {
   const endPoint = endPoints.get(constants.API_TYPES.VALIDATE);
-  endPoint.payload.attr = getAttr();
-  endPoint.payload.website_uuid = import.meta.env[
+  endPoint.params.attr = getAttr();
+  endPoint.params.website_uuid = import.meta.env[
     constants.PREFIX + props.appType.toUpperCase()
   ];
   // FIXME replace when live/testing
@@ -401,32 +436,39 @@ const getInitData = () => {
   passwordLength.value.min = 7;
   passwordLength.value.max = 10;
 
-  // useFetch(endPoint).then((response) => {
-  //   if (response.status === 200) {
-  //     userUuid.value = response.user_uuid;
-  //     passwordLength.value.min = response.minimum_length;
-  //     passwordLength.value.max = response.maximum_length;
-  //   }
-  //   if (response.status >= 400) {
-  //     loading.value = constants.LOADING.ERROR;
-  //   }
-  // });
-  loading.value = constants.LOADING.DONE;
+  useFetch(endPoint).then((response) => {
+    if (response.status === 200) {
+      userUuid.value = response.user_uuid;
+      passwordLength.value.min = response.minimum_length;
+      passwordLength.value.max = response.maximum_length;
+    }
+    if (response.status >= 400) {
+      loading.value = constants.LOADING.ERROR;
+    }
+    if (response.error) {
+      apiError.value = response.errorMsg
+      loading.value = constants.LOADING.ERROR;
+    }
+  });
+  //loading.value = constants.LOADING.DONE;
 };
 // handling hCaptcha
 const hcaptchaKey = import.meta.env[constants.PREFIX + constants.HCAPTCHA_KEY];
+const recaptchaKey = import.meta.env[
+  constants.PREFIX + constants.RECAPTCHA_KEY
+];
 const hcaptcha = ref(null);
 const captchaToken = ref(null);
-const onError = (error) => {
+const onCapchaError = (error) => {
   if (!error.handled) {
     //this.toast(this.$t('form.error.hcaptcha', { error }));
   }
 };
-const onSuccess = (token) => {
+const onCapchaSuccess = (token) => {
   captchaToken.value = token;
-  console.log(555, captchaToken.value);
+  console.log('hchapcha token', captchaToken.value);
 };
-const onExpired = async () => {
+const onCapchaExpired = async () => {
   console.log('captcha expired');
   captchaToken.value = null;
   await hcaptcha.value.reset();
@@ -465,7 +507,7 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   border: 5px solid transparent;
-  border-bottom-color: #f700ff;
+  border-bottom-color: v-bind(primaryColor);
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -479,11 +521,6 @@ onMounted(() => {
   100% {
     transform: rotate(360deg);
   }
-}
-.field-icon {
-  display: flex;
-  gap: 0.5rem;
-  position: relative;
 }
 .eye {
   cursor: pointer;
@@ -504,6 +541,11 @@ onMounted(() => {
 }
 .eye:hover path {
   stroke: v-bind(secondaryColor);
+}
+.field-icon {
+  display: flex;
+  gap: 0.5rem;
+  position: relative;
 }
 .field-error {
   border: solid 1px #c31a19;

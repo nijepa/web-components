@@ -15,7 +15,8 @@
         font-family: 'Open Sans', sans-serif;
       }
       #app {
-        display: flex;
+        display: blok;
+        margin: 0 auto;
         justify-content: center;
         border: 1px solid red;
         padding: 1rem;
@@ -40,21 +41,21 @@
         <div class="">
           <input
             type="radio"
-            id="new"
+            id="forgot"
             name="component_type"
-            value="new"
+            value="forgot"
             checked
           />
-          <label for="new">NEW</label><br />
+          <label for="forgot">FORGOT</label><br />
         </div>
         <div class="">
           <input
             type="radio"
-            id="forgot"
+            id="new"
             name="component_type"
-            value="forgot"
+            value="new"
           />
-          <label for="forgot">FORGOT</label><br />
+          <label for="new">NEW</label><br />
         </div>
       </div>
       <div class="">
@@ -103,9 +104,11 @@
     </div>
 
     <div id="app">
-      <custom-new-password app-type="taxfreenoncashbenefit" component-type="forgot" language="en">
-        <h1 slot="captcha">
-          hcaptcha
+      <custom-new-password
+        app-type="taxfreenoncashbenefit"
+        component-type="new"
+        language="en"
+      >
       </custom-new-password>
     </div>
 

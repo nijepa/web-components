@@ -15,9 +15,9 @@ export const endPoints = new Map([
   [
     'validateEmailLink',
     {
-      method: 'POST',
+      method: 'GET',
       url: 'validate_reset_password_email_link',
-      payload: {
+      params: {
         attr: 'string',
         website_uuid: 'string',
       },

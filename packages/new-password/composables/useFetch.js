@@ -8,7 +8,10 @@ export const useFetch = async (endPoint) => {
       headers: new Headers(headers),
       body: JSON.stringify(endPoint.payload),
     };
-    const url = import.meta.env[PREFIX + GLOBALS.BASE] + endPoint.url;
+    let url = import.meta.env[PREFIX + GLOBALS.BASE] + endPoint.url;
+    if (endPoint.params) {
+      url = url + '?' + new URLSearchParams(endPoint.params);
+    }
     const response = await fetch(url, requestInit);
     // TODO handle errors
     if (response.status !== 200) {
@@ -17,6 +20,10 @@ export const useFetch = async (endPoint) => {
     return response.json();
   } catch (error) {
     console.log('Error: ', error);
-    return error;
+    const err = {
+      error: true,
+      errorMsg: error
+    }
+    return err;
   }
 };

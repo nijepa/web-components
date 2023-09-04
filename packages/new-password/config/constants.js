@@ -1,5 +1,6 @@
 export const PREFIX = 'VITE_';
 export const HCAPTCHA_KEY = 'HCAPTCHA_KEY';
+export const RECAPTCHA_KEY = 'RECAPTCHA_KEY';
 export const GLOBALS = {
   BASE: 'BASE_URL',
   PART: 'PART_URL',
@@ -8,6 +9,10 @@ export const COMP_TYPES = {
   FORGOT: 'forgot',
   NEW: 'new',
 };
+export const CAPCHA_TYPE = {
+  HCAPCHA: 'HCAPCHA',
+  RECAPCHA: 'RECAPCHA'
+}
 export const API_TYPES = {
   FORGOT: 'forgotPassword',
   VALIDATE: 'validateEmailLink',
