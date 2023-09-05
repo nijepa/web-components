@@ -6,8 +6,30 @@
 </div>
 
 <script>
-const capchaType = '$captcha';
-const lang = "$!{locale.toLanguageTag()}";
 const pass = document.querySelector("custom-new-password");
-pass.setAttribute("language", lang);
+function setAttributes(el, attrs) {
+  for (var key in attrs) {
+    const attr =
+      typeof attrs[key] !== "string"
+        ? JSON.stringify(attrs[key])
+        : attrs[key];
+    el.setAttribute(key, attr);
+  }
+}
+const passProps = {
+  translations: {
+    #foreach($resource in ${messages.getResourcesWithPrefix("api.rest", "shop.ebc")})
+      '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+    #end
+    #foreach($resource in ${messages.getResourcesWithPrefix("passwords")})
+      '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+    #end
+  }
+  "website-uuid": $session.getAttribute("com.cadooz.WEBSITE_EXTERNAL_IDENTIFICATION"),
+  "capcha-type": '$captcha',
+  "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
+  "secondary-color": getComputedStyle(document.querySelector('.site-title')).color,
+  lang: "$!{locale.toLanguageTag()}",
+}
+setAttributes(pass, passProps);
 </script>

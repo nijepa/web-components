@@ -144,9 +144,9 @@
               v-if="capchaType === constants.CAPCHA_TYPE.RECAPCHA"
               sitekey="recaptchaKey"
               :load-recaptcha-script="true"
-              @verify="handleSuccess"
-              @error="handleError"
-              @expired="onExpired"
+              @verify="onCapchaSuccess"
+              @error="onCapchaError"
+              @expired="onCapchaExpired"
             ></VueRecaptcha>
           </span>
 
@@ -194,7 +194,7 @@ const props = defineProps({
     type: String,
     default: 'mall',
   },
-  appUrl: {
+  websiteUuid: {
     type: String,
     default: '',
   },
@@ -220,7 +220,8 @@ const props = defineProps({
 });
 
 // TODO prepare translations
-// const $t = JSON.parse(props.translations);
+const $tr = JSON.parse(props.translations);
+console.log('translations', $tr)
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
@@ -242,8 +243,8 @@ const resetErrors = () => {
 };
 const getSuccessMsg = computed(() => {
   return props.componentType === constants.COMP_TYPES.NEW
-    ? $t[props.language]['NewSuccess']
-    : $t[props.language]['ForgotSuccess'];
+    ? $tr['api.rest.password.success.new_password_saved']
+    : $tr['api.rest.password.success.reset_password_email_sent'];
 });
 
 const fieldValidation = () => {
@@ -256,8 +257,8 @@ const fieldValidation = () => {
       resetErrors();
       return true;
     }
-    if (!inputOne.value) errors.value.fieldOne = 'error 1';
-    if (!inputTwo.value) errors.value.fieldTwo = 'error 2';
+    if (!inputOne.value) errors.value.fieldOne = $tr['api.rest.password.exception.errors.username_required'];
+    if (!inputTwo.value) errors.value.fieldTwo = $tr['api.rest.password.exception.errors.email_required'];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
       errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 regex';
   } else {
