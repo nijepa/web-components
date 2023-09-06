@@ -1,9 +1,10 @@
 ::: raw
+
 <h1 class="heading">custom-new-password</h1>
 :::
 
 ::: tip usage
-in ***cadooz*** for new password
+in **_cadooz_** for new password
 :::
 
 ## Import component
@@ -11,75 +12,121 @@ in ***cadooz*** for new password
 ### in HTML header in `structure.vm` velocity template
 
 ```html
-  <script type="module" crossorigin src="/scripts/path/to/search.js"></script>
+<script
+  type="module"
+  crossorigin
+  src="/scripts/path/to/new-password.js"
+></script>
 ```
 
 ## Place component
 
-### in velocity template `header.vm`
+### in velocity template `forgot_password.vm`
 
 ```html
-  <custom-search></custom-search>
+<custom-new-password
+  app-type="taxfreenoncashbenefit"
+  component-type="forgot"
+></custom-new-password>
+```
+
+### in velocity template `new_password.vm`
+
+```html
+<custom-new-password
+  app-type="taxfreenoncashbenefit"
+  component-type="new"
+></custom-new-password>
 ```
 
 ## Interacting with component
 
-### Script for *emmiting/listening* event *to/from* component and getting required translations, app context name
+### Script for _emmiting/listening_ event _to/from_ component and getting required translations, app context name
 
 ```js
   <script async defer>
-    const search = document.querySelector("custom-search");
-    const showSearch = () => {
-      search.setAttribute("is-active", "true");
-    };
-    const searchClosed = () => {
-      search.setAttribute("is-active", "false");
-    };
-    window.addEventListener("close-search", searchClosed);
-    const msgs = {
-      empty: "$!{messages.get('incentivemall.productoverview.empty')}",
-      placeholder: "$!{messages.get('incentivemall.productoverview.search')}"
+    const pass = document.querySelector("custom-new-password");
+    function setAttributes(el, attrs) {
+      for (var key in attrs) {
+        const attr =
+          typeof attrs[key] !== "string"
+            ? JSON.stringify(attrs[key])
+            : attrs[key];
+        el.setAttribute(key, attr);
+      }
     }
-    search.setAttribute("translations", JSON.stringify(msgs))
-    search.setAttribute("context", "$request.getContextPath()")
+    const passProps = {
+      translations: {
+        #foreach($resource in ${messages.getResourcesWithPrefix("api.rest", "shop.ebc")})
+          '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+        #end
+        #foreach($resource in ${messages.getResourcesWithPrefix("passwords")})
+          '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+        #end
+      }
+      "website-uuid": '$session.getAttribute("com.cadooz.WEBSITE_EXTERNAL_IDENTIFICATION")',
+      "captcha-type": '$torque.getCaptchaTypeByName($!{current_website.getAttributeOptionValue('CAPTCHA_TYPE')})',
+      "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
+      "secondary-color": getComputedStyle(document.querySelector('.site-title')).color,
+      lang: "$!{locale.toLanguageTag()}",
+    }
+    setAttributes(pass, passProps);
   </script>
-```
-
-### Header navbar elemet with search icon to init component
-
-```html
-  <li class="nav-item d-flex align-items-center" onclick="showSearch()">
-    <svg id="search" class="search__icon svg-icon ml-0" 
-      xmlns:xlink="http://www.w3.org/1999/xlink" 
-      xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <use xlink:href="/images/icons/all_in_one.svg#search"></use>
-    </svg>
-  </li>
 ```
 
 ## Props
 
-### ***Used for component state (show/hide):***
+### **_Used to load right component (forgot/new):_**
 
-### **`isActive`**
+### **`componentType`**
 
 - Type: String
-- Default: 'false'
 
-### ***Used for text resources (recived from velocity action):***
+### **_Used to load right app (taxfreenoncashbenefit/mall/oip/cips/...):_**
+
+### **`appType`**
+
+- Type: String
+
+### **_Used for text resources (recived from velocity action):_**
 
 ### **`translations`**
 
 - Type: String
 
-### ***Used for API call and generation of links to outer pages:***
+### **_Unique identifier from current app (used for requests):_**
 
-### **`context`**
+### **`websiteUuid`**
 
 - Type: String
-- Default: '/mall'
+
+### **_Used to apply language:_**
+
+### **`language`**
+
+- Type: String
+- Default: 'de'
+
+### **_Used to load captcha (hCaptcha/reCaptcha):_**
+
+### **`captchaType`**
+
+- Type: String
+- Default: 'hCaptcha'
+
+### **_Used to apply primary colors:_**
+
+### **`primaryColor`**
+
+- Type: String
+
+### **_Used to apply secondary colors:_**
+
+### **`secondaryColor`**
+
+- Type: String
 
 ## Deployment
 
 - build app
-- upload file **`search.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`new-password.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**

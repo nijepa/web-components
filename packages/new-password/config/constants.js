@@ -9,9 +9,9 @@ export const COMP_TYPES = {
   FORGOT: 'forgot',
   NEW: 'new',
 };
-export const CAPCHA_TYPE = {
-  HCAPCHA: 'HCAPCHA',
-  RECAPCHA: 'RECAPCHA'
+export const CAPTCHA_TYPE = {
+  HCAPTCHA: 'HCAPTCHA',
+  RECAPTCHA: 'RECAPTCHA'
 }
 export const API_TYPES = {
   FORGOT: 'forgotPassword',

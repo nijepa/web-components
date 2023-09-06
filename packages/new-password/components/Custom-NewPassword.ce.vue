@@ -132,21 +132,21 @@
             v-if="hasProperty(constants.CONDITIONS.CAPTCHA)"
           >
             <VueHcaptcha
-              v-if="capchaType === constants.CAPCHA_TYPE.HCAPCHA"
+              v-if="captchaType === constants.CAPTCHA_TYPE.HCAPTCHA"
               ref="hcaptcha"
               :sitekey="hcaptchaKey"
               :language="language"
-              @error="onCapchaError"
-              @verify="onCapchaSuccess"
-              @expired="onCapchaExpired"
+              @error="onCaptchaError"
+              @verify="onCaptchaSuccess"
+              @expired="onCaptchaExpired"
             />
             <VueRecaptcha
-              v-if="capchaType === constants.CAPCHA_TYPE.RECAPCHA"
+              v-if="captchaType === constants.CAPTCHA_TYPE.RECAPTCHA"
               sitekey="recaptchaKey"
               :load-recaptcha-script="true"
-              @verify="onCapchaSuccess"
-              @error="onCapchaError"
-              @expired="onCapchaExpired"
+              @verify="onCaptchaSuccess"
+              @error="onCaptchaError"
+              @expired="onCaptchaExpired"
             ></VueRecaptcha>
           </span>
 
@@ -183,7 +183,6 @@ import { translations as $t } from '../utils/translations';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import { VueRecaptcha } from 'vue-recaptcha';
 
-getAppID();
 // setting props
 const props = defineProps({
   componentType: {
@@ -213,9 +212,9 @@ const props = defineProps({
     type: String,
     default: 'en',
   },
-  capchaType: {
+  captchaType: {
     type: String,
-    default: 'HCAPCHA',
+    default: 'HCAPTCHA',
   },
 });
 
@@ -362,7 +361,7 @@ const css = ref(null);
 const loadStyle = async () => {
   if (environment === 'production') {
     const response = await fetch(
-      `${props.appUrl}${
+      `https://${getAppID()}${
         import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
       }${props.appType}.css`,
       {
@@ -460,16 +459,16 @@ const recaptchaKey = import.meta.env[
 ];
 const hcaptcha = ref(null);
 const captchaToken = ref(null);
-const onCapchaError = (error) => {
+const onCaptchaError = (error) => {
   if (!error.handled) {
     //this.toast(this.$t('form.error.hcaptcha', { error }));
   }
 };
-const onCapchaSuccess = (token) => {
+const onCaptchaSuccess = (token) => {
   captchaToken.value = token;
   console.log('hchapcha token', captchaToken.value);
 };
-const onCapchaExpired = async () => {
+const onCaptchaExpired = async () => {
   console.log('captcha expired');
   captchaToken.value = null;
   await hcaptcha.value.reset();

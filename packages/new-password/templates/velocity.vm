@@ -26,7 +26,7 @@ const passProps = {
     #end
   }
   "website-uuid": $session.getAttribute("com.cadooz.WEBSITE_EXTERNAL_IDENTIFICATION"),
-  "capcha-type": '$captcha',
+  "captcha-type": '$captcha',
   "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
   "secondary-color": getComputedStyle(document.querySelector('.site-title')).color,
   lang: "$!{locale.toLanguageTag()}",
