@@ -4,7 +4,7 @@
 :::
 
 ::: tip usage
-in **_cadooz_** for new password
+in **_cadooz_** for forgot password/new password
 :::
 
 ## Import component
@@ -41,7 +41,7 @@ in **_cadooz_** for new password
 
 ## Interacting with component
 
-### Script for _emmiting/listening_ event _to/from_ component and getting required translations, app context name
+### Script for _emmiting/listening_ event _to/from_ component and getting required props
 
 ```js
   <script async defer>

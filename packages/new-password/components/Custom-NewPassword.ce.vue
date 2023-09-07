@@ -7,10 +7,23 @@
   </div>
   <Transition name="slide-fade" mode="out-in">
     <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS">
-      <h1>{{ getSuccessMsg }}</h1>
+      <svg
+        width="48"
+        height="48"
+        fill="rgb(110, 181, 49)"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+        />
+        <path
+          d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"
+        />
+      </svg>
+      <h3>{{ getSuccessMsg }}</h3>
     </div>
   </Transition>
-  <Transition name="slide-fade" mode="out-in">
+  <Transition name="slide-fade">
     <div key="4" v-if="loading === constants.LOADING.DONE">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
@@ -220,7 +233,7 @@ const props = defineProps({
 
 // TODO prepare translations
 const $tr = JSON.parse(props.translations);
-console.log('translations', $tr)
+console.log('translations', $tr);
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
@@ -246,6 +259,9 @@ const getSuccessMsg = computed(() => {
     : $tr['api.rest.password.success.reset_password_email_sent'];
 });
 
+const otherFieldError = (field) => {
+  return field ? field + '\n' : '';
+};
 const fieldValidation = () => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
     if (
@@ -256,10 +272,16 @@ const fieldValidation = () => {
       resetErrors();
       return true;
     }
-    if (!inputOne.value) errors.value.fieldOne = $tr['api.rest.password.exception.errors.username_required'];
-    if (!inputTwo.value) errors.value.fieldTwo = $tr['api.rest.password.exception.errors.email_required'];
+    if (!inputOne.value)
+      errors.value.fieldOne =
+        $tr['api.rest.password.exception.errors.username_required'];
+    if (!inputTwo.value)
+      errors.value.fieldTwo =
+        $tr['api.rest.password.exception.errors.email_required'];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
-      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 regex';
+      errors.value.fieldTwo =
+        otherFieldError(errors.value.fieldTwo) +
+        $tr['api.rest.password.exception.errors.email_required'];
   } else {
     if (
       inputOne.value &&
@@ -273,12 +295,17 @@ const fieldValidation = () => {
     }
     if (!inputOne.value) errors.value.fieldOne = 'error 1';
     if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
-      errors.value.fieldOne = errors.value.fieldOne + '\n' + 'error 1 regex';
+      errors.value.fieldOne =
+        otherFieldError(errors.value.fieldOne) +
+        $tr['api.rest.password.exception.errors.password_violates_policy'];
     if (!inputTwo.value) errors.value.fieldTwo = 'error 2';
     if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
-      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 regex';
+      errors.value.fieldTwo =
+        otherFieldError(errors.value.fieldTwo) +
+        $tr[api.rest.password.exception.errors.password_violates_policy];
     if (inputOne.value !== inputTwo.value)
-      errors.value.fieldTwo = errors.value.fieldTwo + '\n' + 'error 2 same';
+      errors.value.fieldTwo =
+        otherFieldError(errors.value.fieldTwo) + 'error 2 same';
   }
   if (hasProperty(constants.CONDITIONS.ERROR_BORDER)) {
     isError.value = constants.CLASSES.FIELD_ERROR;
@@ -332,9 +359,7 @@ const onSubmit = () => {
       endPoint.payload.email = inputTwo.value;
       endPoint.payload.language_id = props.language;
     }
-    endPoint.payload.website_uuid = import.meta.env[
-      constants.PREFIX + props.appType.toUpperCase()
-    ];
+    endPoint.payload.website_uuid = props.websiteUuid;
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
     // useFetch(endPoint);
@@ -348,6 +373,10 @@ const onSubmit = () => {
       setTimeout(() => {
         //window.location.href = props.appUrl;
       }, 5000);
+    } else {
+      setTimeout(() => {
+        loading.value = constants.LOADING.DONE;
+      }, 7000);
     }
   } else {
     // errors.value = {
@@ -361,7 +390,7 @@ const css = ref(null);
 const loadStyle = async () => {
   if (environment === 'production') {
     const response = await fetch(
-      `https://${getAppID()}${
+      `${getAppID()}${
         import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
       }${props.appType}.css`,
       {
@@ -424,7 +453,7 @@ const applyCss = async () => {
   await applyCss();
 })();
 
-const apiError = ref(null)
+const apiError = ref(null);
 const getInitData = () => {
   const endPoint = endPoints.get(constants.API_TYPES.VALIDATE);
   endPoint.params.attr = getAttr();
@@ -446,7 +475,7 @@ const getInitData = () => {
       loading.value = constants.LOADING.ERROR;
     }
     if (response.error) {
-      apiError.value = response.errorMsg
+      apiError.value = response.errorMsg;
       loading.value = constants.LOADING.ERROR;
     }
   });
@@ -496,6 +525,19 @@ onMounted(() => {
 // .button-cust:disabled {
 //   background: v-bind(secondaryColor) !important;
 // }
+pre {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.success {
+  min-height: 180px;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .center-screen {
   display: flex;
   justify-content: center;
@@ -562,7 +604,7 @@ onMounted(() => {
   transition: all 0.5s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+  //transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter-from,
 .slide-fade-leave-to {

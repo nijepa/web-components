@@ -15,12 +15,8 @@ export function getAttr() {
 }
 
 export function getAppID() {
-  const currentUrl = window.location.href;
-    //'https://employee-benefit-club.cadooztest.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
-    const { hostname } = new URL(currentUrl);
-    console.log(4, hostname)
-    //return currentUrl.slice(currentUrl.search('//') + 2, currentUrl.search(/\./));
-    return hostname 
+  const { hostname } = new URL(window.location.href);
+  return 'https://' + hostname 
 }
 
 export function genarateRedirectUrl(appType) {
