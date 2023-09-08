@@ -1,0 +1,89 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 41rem;
+}
+.field {
+  background: #ffffff;
+  color: v-bind(primaryColor);
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  font-size: 1rem;
+  padding: 0 0.75rem;
+  position: relative;
+  text-overflow: ellipsis;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: block;
+  width: 12rem;
+  height: 2.9rem;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 1rem;
+}
+
+.field:hover,
+.field-active {
+  box-shadow: none;
+  outline: none;
+  border-color: #aaa;
+}
+.field-icon {
+  display: grid;
+}
+.field-icon > #username {
+  justify-self: end;
+  margin-right: 0.5rem;
+}
+.header-loginbox-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.header-loginbox-content .form-group {
+  flex: 50%;
+}
+.captcha {
+  margin-right: 5px;
+}
+
+.button {
+  padding: 0.6em 2em;
+  margin-bottom: 7px;
+  align-self: end;
+  height: 46px;
+  border: 1px solid #ea5d0b;
+  border-radius: 3px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background: #ea5d0b;
+  outline: none;
+  cursor: pointer;
+  color: #ffffff;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  width: 12rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.button:disabled {
+  background: #aaa;
+  border-color: #aaa;
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}

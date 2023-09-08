@@ -2,9 +2,11 @@
   <div key="1" class="center-screen" v-if="loading === constants.LOADING.INIT">
     <span class="loader"></span>
   </div>
+
   <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR">
     {{ apiError.message }}
   </div>
+
   <Transition name="slide-fade" mode="out-in">
     <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS">
       <svg
@@ -23,6 +25,7 @@
       <h3>{{ getSuccessMsg }}</h3>
     </div>
   </Transition>
+
   <Transition name="slide-fade">
     <div key="4" v-if="loading === constants.LOADING.DONE">
       <div class="wrapper" style="display: block">
@@ -136,6 +139,7 @@
               </div>
             </Transition>
           </div>
+
           <Transition name="slide-fade">
             <div class="alert" v-if="errors.general">{{ errors.general }}</div>
           </Transition>
@@ -155,7 +159,7 @@
             />
             <VueRecaptcha
               v-if="captchaType === constants.CAPTCHA_TYPE.RECAPTCHA"
-              sitekey="recaptchaKey"
+              :sitekey="recaptchaKey"
               :load-recaptcha-script="true"
               @verify="onCaptchaSuccess"
               @error="onCaptchaError"
@@ -232,8 +236,8 @@ const props = defineProps({
 });
 
 // TODO prepare translations
-const $tr = JSON.parse(props.translations);
-console.log('translations', $tr);
+// const $tr = JSON.parse(props.translations);
+// console.log('translations', $tr);
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
@@ -386,6 +390,7 @@ const onSubmit = () => {
     // };
   }
 };
+// handling dynamic css
 const css = ref(null);
 const loadStyle = async () => {
   if (environment === 'production') {
@@ -465,6 +470,7 @@ const getInitData = () => {
   passwordLength.value.min = 7;
   passwordLength.value.max = 10;
 
+  if (environment === 'production') {
   useFetch(endPoint).then((response) => {
     if (response.status === 200) {
       userUuid.value = response.user_uuid;
@@ -479,6 +485,7 @@ const getInitData = () => {
       loading.value = constants.LOADING.ERROR;
     }
   });
+}
   //loading.value = constants.LOADING.DONE;
 };
 // handling hCaptcha
