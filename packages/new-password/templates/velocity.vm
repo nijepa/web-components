@@ -27,8 +27,8 @@ const passProps = {
   }
   "website-uuid": $session.getAttribute("com.cadooz.WEBSITE_EXTERNAL_IDENTIFICATION"),
   "captcha-type": '$captcha',
-  "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
-  "secondary-color": getComputedStyle(document.querySelector('.site-title')).color,
+  "primary-color": getComputedStyle(document.querySelector('.class-with-primary-color')).color,
+  "secondary-color": getComputedStyle(document.querySelector('.class-with-secondary-color')).color,
   lang: "$!{locale.toLanguageTag()}",
 }
 setAttributes(pass, passProps);
