@@ -4,7 +4,7 @@
 :::
 
 ::: tip usage
-in **_cadooz_** for forgot password/new password
+in **_cadooz_** for forgot password/new password functionality
 :::
 
 ## Import component
@@ -76,17 +76,19 @@ in **_cadooz_** for forgot password/new password
 
 ## Props
 
-### **_Used to load right component (forgot/new):_**
+### **_Used to load right component:_**
 
 ### **`componentType`**
 
 - Type: String
+- Values: `forgot`, `new`
 
 ### **_Used to load right app (taxfreenoncashbenefit/mall/oip/cips/...):_**
 
 ### **`appType`**
 
 - Type: String
+- Values: `taxfreenoncashbenefit`, `mall`, `oip`, `cips`, `otto`, `renault`, `service`
 
 ### **_Used for text resources (recived from velocity action):_**
 
@@ -107,12 +109,13 @@ in **_cadooz_** for forgot password/new password
 - Type: String
 - Default: 'de'
 
-### **_Used to load captcha (hCaptcha/reCaptcha):_**
+### **_Used to load captcha:_**
 
 ### **`captchaType`**
 
 - Type: String
 - Default: 'hCaptcha'
+- Values: `hCaptcha`, `reCaptcha`
 
 ### **_Used to apply primary colors:_**
 
