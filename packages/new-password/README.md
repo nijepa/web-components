@@ -132,4 +132,4 @@ in **_cadooz_** for forgot password/new password functionality
 ## Deployment
 
 - build app
-- upload file **`new-password.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`new-password.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/new-password.js`**
