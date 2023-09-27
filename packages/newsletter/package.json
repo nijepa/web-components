@@ -1,0 +1,26 @@
+{
+  "name": "ebc-web-component",
+  "version": "0.2.7",
+  "author": "Nikola Pavicevic <nijepa@gmail.com>",
+  "description": "component for handling account details for ebc",
+  "keywords": [
+    "Vue3",
+    "web-component",
+    "vite"
+  ],
+  "repository": "github:https://github.com/nijepa/vue3-web-component-ebc",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "sass": "^1.68.0",
+    "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "vue": "^3.3.4"
+  }
+}
