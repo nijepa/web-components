@@ -8,7 +8,7 @@
     "web-component",
     "vite"
   ],
-  "repository": "https://git.uklo.office.eeft.com/cadooz-developers/prototypes/mfa-vue",
+  "repository": "https://github.oneeuronet.com/Euronet-Cadooz/PrototypeWebComponentsVue",
   "private": true,
   "scripts": {
     "dev": "vite",

@@ -8,7 +8,7 @@
     "web-component",
     "vite"
   ],
-  "repository": "github:https://github.com/nijepa/vue3-web-component-ebc",
+  "repository": "https://github.oneeuronet.com/Euronet-Cadooz/PrototypeWebComponentsVue",
   "private": true,
   "scripts": {
     "dev": "vite",
