@@ -1,8 +1,8 @@
 {
-  "name": "ebc-web-component",
-  "version": "0.2.7",
+  "name": "newsletter-web-component",
+  "version": "0.1.1",
   "author": "Nikola Pavicevic <nijepa@gmail.com>",
-  "description": "component for handling account details for ebc",
+  "description": "component for newsletter functionality",
   "keywords": [
     "Vue3",
     "web-component",
