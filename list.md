@@ -20,5 +20,8 @@ features:
   - title: New password
     details: default component, anywhere in `old world` apps
     link: /packages/new-password/README
+  - title: Newsletter
+    details: default component, anywhere in `old world` apps
+    link: /packages/newsletter/README
 
 ---

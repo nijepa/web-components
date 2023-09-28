@@ -25,6 +25,9 @@ hero:
     - theme: brand
       text: New password
       link: /packages/new-password/README
+    - theme: brand
+      text: Newsletter
+      link: /packages/newsletter/README
 
 features:
   - icon:

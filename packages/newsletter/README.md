@@ -1,9 +1,9 @@
 ::: raw
-<h1 class="heading">custom-ebc</h1>
+<h1 class="heading">custom-newsletter</h1>
 :::
 
 ::: tip usage
-in ***EBC*** portal for account details management
+in ***ALDI*** for newsletter functionality
 :::
 
 ## Import component
@@ -11,15 +11,15 @@ in ***EBC*** portal for account details management
 ### in HTML header in `structure.vm` velocity template
 
 ```html
-  <script type="module" crossorigin src="/scripts/path/to/ebc.js"></script>
+  <script type="module" crossorigin src="/scripts/path/to/newsletter.js"></script>
 ```
 
 ## Place component
 
-### in velocity template `account_details.vm`
+### in velocity template `catalog/list/default.vm`
 
 ```html
-  <custom-ebc></custom-ebc>
+  <custom-newsletter></custom-newsletter>
 ```
 
 ## Interacting with component
