@@ -1,3 +1,4 @@
-export function resolveUrl(url, path) {
-  return url.replace('email', path);
+export function resolveUrl() {
+  const { hostname } = new URL(window.location.href);
+  return 'https://' + hostname 
 }
