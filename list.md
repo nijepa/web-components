@@ -6,13 +6,13 @@ hero:
 
 features:
   - title: MFA
-    details: in CIPS aps for multi factor authentication
+    details: in `CIPS` aps for multi factor authentication
     link: /packages/mfa/README
   - title: Search
-    details: in Incentivemall for global search
+    details: in `Incentivemall` for global search
     link: /packages/search-incentivemall/README
   - title: Account
-    details: in EBC portal for account details management
+    details: in `EBC` portal for account details management
     link: /packages/account-ebc/README
   - title: Toast
     details: default component, anywhere in `old world` apps

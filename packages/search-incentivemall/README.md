@@ -82,4 +82,4 @@ in ***Incentivemall*** for global search
 ## Deployment
 
 - build app
-- upload file **`search.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`search.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/search.js`**

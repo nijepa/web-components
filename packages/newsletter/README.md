@@ -28,7 +28,7 @@ in ***ALDI*** for newsletter functionality
 
 ```js
   <script async defer>
-    const ebc = document.querySelector("custom-ebc");
+    const newsletter = document.querySelector("custom-newsletter");
     function setAttributes(el, attrs) {
       for (var key in attrs) {
         const attr =
@@ -38,22 +38,17 @@ in ***ALDI*** for newsletter functionality
         el.setAttribute(key, attr);
       }
     }
-    const ebcProps = {
+    const newsletterProps = {
       translations: {
-        #foreach($resource in ${messages.getResourcesWithPrefix('shop.ebc.my_account')})
+        #foreach($resource in ${messages.getResourcesWithPrefix('shop.newsletter')})
           '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
         #end
       },
       "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
       "hover-color": getComputedStyle(document.querySelector('.hover-color')).color,
-      font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
-      "action-url": "${link.getAction('/ajax/taxfreenoncashbenefit/email')}"
+      font: getComputedStyle(document.querySelector('.site-title')).fontFamily
     };
-    setAttributes(ebc, ebcProps);
-    window.addEventListener("toggle-toast", toggleToast);
-    function toggleToast(e) {
-      showToast(e.detail.messages, e.detail.type, e.detail.fixed)
-    }
+    setAttributes(newsletter, newsletterProps);
   </script>
 ```
 
@@ -79,14 +74,7 @@ in ***ALDI*** for newsletter functionality
 
 - Type: String
 
-### ***Action url are received from velocity action:***
-
-### **`actionUrl`**
-
-- Type: String
-- Default: ''
-
 ## Deployment
 
 - build app
-- upload file **`ebc.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`newsletter.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/newsletter.js`**

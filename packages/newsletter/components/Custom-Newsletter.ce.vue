@@ -1,51 +1,53 @@
 <template>
-  <main class="main">
-    <Transition name="slide-up" appear>
-      <section class="stage" ref="accountWrapper">
-        <div class="news">
-          <div class="heading">
-            <h3>Anmeldung zum ALDI SÜD Newsletter</h3>
-            <p>
-              Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr
-              verpassen! Abmeldung jederzeit möglich.
-            </p>
-          </div>
-          <input
-            class="email"
-            type="email"
-            v-model="email"
-            placeholder="Ihre E-Mail-Adresse"
-          />
-          <div class="submit">
-            <button class="btn btn-primary" @click="sendRequest" :disabled="!isValidated">
-              Newsletter abonnieren
-            </button>
-            <div class="check">
-              <label class="checkbox">
-                <input type="checkbox" name="checkbox" v-model="check" />
-                Ich möchte News per E-Mail erhalten und bin mit der damit
-                verbundenen Verarbeitung meiner personenbezogenen Daten gemäß
-                der ALDI SÜD-Datenschutzerklärung einverstanden. Ein Widerruf
-                ist jederzeit möglich. cadooz GmbH übernimmt keine Haftung für
-                den ALDI Newsletter.
-              </label>
-            </div>
+  <Transition name="slide-up" appear>
+    <section class="stage" ref="accountWrapper">
+      <div class="news">
+        <div class="heading">
+          <p style="font-weight: 600; margin-top: 0;">Anmeldung zum ALDI SÜD Newsletter</p>
+          <p>
+            Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr
+            verpassen! Abmeldung jederzeit möglich.
+          </p>
+        </div>
+        <input
+          class="email"
+          type="email"
+          v-model="email"
+          placeholder="Ihre E-Mail-Adresse"
+        />
+        <div class="submit">
+          <button
+            class="btn btn-primary"
+            @click="sendRequest"
+            :disabled="!isValidated"
+          >
+            Newsletter abonnieren
+          </button>
+          <div class="check">
+            <label class="checkbox">
+              <input type="checkbox" name="checkbox" v-model="check" />
+              Ich möchte News per E-Mail erhalten und bin mit der damit
+              verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der
+              ALDI SÜD-Datenschutzerklärung einverstanden. Ein Widerruf ist
+              jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den
+              ALDI Newsletter.
+            </label>
           </div>
         </div>
-        <img
-          :src="imgUrl + 'newsletter-img.png'"
-          alt="Newsletter Image"
-          class="image"
-        />
-      </section>
-    </Transition>
-  </main>
+      </div>
+      <!-- <img
+        :src="imgUrl + 'newsletter-img.png'"
+        alt="Newsletter Image"
+        class="image"
+      /> -->
+    </section>
+  </Transition>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useFetch } from '../composables/useFetch';
-import { resolveUrl } from '../utils/resolveUrl'
+import { resolveUrl } from '../utils/resolveUrl';
 
 // setting props
 const props = defineProps({
@@ -62,7 +64,7 @@ const props = defineProps({
   },
   font: {
     type: String,
-    default: '',
+    default: "'Open Sans Regular', sans-serif",
   },
   actionUrl: {
     type: String,
@@ -71,16 +73,18 @@ const props = defineProps({
 });
 
 //const imageUrl = new URL('../assets/newsletter-img.png', import.meta.url).href;
-console.log(0, resolveUrl())
+console.log(0, resolveUrl());
 const imgUrl = resolveUrl() + '/scripts/ebc/';
 const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
-const email = ref(null)
-const check = ref(false)
+const email = ref(null);
+const check = ref(false);
 const isValidated = computed(() => {
-  return email.value && email.value.match(EMAIL_REGEX) && check.value ? true : false
-})
+  return email.value && email.value.match(EMAIL_REGEX) && check.value
+    ? true
+    : false;
+});
 
 // load user data
 onMounted(async () => {
@@ -89,29 +93,17 @@ onMounted(async () => {
 
 // end-point call
 const sendRequest = async () => {
-  const url = import.meta.env.VITE_QA_URL
+  const url = import.meta.env.VITE_QA_URL;
   const received = await useFetch(
     url,
     'POST',
-    JSON.stringify({"email": email.value})
+    JSON.stringify({ email: email.value })
   );
   if (received.error.length) {
     console.log('pass errors', received);
   } else {
-    console.log('success', received)
+    console.log('success', received);
   }
-};
-// creating & emitting event for showing toast
-const emit = defineEmits(['toggle-toast']);
-const accountWrapper = ref(null);
-const showToast = (messages, type, fixed = false) => {
-  accountWrapper.value.dispatchEvent(
-    new CustomEvent('toggle-toast', {
-      bubbles: true,
-      composed: true,
-      detail: { messages, type, fixed },
-    })
-  );
 };
 </script>
 <style>
@@ -122,7 +114,8 @@ const showToast = (messages, type, fixed = false) => {
 }
 .stage {
   padding-bottom: 1.5rem;
-  font-family: v-bind(props.font);
+  font-family: v-bind(font);
+  font-size: .9rem;
   display: flex;
   flex-direction: column;
   background-color: #202b78;
@@ -130,6 +123,7 @@ const showToast = (messages, type, fixed = false) => {
   color: #fff;
   padding: 2rem;
   position: relative;
+  margin-bottom: 2rem;
 }
 .news {
   padding: 0;
@@ -166,9 +160,10 @@ label {
   cursor: pointer;
   width: 100%;
   color: #202b78;
-  font-size: 1rem;
+  font-size: .9rem;
 }
 .btn-primary {
+  font-family: v-bind(font);
   background-color: #fff;
   outline: none;
   border: 0;
@@ -183,7 +178,7 @@ label {
   border-radius: 0.3rem;
   padding: 1rem;
   width: 100%;
-  font-size: 1rem;
+  font-size: .9rem;
 }
 .email:focus {
   color: #fff;
@@ -262,11 +257,11 @@ input[type='checkbox']:checked::before {
     display: none;
   }
 }
-@media (min-width: 768px) and (max-width: 992px) {
+@media (min-width: 768px) and (max-width: 992px) { 
   .heading,
   .submit,
   .email {
-    width: 60%;
+    /* width: 60%; */
   }
   .submit {
     flex-direction: row;
@@ -288,10 +283,10 @@ input[type='checkbox']:checked::before {
 }
 .slide-up-enter-from {
   opacity: 0;
-  transform: translateY(-50px);
+  transform: translateY(-100px);
 }
 .slide-up-leave-to {
   opacity: 0;
-  transform: translateY(-50px);
+  transform: translateY(-100px);
 }
 </style>

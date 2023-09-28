@@ -189,4 +189,4 @@ in ***CIPS*** apps for multi factor authentication
 ## Deployment
 
 - build app
-- upload file **`mfa.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`mfa.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/mfa.js`**

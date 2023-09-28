@@ -174,4 +174,4 @@ default component, can be used anywhere in ***old world*** apps
 ## Deployment
 
 - build app
-- upload file **`toast.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`toast.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/toast.js`**

@@ -89,4 +89,4 @@ in ***EBC*** portal for account details management
 ## Deployment
 
 - build app
-- upload file **`ebc.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/for/app`**
+- upload file **`ebc.js`** from **`dist`** folder to **`Doocroot-Explorer -> scripts/path/to/ebc.js`**
