@@ -1,16 +1,13 @@
 export const useFetch = async (url, method, data = undefined) => {
   try {
-    const response = await fetch(url, {
+    const response = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
       method,
-      body: data,
-      withCredentials: true,
+      body: JSON.stringify(data),
+      // mode: "no-cors",
       headers: {
-        "X-Auth-Token": import.meta.env.VITE_API_KEY,
+        "x-api-key": import.meta.env.VITE_API_TOKEN_QA,
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin":"*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
-      }
+      },
     });
     console.log('success', response);
     return response.json();
@@ -19,3 +16,8 @@ export const useFetch = async (url, method, data = undefined) => {
     return { error: true };
   }
 };
+/*"Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+        "Access-Control-Max-Age": "3600"*/

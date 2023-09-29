@@ -97,7 +97,7 @@ const sendRequest = async () => {
   const received = await useFetch(
     url,
     'POST',
-    JSON.stringify({ email: email.value })
+    { email: email.value }
   );
   if (received.error.length) {
     console.log('pass errors', received);
