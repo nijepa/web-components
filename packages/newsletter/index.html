@@ -6,10 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Regular&display=swap" rel="stylesheet">
+    <style>
+      * {
+        font-family: 'Open Sans Regular', sans-serif;
+      }
+      #app {
+        max-width: 1140px;
+        margin: 0 auto;
+        
+      }
+    </style>
   </head>
 
   <body>
@@ -21,7 +28,7 @@
     <script type="module" src="/main.js"></script>
     <script>
       const newsletter = document.querySelector("custom-newsletter");
-      newsletter.setAttribute(font, "'Open Sans', sans-serif")
+      newsletter.setAttribute(font, "'Open Sans Regular', sans-serif")
     </script>
   </body>
 </html>

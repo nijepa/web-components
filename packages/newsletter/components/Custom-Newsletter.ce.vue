@@ -1,36 +1,33 @@
 <template>
   <Transition name="slide-up" appear>
-    <section class="stage" ref="accountWrapper">
+    <section class="newsletter" ref="newsletterWrapper">
       <div class="news">
         <div class="heading">
-          <p style="font-weight: 600; margin-top: 0;">Anmeldung zum ALDI SÜD Newsletter</p>
           <p>
-            Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr
-            verpassen! Abmeldung jederzeit möglich.
+            {{ translate.title }}
+          </p>
+          <p>
+            {{ translate.copy }}
           </p>
         </div>
         <input
           class="email"
           type="email"
           v-model="email"
-          placeholder="Ihre E-Mail-Adresse"
+          :placeholder="translate.placeholder"
         />
         <div class="submit">
           <button
-            class="btn btn-primary"
+            class="button-submit"
             @click="sendRequest"
             :disabled="!isValidated"
           >
-            Newsletter abonnieren
+            {{ translate.button }}
           </button>
           <div class="check">
             <label class="checkbox">
               <input type="checkbox" name="checkbox" v-model="check" />
-              Ich möchte News per E-Mail erhalten und bin mit der damit
-              verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der
-              ALDI SÜD-Datenschutzerklärung einverstanden. Ein Widerruf ist
-              jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den
-              ALDI Newsletter.
+              {{ translate.check }}
             </label>
           </div>
         </div>
@@ -56,11 +53,11 @@ const props = defineProps({
   },
   primaryColor: {
     type: String,
-    default: '#fff',
+    default: '#202b78',
   },
-  hoverColor: {
+  secondaryColor: {
     type: String,
-    default: '#660000',
+    default: '#ed6666',
   },
   font: {
     type: String,
@@ -73,8 +70,15 @@ const props = defineProps({
 });
 
 //const imageUrl = new URL('../assets/newsletter-img.png', import.meta.url).href;
-console.log(0, resolveUrl());
 const imgUrl = resolveUrl() + '/scripts/ebc/';
+const translate = {
+  title: 'Anmeldung zum ALDI SÜD Newsletter',
+  copy: 'Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr verpassen! Abmeldung jederzeit möglich.',
+  placeholder: 'Ihre E-Mail-Adresse',
+  button: 'Newsletter abonnieren',
+  check:
+    'Ich möchte News per E-Mail erhalten und bin mit der damit verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der ALDI SÜD-Datenschutzerklärung einverstanden. Ein Widerruf ist jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den ALDI Newsletter.',
+};
 const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
@@ -94,14 +98,12 @@ onMounted(async () => {
 // end-point call
 const sendRequest = async () => {
   const url = import.meta.env.VITE_QA_URL;
-  const received = await useFetch(
-    url,
-    'POST',
-    { email: email.value }
-  );
+  const received = await useFetch(url, 'POST', { email: email.value });
   if (received.error.length) {
+    // TODO success action
     console.log('pass errors', received);
   } else {
+    // TODO error action
     console.log('success', received);
   }
 };
@@ -112,13 +114,13 @@ const sendRequest = async () => {
 ::before {
   box-sizing: border-box;
 }
-.stage {
+.newsletter {
   padding-bottom: 1.5rem;
   font-family: v-bind(font);
-  font-size: .9rem;
+  font-size: 0.9rem;
   display: flex;
   flex-direction: column;
-  background-color: #202b78;
+  background-color: v-bind(primaryColor);
   border-radius: 0.5rem;
   color: #fff;
   padding: 2rem;
@@ -129,17 +131,62 @@ const sendRequest = async () => {
   padding: 0;
   z-index: 1;
 }
+.heading p:first-of-type {
+  font-weight: 600;
+  margin-top: 0;
+}
 h3 {
   margin: 0;
 }
-.image {
-  position: absolute;
-  right: -15px;
-  bottom: 0;
+.email {
+  height: 3rem;
+  margin-bottom: 1rem;
+  background-color: color-mix(in srgb, v-bind(primaryColor), #000 25%);
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 0.3rem;
+  padding: 1rem;
+  width: 100%;
+  font-size: 0.9rem;
+}
+.email:focus {
+  color: #fff;
+  background-color: color-mix(in srgb, v-bind(primaryColor), #000 25%);
+  border-color: v-bind(secondaryColor);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgb(237 102 102 / 25%);
 }
 .submit {
   display: flex;
   flex-direction: column;
+}
+.button-submit {
+  padding: 1rem;
+  font-weight: 600;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  width: 100%;
+  color: v-bind(primaryColor);
+  font-size: 0.9rem;
+  font-family: v-bind(font);
+  background-color: #fff;
+  outline: none;
+  border: 0;
+  transition: all 0.4s ease-in-out;
+}
+.button-submit:hover:enabled,
+.button-submit:active:enabled,
+.button-submit:focus:enabled {
+  /*background-color: rgb(237, 102, 102);
+  border-color: v-bind(props.hoverColor);*/
+  outline: none;
+  box-shadow: none;
+  background-color: v-bind(secondaryColor);
+  /* box-shadow: inset 0px 0px 2px 1px rgba(237, 102, 102, 1); */
+}
+.button-submit:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
 }
 .check {
   margin-top: 1rem;
@@ -152,54 +199,6 @@ h3 {
 }
 label {
   font-size: 0.725rem;
-}
-.btn {
-  padding: 1rem;
-  font-weight: 600;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  width: 100%;
-  color: #202b78;
-  font-size: .9rem;
-}
-.btn-primary {
-  font-family: v-bind(font);
-  background-color: #fff;
-  outline: none;
-  border: 0;
-  transition: all 0.4s ease-in-out;
-}
-.email {
-  height: 3rem;
-  margin-bottom: 1rem;
-  background-color: #1a2261;
-  color: #fff;
-  border: 1px solid #fff;
-  border-radius: 0.3rem;
-  padding: 1rem;
-  width: 100%;
-  font-size: .9rem;
-}
-.email:focus {
-  color: #fff;
-  background-color: #1a2261;
-  border-color: rgb(237, 102, 102);
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgb(237 102 102 / 25%);
-}
-.btn-primary:hover:enabled,
-.btn-primary:active:enabled,
-.btn-primary:focus:enabled {
-  /*background-color: rgb(237, 102, 102);
-  border-color: v-bind(props.hoverColor);*/
-  outline: none;
-  box-shadow: none;
-  background-color: rgb(237, 102, 102);
-  /* box-shadow: inset 0px 0px 2px 1px rgba(237, 102, 102, 1); */
-}
-.btn-primary:disabled {
-  cursor: not-allowed;
-  pointer-events: all !important;
 }
 .checkbox {
   font-size: 0.725rem;
@@ -246,6 +245,11 @@ input[type='checkbox']::before {
 input[type='checkbox']:checked::before {
   transform: scale(1);
 }
+.image {
+  position: absolute;
+  right: -15px;
+  bottom: 0;
+}
 
 @media (min-width: 992px) {
   img {
@@ -257,7 +261,7 @@ input[type='checkbox']:checked::before {
     display: none;
   }
 }
-@media (min-width: 768px) and (max-width: 992px) { 
+@media (min-width: 768px) and (max-width: 992px) {
   .heading,
   .submit,
   .email {
