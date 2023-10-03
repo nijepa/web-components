@@ -1,6 +1,9 @@
 <template>
-  <Transition name="slide-up" appear>
-    <section class="newsletter" ref="newsletterWrapper">
+  <Transition name="slide-up" appear mode="out-in">
+    <section class="newsletter" v-if="apiCallEnded">
+        {{ apiCallEndedMessage }}
+    </section>
+    <section v-else class="newsletter" ref="newsletterWrapper">
       <div class="news">
         <div class="heading">
           <p>
@@ -82,7 +85,7 @@ const translate = {
 const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
-const email = ref(null);
+const email = ref('');
 const check = ref(false);
 const isValidated = computed(() => {
   return email.value && email.value.match(EMAIL_REGEX) && check.value
@@ -95,17 +98,31 @@ onMounted(async () => {
   //await getUserData();
 });
 
+const clearData = () => {
+  email.value = ''
+  check.value = false
+}
+const apiCallEnded = ref(false)
+const apiCallEndedMessage = ref('')
 // end-point call
 const sendRequest = async () => {
   const url = import.meta.env.VITE_QA_URL;
-  const received = await useFetch(url, 'POST', { email: email.value });
-  if (received.error.length) {
+  //const received = await useFetch(url, 'POST', { email: email.value });
+  const received = true
+  if (received) {
     // TODO success action
+    apiCallEndedMessage.value = 'success'
     console.log('pass errors', received);
   } else {
     // TODO error action
+    apiCallEndedMessage.value = 'error'
     console.log('success', received);
   }
+  apiCallEnded.value = true
+  setTimeout(() => {
+    apiCallEnded.value = false
+  }, 5000)
+  clearData()
 };
 </script>
 <style>
