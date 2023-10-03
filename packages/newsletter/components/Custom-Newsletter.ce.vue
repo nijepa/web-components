@@ -30,7 +30,7 @@
           <div class="check">
             <label class="checkbox">
               <input type="checkbox" name="checkbox" v-model="check" />
-              {{ translate.check }}
+              <span v-html="translate.check"></span>
             </label>
           </div>
         </div>
@@ -80,7 +80,7 @@ const translate = {
   placeholder: 'Ihre E-Mail-Adresse',
   button: 'Newsletter abonnieren',
   check:
-    'Ich möchte News per E-Mail erhalten und bin mit der damit verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der ALDI SÜD-Datenschutzerklärung einverstanden. Ein Widerruf ist jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den ALDI Newsletter.',
+    'Ich möchte News per E-Mail erhalten und bin mit der damit verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der <a href="https://www.aldi-sued.de/de/informationen/datenschutzhinweis-impressum.html#6" target="_blank">ALDI SÜD-Datenschutzerklärung</a> einverstanden. Ein Widerruf ist jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den ALDI Newsletter.',
 };
 const EMAIL_REGEX = new RegExp(
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -213,6 +213,12 @@ h3 {
 .check label,
 .checkbox {
   cursor: pointer;
+}
+.checkbox span a {
+  color: #fff;
+}
+.checkbox span a:hover {
+  color: v-bind(secondaryColor);
 }
 label {
   font-size: 0.725rem;
