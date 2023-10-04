@@ -1,7 +1,31 @@
 <template>
   <Transition name="slide-up" appear mode="out-in">
-    <section class="newsletter" v-if="apiCallEnded">
-        {{ apiCallEndedMessage }}
+    <section class="newsletter messages" v-if="apiCallEnded">
+      <svg
+        v-if="!isApiError"
+        fill="#fff"
+        width="32px"
+        height="32px"
+        viewBox="0 0 1024 1024"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M351.605 663.268l481.761-481.761c28.677-28.677 75.171-28.677 103.847 0s28.677 75.171 0 103.847L455.452 767.115l.539.539-58.592 58.592c-24.994 24.994-65.516 24.994-90.51 0L85.507 604.864c-28.677-28.677-28.677-75.171 0-103.847s75.171-28.677 103.847 0l162.25 162.25z"
+        />
+      </svg>
+      <svg
+        v-else
+        fill="#fff"
+        width="32px"
+        height="32px"
+        viewBox="0 0 1024 1024"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M512.481 421.906L850.682 84.621c25.023-24.964 65.545-24.917 90.51.105s24.917 65.545-.105 90.51L603.03 512.377 940.94 850c25.003 24.984 25.017 65.507.033 90.51s-65.507 25.017-90.51.033L512.397 602.764 174.215 940.03c-25.023 24.964-65.545 24.917-90.51-.105s-24.917-65.545.105-90.51l338.038-337.122L84.14 174.872c-25.003-24.984-25.017-65.507-.033-90.51s65.507-25.017 90.51-.033L512.48 421.906z"
+        />
+      </svg>
+      {{ apiCallEndedMessage }}
     </section>
     <section v-else class="newsletter" ref="newsletterWrapper">
       <div class="news">
@@ -99,30 +123,33 @@ onMounted(async () => {
 });
 
 const clearData = () => {
-  email.value = ''
-  check.value = false
-}
-const apiCallEnded = ref(false)
-const apiCallEndedMessage = ref('')
+  email.value = '';
+  check.value = false;
+};
+const apiCallEnded = ref(false);
+const apiCallEndedMessage = ref('');
+const isApiError = ref(false);
 // end-point call
 const sendRequest = async () => {
   const url = import.meta.env.VITE_QA_URL;
   //const received = await useFetch(url, 'POST', { email: email.value });
-  const received = true
+  const received = true;
   if (received) {
     // TODO success action
-    apiCallEndedMessage.value = 'success'
+    isApiError.value = false;
+    apiCallEndedMessage.value = 'success';
     console.log('pass errors', received);
   } else {
     // TODO error action
-    apiCallEndedMessage.value = 'error'
+    isApiError.value = true;
+    apiCallEndedMessage.value = 'error';
     console.log('success', received);
   }
-  apiCallEnded.value = true
+  apiCallEnded.value = true;
   setTimeout(() => {
-    apiCallEnded.value = false
-  }, 5000)
-  clearData()
+    apiCallEnded.value = false;
+  }, 5000);
+  clearData();
 };
 </script>
 <style>
@@ -143,6 +170,13 @@ const sendRequest = async () => {
   padding: 2rem;
   position: relative;
   margin-bottom: 2rem;
+}
+.messages {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 .news {
   padding: 0;
