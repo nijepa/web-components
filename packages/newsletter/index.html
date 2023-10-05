@@ -30,5 +30,28 @@
       const newsletter = document.querySelector("custom-newsletter");
       newsletter.setAttribute('font', "'Open Sans Regular', sans-serif")
     </script>
+    <!-- <script async defer>
+      const newsletter = document.querySelector("custom-newsletter");
+      function setAttributes(el, attrs) {
+        for (var key in attrs) {
+          const attr =
+            typeof attrs[key] !== "string"
+              ? JSON.stringify(attrs[key])
+              : attrs[key];
+          el.setAttribute(key, attr);
+        }
+      }
+      const newsletterProps = {
+        translations: {
+          #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
+            '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+          #end
+        },
+        "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
+        "secondary-color": getComputedStyle(document.querySelector('.site-title')).color,
+        font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
+      };
+      setAttributes(newsletter, newsletterProps);
+    </script> -->
   </body>
 </html>
