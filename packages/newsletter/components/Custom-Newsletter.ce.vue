@@ -71,7 +71,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useFetch } from '../composables/useFetch';
-import { resolveUrl } from '../utils/resolveUrl';
+import { resolveUrl, resolveSessionId } from '../utils/resolveUrl';
 
 // setting props
 const props = defineProps({
@@ -84,7 +84,7 @@ const props = defineProps({
   },
   secondaryColor: {
     type: String,
-    default: '#ed6666',
+    default: 'rgb(153, 204, 255)',
   },
   font: {
     type: String,
@@ -98,6 +98,7 @@ const props = defineProps({
 
 //const imageUrl = new URL('../assets/newsletter-img.png', import.meta.url).href;
 const imgUrl = resolveUrl() + '/scripts/ebc/';
+console.log(0, resolveUrl(), resolveSessionId())
 const translate = {
   title: 'Anmeldung zum ALDI SÜD Newsletter',
   copy: 'Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr verpassen! Abmeldung jederzeit möglich.',
@@ -131,10 +132,10 @@ const apiCallEndedMessage = ref('');
 const isApiError = ref(false);
 // end-point call
 const sendRequest = async () => {
-  const url = import.meta.env.VITE_QA_URL;
-  //const received = await useFetch(url, 'POST', { email: email.value });
-  const received = true;
-  if (received) {
+  //const url = import.meta.env.VITE_QA_URL;
+  const received = await useFetch( 'POST', { email: email.value });
+  //const received = true;
+  if (!received.error) {
     // TODO success action
     isApiError.value = false;
     apiCallEndedMessage.value = 'success';
@@ -205,7 +206,7 @@ h3 {
   background-color: color-mix(in srgb, v-bind(primaryColor), #000 25%);
   border-color: v-bind(secondaryColor);
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgb(237 102 102 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(153 204 255 / 25%);
 }
 .submit {
   display: flex;
