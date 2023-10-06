@@ -71,7 +71,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useFetch } from '../composables/useFetch';
-import { resolveUrl, resolveSessionId } from '../utils/resolveUrl';
+import { resolveUrl } from '../utils/resolveUrl';
+import { translate, EMAIL_REGEX } from '../config/config'
 
 // setting props
 const props = defineProps({
@@ -98,29 +99,12 @@ const props = defineProps({
 
 //const imageUrl = new URL('../assets/newsletter-img.png', import.meta.url).href;
 const imgUrl = resolveUrl() + '/scripts/ebc/';
-console.log(0, resolveUrl(), resolveSessionId())
-const translate = {
-  title: 'Anmeldung zum ALDI SÜD Newsletter',
-  copy: 'Jetzt für den ALDI SÜD Newsletter anmelden und keine Angebote mehr verpassen! Abmeldung jederzeit möglich.',
-  placeholder: 'Ihre E-Mail-Adresse',
-  button: 'Newsletter abonnieren',
-  check:
-    'Ich möchte News per E-Mail erhalten und bin mit der damit verbundenen Verarbeitung meiner personenbezogenen Daten gemäß der <a href="https://www.aldi-sued.de/de/informationen/datenschutzhinweis-impressum.html#6" target="_blank">ALDI SÜD-Datenschutzerklärung</a> einverstanden. Ein Widerruf ist jederzeit möglich. cadooz GmbH übernimmt keine Haftung für den ALDI Newsletter.',
-};
-const EMAIL_REGEX = new RegExp(
-  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-);
 const email = ref('');
 const check = ref(false);
 const isValidated = computed(() => {
   return email.value && email.value.match(EMAIL_REGEX) && check.value
     ? true
     : false;
-});
-
-// load user data
-onMounted(async () => {
-  //await getUserData();
 });
 
 const clearData = () => {
@@ -130,11 +114,10 @@ const clearData = () => {
 const apiCallEnded = ref(false);
 const apiCallEndedMessage = ref('');
 const isApiError = ref(false);
+
 // end-point call
 const sendRequest = async () => {
-  //const url = import.meta.env.VITE_QA_URL;
   const received = await useFetch( 'POST', { email: email.value });
-  //const received = true;
   if (!received.error) {
     // TODO success action
     isApiError.value = false;
