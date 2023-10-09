@@ -4,8 +4,8 @@
       <svg
         v-if="!isApiError"
         fill="#fff"
-        width="32px"
-        height="32px"
+        width="48px"
+        height="48px"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -16,8 +16,8 @@
       <svg
         v-else
         fill="#fff"
-        width="32px"
-        height="32px"
+        width="48px"
+        height="48px"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -123,7 +123,7 @@ const messages = {
 // end-point call
 const sendRequest = async () => {
   const received = await useFetch('POST', { email: email.value });
-  if (received.status = 400) {
+  if (received.status >= 400) {
     // TODO error action
     isApiError.value = true;
     apiCallEndedMessage.value = messages.error;
