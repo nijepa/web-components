@@ -25,7 +25,7 @@
           d="M512.481 421.906L850.682 84.621c25.023-24.964 65.545-24.917 90.51.105s24.917 65.545-.105 90.51L603.03 512.377 940.94 850c25.003 24.984 25.017 65.507.033 90.51s-65.507 25.017-90.51.033L512.397 602.764 174.215 940.03c-25.023 24.964-65.545 24.917-90.51-.105s-24.917-65.545.105-90.51l338.038-337.122L84.14 174.872c-25.003-24.984-25.017-65.507-.033-90.51s65.507-25.017 90.51-.033L512.48 421.906z"
         />
       </svg>
-      {{ apiCallEndedMessage }}
+      <div v-html="apiCallEndedMessage" class="msg"></div>
     </section>
     <section v-else class="newsletter" ref="newsletterWrapper">
       <div class="news">
@@ -69,10 +69,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { resolveUrl } from '../utils/resolveUrl';
-import { translate, EMAIL_REGEX } from '../config/config'
+import { translate, EMAIL_REGEX } from '../config/config';
 
 // setting props
 const props = defineProps({
@@ -114,25 +114,30 @@ const clearData = () => {
 const apiCallEnded = ref(false);
 const apiCallEndedMessage = ref('');
 const isApiError = ref(false);
-
+const messages = {
+  success:
+    '<h3>Vielen Dank! Sie haben sich erfolgreich für unseren Newsletter angemeldet.</h3><p>Sie erhalten in Kürze eine E-Mail mit einem Link, den Sie noch einmal bestätigen müssen. Erst dann können Sie unseren Newsletter zukünftig erhalten.</p>',
+  error:
+    '<h3>Hier hat etwas nicht funktioniert.</h3><p>Bitte überprüfen Sie Ihre eingaben und versuchen Sie es erneut. Sollten Sie weiterhin Probleme mit der Anmeldung haben, wenden Sie sich gerne an uns unter: <a href="mailto:kontakt@kundenservice.aldi-sued.de">kontakt@kundenservice.aldi-sued.de</a></p>',
+};
 // end-point call
 const sendRequest = async () => {
-  const received = await useFetch( 'POST', { email: email.value });
-  if (!received.error) {
-    // TODO success action
-    isApiError.value = false;
-    apiCallEndedMessage.value = 'success';
-    console.log('pass errors', received);
-  } else {
+  const received = await useFetch('POST', { email: email.value });
+  if (received.status = 400) {
     // TODO error action
     isApiError.value = true;
-    apiCallEndedMessage.value = 'error';
+    apiCallEndedMessage.value = messages.error;
     console.log('success', received);
+  } else {
+    // TODO success action
+    isApiError.value = false;
+    apiCallEndedMessage.value = messages.success;
+    console.log('pass errors', received);
   }
   apiCallEnded.value = true;
   setTimeout(() => {
     apiCallEnded.value = false;
-  }, 5000);
+  }, 16000);
   clearData();
 };
 </script>
@@ -232,10 +237,12 @@ h3 {
 .checkbox {
   cursor: pointer;
 }
-.checkbox span a {
+.checkbox span a,
+.msg a {
   color: #fff;
 }
-.checkbox span a:hover {
+.checkbox span a:hover,
+.msg a:hover {
   color: v-bind(secondaryColor);
 }
 label {
