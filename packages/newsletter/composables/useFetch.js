@@ -1,5 +1,5 @@
 import { resolveUrl, resolveSessionId } from '../utils/resolveUrl';
-const restPath = '/rest/aldi/newsletter';
+const restPath = '/frontend/rest/aldi/newsletter';
 const url = resolveUrl() + restPath + resolveSessionId();
 export const useFetch = async (method, data = undefined) => {
   try {
