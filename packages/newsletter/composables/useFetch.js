@@ -1,5 +1,5 @@
 import { resolveUrl, resolveSessionId } from '../utils/resolveUrl';
-const restPath = '/frontend/rest/aldi/newsletter';
+const restPath = import.meta.env.VITE_API_PATH //'/frontend/rest/aldi/newsletter';
 const url = resolveUrl() + restPath + resolveSessionId();
 export const useFetch = async (method, data = undefined) => {
   try {
@@ -12,7 +12,7 @@ export const useFetch = async (method, data = undefined) => {
       },
     });
     console.log('success', response);
-    return response.status === 200 ? response.json() : { error: true };
+    return response.status >= 400 ? { error: true } : response.json();
   } catch (error) {
     console.error('Error: ', error);
     return { error: true };
