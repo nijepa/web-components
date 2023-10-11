@@ -120,10 +120,10 @@ const messages = {
   error:
     '<h3>Hier hat etwas nicht funktioniert.</h3><p>Bitte überprüfen Sie Ihre eingaben und versuchen Sie es erneut. Sollten Sie weiterhin Probleme mit der Anmeldung haben, wenden Sie sich gerne an uns unter: <a href="mailto:kontakt@kundenservice.aldi-sued.de">kontakt@kundenservice.aldi-sued.de</a></p>',
 };
-const source = 'cadooz'
+const source = 'cadooz';
 // end-point call
 const sendRequest = async () => {
-  const received = await useFetch('POST', { email: email.value });
+  const received = await useFetch('POST', { source, email: email.value });
   if (received.error || received.status >= 400) {
     // error
     isApiError.value = true;

@@ -7,7 +7,7 @@ export const useFetch = async (method, data = undefined) => {
       method,
       body: JSON.stringify(data),
       headers: {
-        'x-api-key': import.meta.env.VITE_API_TOKEN_QA,
+        // 'x-api-key': import.meta.env.VITE_API_TOKEN_QA,
         'Content-Type': 'application/json',
       },
     });
@@ -18,8 +18,3 @@ export const useFetch = async (method, data = undefined) => {
     return { error: true };
   }
 };
-// "Access-Control-Allow-Origin": "*",
-// "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-// "Access-Control-Allow-Credentials": "true",
-// "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-// "Access-Control-Max-Age": "3600"
