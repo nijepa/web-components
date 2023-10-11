@@ -1,38 +1,65 @@
 <template>
-  <div class="comp">
+  <div :class="appType !== 'cips' ? 'comp-new' : 'comp'">
     <!-- *********************** HEADER *********************** -->
-    <div class="header" ref="header" v-if="fromMfaLogin !== 'true'">
-      <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
-        2. {{ translate('notes.2fa_authentication') }}
-      </h1>
-      <button class="btn-edit" @click="editing(false)">
-        <svg
-          class="svg-edit"
-          viewBox="0 0 33.583 34.179"
-          x="0px"
-          y="0px"
-          width="32px"
-          height="32px"
-          stroke="rgb(255, 255, 255)"
-          stroke-width="0"
-          :style="{
-            fill: isEditing ? 'rgb(255, 255, 255)' : 'rgb(255, 255, 255)',
-          }"
-        >
-          <g transform="matrix(1.3333333,0,0,-1.3333333,0,34.179467)">
-            <g transform="translate(21.6945,25.6347)">
-              <path
-                d="m0 0-0.855-0.856-0.619-0.619-15.054-15.053-1.26-4.791 4.772 1.316 16.509 16.509zM-2.288-3.523 0-1.239 2.255-3.494-0.033-5.777Zm-13.002-13.005 12.045 12.041 2.256-2.254-12.046-12.041z"
-              />
+    <div
+      :class="appType !== 'cips' ? 'header-new' : 'header'"
+      ref="header"
+      v-if="fromMfaLogin !== 'true'"
+    >
+      <template v-if="appType === 'cips'">
+        <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
+          2. {{ translate('notes.2fa_authentication') }}
+        </h1>
+        <button class="btn-edit" @click="editing(false)">
+          <svg
+            class="svg-edit"
+            viewBox="0 0 33.583 34.179"
+            x="0px"
+            y="0px"
+            width="32px"
+            height="32px"
+            stroke="rgb(255, 255, 255)"
+            stroke-width="0"
+            :style="{
+              fill: isEditing ? 'rgb(255, 255, 255)' : 'rgb(255, 255, 255)',
+            }"
+          >
+            <g transform="matrix(1.3333333,0,0,-1.3333333,0,34.179467)">
+              <g transform="translate(21.6945,25.6347)">
+                <path
+                  d="m0 0-0.855-0.856-0.619-0.619-15.054-15.053-1.26-4.791 4.772 1.316 16.509 16.509zM-2.288-3.523 0-1.239 2.255-3.494-0.033-5.777Zm-13.002-13.005 12.045 12.041 2.256-2.254-12.046-12.041z"
+                />
+              </g>
+              <g transform="translate(0,20.6298)">
+                <path
+                  d="m0 0v-20.63h19.703v11.724l-1.037-1v-9.686H1.038v18.556h9.629L11.704 0Z"
+                />
+              </g>
             </g>
-            <g transform="translate(0,20.6298)">
-              <path
-                d="m0 0v-20.63h19.703v11.724l-1.037-1v-9.686H1.038v18.556h9.629L11.704 0Z"
-              />
-            </g>
-          </g>
-        </svg>
-      </button>
+          </svg>
+        </button>
+      </template>
+      <template v-else>
+        <h1>Zwei-Faktor-Identifizierung</h1>
+        <button class="btn-edit-new" @click="editing(false)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-pencil-square svg-edit"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+            />
+          </svg>
+        </button>
+      </template>
     </div>
     <!-- *********************** CONTENT *********************** -->
     <Transition name="slide-up" appear>
@@ -57,7 +84,7 @@
         {{ responseMsg.msg }}
       </div>
     </Transition>
-    <div class="subhead" v-if="fromMfaLogin !== 'true'">
+    <div :class="appType !== 'cips' ? 'subhead-new' : 'subhead'" v-if="fromMfaLogin !== 'true'">
       <h6>{{ translate('notes.status') }}</h6>
       <h4>{{ translateMfaStatus }}</h4>
       <Transition name="fade" appear>
@@ -72,7 +99,7 @@
     </div>
     <hr v-if="isEditing && fromMfaLogin !== 'true'" />
     <Transition name="slide-up" appear>
-      <div class="main" v-if="isEditing">
+      <div class="main" :class="appType !== 'cips' && 'main-new'" v-if="isEditing">
         <div class="content">
           <template v-for="item in templateFields">
             <h3 v-if="item.tag === 'h3'" :class="item.class">
@@ -147,13 +174,14 @@
             {{ translate(mapStates[templateState].leftBtn) }}
           </button>
           <button
-            class="btn btn-right"
+            class="btn-right"
             @click="handleClick"
             :disabled="isDisabled"
-            :class="{
+            :class="[{
               'btn-disabled': isDisabled,
               'btn-light': templateState === 'backup',
-            }"
+              
+            },appType !== 'cips' ? 'btn-new' : 'btn']"
           >
             {{ getButtonLabel }}
           </button>
@@ -171,10 +199,15 @@ import { config } from '../config/config';
 import { resolveUrl } from '../utils/resolveUrl';
 import { getDataURL } from '../utils/convertImage';
 import { generateNewPDF } from '../utils/generatePDF';
+import { prepareFormData } from '../utils/prepareFormData';
 // setting props
 const props = defineProps({
   translations: {
     type: String,
+  },
+  appType: {
+    type: String,
+    default: 'cips',
   },
   primaryColor: {
     type: String,
@@ -373,9 +406,14 @@ const handleSessionExpired = (error) => {
     setTimeout(() => (window.location.href = loginUrl), 6000);
   }
 };
+function insert(str, index, value) {
+  return str.substr(0, index) + value + str.substr(index);
+}
 // actions / end-points calls
 const getMfaStatus = async () => {
-  const received = await useFetch(props.mfaStatusUrl, 'GET');
+  const idx = props.mfaStatusUrl.indexOf('frontend') + 9;
+  const url = insert(props.mfaStatusUrl, idx, 'ajax/shop/');
+  const received = await useFetch(url, 'POST', prepareFormData('CHECK_STATUS'));
   if (!received.error)
     mfaStatus.value = received.multifactorAuthenticationEnabled;
 };
@@ -520,7 +558,384 @@ const mapStates = {
   },
 };
 </script>
-<style lang="scss">
+<style>
+.download {
+  text-align: center;
+}
+.download:hover {
+  color: v-bind(primaryColor);
+}
+.download:first-of-type {
+  margin-top: 1em;
+}
+.download:last-of-type {
+  margin-bottom: 1em;
+}
+.qrcode {
+  width: 150px;
+  height: 150px;
+  align-self: center;
+  margin: 1em 0;
+}
+.comp-new {
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.5rem #0000001f;
+  margin-bottom: 1.5rem;
+}
+.comp {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  font-family: v-bind(font);
+}
+@media screen and (min-width: 1200px) {
+  .comp {
+    padding: 0 0.8em;
+  }
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #9e9e9e;
+  align-items: center;
+  padding: 17px 15px;
+  z-index: 100;
+}
+.header-new {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  z-index: 100;
+}
+@media screen and (min-width: 768px) {
+  .header {
+    padding: 31px 24px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .header {
+    padding: 0 1em 0 0.5em;
+  }
+}
+.header h1 {
+  padding-left: 0.5em;
+  font-size: 1.33333em;
+  font-weight: 400;
+  line-height: 1.44444rem;
+  color: #fff;
+}
+.header-new h1 {
+  padding-left: 0.5em;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.44444rem;
+  color: #000;
+}
+.btn-edit, .btn-edit-new {
+  background-color: transparent;
+  border: none;
+}
+.btn-edit .svg-edit {
+  cursor: pointer;
+  transition: all 0.25s ease;
+  height: 50px;
+  width: 50px;
+}
+.btn-edit-new .svg-edit {
+  cursor: pointer;
+  transition: all 0.25s ease;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+.btn-edit-new .svg-edit:hover {
+  fill: v-bind(primaryColor);
+}
+@media screen and (min-width: 768px) {
+  .btn-edit .svg-edit {
+    height: 40px;
+    width: 40px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .btn-edit .svg-edit {
+    height: 32px;
+    width: 32px;
+  }
+}
+.message {
+  padding: 1em;
+  display: flex;
+  align-items: center;
+}
+.error-msg {
+  color: #e80000;
+}
+.success-msg {
+  color: #0c7d0c;
+}
+.subhead {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  height: 5em;
+  padding: 1em;
+}
+.subhead-new {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  margin: 0 2.25rem 1.5rem 2.25rem;
+}
+@media screen and (max-width: 768px) {
+  .subhead, .subhead-new {
+    grid-template-columns: repeat(2, 1fr);
+    height: 6em;
+  }
+  .subhead button, .subhead-new button {
+    grid-column: 0.3333333333;
+  }
+}
+.subhead h4, .subhead-new h4 {
+  margin: 0;
+}
+.subhead h6, .subhead-new h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.33333rem;
+  color: v-bind(primaryColor);
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0;
+  padding: 0;
+}
+.main {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.main-new {
+  padding: 1em 2.25rem;
+}
+.main .content {
+  padding: 1rem 1rem 1rem 0;
+}
+.main .content p {
+  margin: 0.5rem 0;
+}
+.main .content .content-title {
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.main .code {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.main .code .download {
+  text-align: center;
+}
+.main .code .download:hover {
+  color: v-bind(primaryColor);
+}
+.main .code .download:first-of-type {
+  margin-top: 1em;
+}
+.main .code .download:last-of-type {
+  margin-bottom: 1em;
+}
+.main .code .qrcode {
+  width: 150px;
+  height: 150px;
+  align-self: center;
+  margin: 1em 0;
+}
+.main .code .secret {
+  margin: 0 auto;
+  color: #c31a19;
+}
+.main .actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -1rem;
+  flex-wrap: wrap;
+}
+.note {
+  background-color: #fffbc6;
+  padding: 0.5em 1em;
+  margin: 1em 0;
+}
+.note p {
+  white-space: pre-line;
+}
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid trans;
+  background-color: v-bind(primaryColor);
+  border-color: v-bind(primaryColor);
+  letter-spacing: 0.01rem;
+  padding: 0.5em 2em;
+  border: 1px solid v-bind(primaryColor);
+  border-radius: 0;
+  font-size: 1.25rem;
+  color: #fff;
+  vertical-align: middle;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+  width: 100%;
+  min-height: 62px;
+  margin-top: 0.5em;
+}
+.btn-new {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid trans;
+  background-color: v-bind(primaryColor);
+  border-color: v-bind(primaryColor);
+  font-weight: 600;
+  letter-spacing: 0.01rem;
+  padding: 1em 2em;
+  border: 1px solid v-bind(primaryColor);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #fff;
+  vertical-align: middle;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+  margin-top: 0.5em;
+}
+.btn:hover {
+  font-weight: 600;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  letter-spacing: -0.0075rem;
+}
+.btn-new:hover {
+  background-color: rgb(13, 17, 48);
+    border-color: rgb(13, 17, 48);
+    outline: none;
+    box-shadow: none;
+    color: rgb(255, 255, 255);
+}
+@media screen and (max-width: 576px) {
+  .btn {
+    font-size: 1rem;
+  }
+}
+@media screen and (min-width: 768px) {
+  .btn {
+    font-size: 1.1rem;
+    width: 350px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .btn {
+    font-size: 1rem;
+  }
+}
+.btn-state {
+  justify-self: flex-end;
+}
+.btn-right {
+  margin-left: auto;
+}
+.btn-abort {
+  background-color: transparent;
+  color: #5d5d5d;
+  border-color: #5d5d5d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-light {
+  background-color: transparent;
+  color: v-bind(primaryColor);
+  border-color: v-bind(primaryColor);
+}
+.btn-light:hover {
+  background-color: v-bind(primaryColor);
+  color: #fff;
+}
+.btn-disabled {
+  background-color: #9e9e9e;
+  border-color: #9e9e9e;
+  pointer-events: none;
+}
+.input-code {
+  position: relative;
+  height: 2.5em;
+  width: 250px;
+  padding: 0 20px;
+  border: 1px solid #5d5d5d;
+  border-radius: 0;
+  font-size: 1.25rem;
+  background: #fff;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-overflow: ellipsis;
+  align-self: center;
+  text-align: center;
+  margin-top: 1em;
+}
+.input-code:focus {
+  border-color: v-bind(primaryColor);
+  outline: 0px none;
+  -webkit-box-shadow: 0 0 0 1px v-bind(primaryColor);
+  box-shadow: 0 0 0 1px v-bind(primaryColor);
+}
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.25s ease;
+}
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+</style>
+<!-- <style lang="scss">
 $small: 768px;
 $medium: 1200px;
 .download {
@@ -540,6 +955,15 @@ $medium: 1200px;
   height: 150px;
   align-self: center;
   margin: 1em 0;
+}
+.comp-new {
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 1rem;
+  background: rgb(255, 255, 255);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.5rem #0000001f;
 }
 .comp {
   display: flex;
@@ -817,4 +1241,4 @@ $medium: 1200px;
 .fade-leave-from {
   opacity: 1;
 }
-</style>
+</style> -->

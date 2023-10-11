@@ -3,10 +3,10 @@ export const useFetch = async (url, method, data = undefined) => {
   try {
     const response = await fetch(url, {
       method,
-      body: JSON.stringify(data),
-      headers: {
-        "Content-type": "application/json",
-      },
+      body: data,
+      // headers: {
+      //   "Content-type": "application/json",
+      // },
     });
     //console.log('success', response);
     return response.json();
