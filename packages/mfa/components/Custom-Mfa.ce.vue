@@ -97,7 +97,7 @@
         </button>
       </Transition>
     </div>
-    <hr v-if="isEditing && fromMfaLogin !== 'true'" />
+    <hr v-if="isEditing && fromMfaLogin !== 'true'" :class="appType !== 'cips' && 'hr-new'" />
     <Transition name="slide-up" appear>
       <div class="main" :class="appType !== 'cips' && 'main-new'" v-if="isEditing">
         <div class="content">
