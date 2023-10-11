@@ -84,7 +84,10 @@
         {{ responseMsg.msg }}
       </div>
     </Transition>
-    <div :class="appType !== 'cips' ? 'subhead-new' : 'subhead'" v-if="fromMfaLogin !== 'true'">
+    <div
+      :class="appType !== 'cips' ? 'subhead-new' : 'subhead'"
+      v-if="fromMfaLogin !== 'true'"
+    >
       <h6>{{ translate('notes.status') }}</h6>
       <h4>{{ translateMfaStatus }}</h4>
       <Transition name="fade" appear>
@@ -97,9 +100,16 @@
         </button>
       </Transition>
     </div>
-    <hr v-if="isEditing && fromMfaLogin !== 'true'" :class="appType !== 'cips' && 'hr-new'" />
+    <hr
+      v-if="isEditing && fromMfaLogin !== 'true'"
+      :class="appType !== 'cips' && 'hr-new'"
+    />
     <Transition name="slide-up" appear>
-      <div class="main" :class="appType !== 'cips' && 'main-new'" v-if="isEditing">
+      <div
+        class="main"
+        :class="appType !== 'cips' && 'main-new'"
+        v-if="isEditing"
+      >
         <div class="content">
           <template v-for="item in templateFields">
             <h3 v-if="item.tag === 'h3'" :class="item.class">
@@ -177,11 +187,13 @@
             class="btn-right"
             @click="handleClick"
             :disabled="isDisabled"
-            :class="[{
-              'btn-disabled': isDisabled,
-              'btn-light': templateState === 'backup',
-              
-            },appType !== 'cips' ? 'btn-new' : 'btn']"
+            :class="[
+              {
+                'btn-disabled': isDisabled,
+                'btn-light': templateState === 'backup',
+              },
+              appType !== 'cips' ? 'btn-new' : 'btn',
+            ]"
           >
             {{ getButtonLabel }}
           </button>
@@ -637,7 +649,8 @@ const mapStates = {
   line-height: 1.44444rem;
   color: #000;
 }
-.btn-edit, .btn-edit-new {
+.btn-edit,
+.btn-edit-new {
   background-color: transparent;
   border: none;
 }
@@ -693,18 +706,22 @@ const mapStates = {
   margin: 0 2.25rem 1.5rem 2.25rem;
 }
 @media screen and (max-width: 768px) {
-  .subhead, .subhead-new {
+  .subhead,
+  .subhead-new {
     grid-template-columns: repeat(2, 1fr);
     height: 6em;
   }
-  .subhead button, .subhead-new button {
+  .subhead button,
+  .subhead-new button {
     grid-column: 0.3333333333;
   }
 }
-.subhead h4, .subhead-new h4 {
+.subhead h4,
+.subhead-new h4 {
   margin: 0;
 }
-.subhead h6, .subhead-new h6 {
+.subhead h6,
+.subhead-new h6 {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
@@ -778,6 +795,9 @@ hr {
   margin-top: -1rem;
   flex-wrap: wrap;
 }
+.main-new .actions {
+  margin-top: 0;
+}
 .note {
   background-color: #fffbc6;
   padding: 0.5em 1em;
@@ -842,10 +862,10 @@ hr {
 }
 .btn-new:hover {
   background-color: rgb(13, 17, 48);
-    border-color: rgb(13, 17, 48);
-    outline: none;
-    box-shadow: none;
-    color: rgb(255, 255, 255);
+  border-color: rgb(13, 17, 48);
+  outline: none;
+  box-shadow: none;
+  color: rgb(255, 255, 255);
 }
 @media screen and (max-width: 576px) {
   .btn {
@@ -938,310 +958,3 @@ hr {
   opacity: 1;
 }
 </style>
-<!-- <style lang="scss">
-$small: 768px;
-$medium: 1200px;
-.download {
-  text-align: center;
-  &:hover {
-    color: v-bind(primaryColor);
-  }
-  &:first-of-type {
-    margin-top: 1em;
-  }
-  &:last-of-type {
-    margin-bottom: 1em;
-  }
-}
-.qrcode {
-  width: 150px;
-  height: 150px;
-  align-self: center;
-  margin: 1em 0;
-}
-.comp-new {
-  height: 100%;
-  background-color: transparent;
-  border: none;
-  padding: 1rem;
-  background: rgb(255, 255, 255);
-  border-radius: 0.5rem;
-  box-shadow: 0 0.125rem 0.5rem #0000001f;
-}
-.comp {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  font-family: v-bind(font);
-  @media screen and (min-width: $medium) {
-    padding: 0 0.8em;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    background-color: rgb(158, 158, 158);
-    align-items: center;
-    padding: 17px 15px;
-    z-index: 100;
-    @media screen and (min-width: $small) {
-      padding: 31px 24px;
-    }
-    @media screen and (min-width: $medium) {
-      padding: 0 1em 0 0.5em;
-    }
-    h1 {
-      padding-left: 0.5em;
-      font-size: 1.33333em;
-      font-weight: 400;
-      line-height: 1.44444rem;
-      color: #fff;
-    }
-    .btn-edit {
-      background-color: transparent;
-      border: none;
-      .svg-edit {
-        cursor: pointer;
-        transition: all 0.25s ease;
-        height: 50px;
-        width: 50px;
-        &:hover {
-          //stroke-width: 1;
-          //transform: scale(1.1);
-        }
-        @media screen and (min-width: $small) {
-          height: 40px;
-          width: 40px;
-        }
-        @media screen and (min-width: $medium) {
-          height: 32px;
-          width: 32px;
-        }
-      }
-    }
-  }
-  .message {
-    padding: 1em;
-    // background-color: rgb(255, 194, 194);
-    display: flex;
-    align-items: center;
-  }
-  .error-msg {
-    color: rgb(232, 0, 0);
-  }
-  .success-msg {
-    color: rgb(12, 125, 12);
-  }
-  .subhead {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    height: 5em;
-    padding: 1em;
-    @media screen and (max-width: $small) {
-      grid-template-columns: repeat(2, 1fr);
-      height: 6em;
-      button {
-        grid-column: 1/3;
-      }
-    }
-    h4 {
-      margin: 0;
-    }
-    h6 {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 700;
-      line-height: 1.33333rem;
-      color: v-bind(primaryColor);
-    }
-  }
-  hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 0;
-    padding: 0;
-  }
-  .main {
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    .content {
-      padding: 1rem 1rem 1rem 0;
-      p {
-        margin: 0.5rem 0;
-      }
-      .content-title {
-        margin-top: -0.5rem;
-        margin-bottom: 0.5rem;
-        font-size: 1.5rem;
-        line-height: 1.25;
-      }
-    }
-    .code {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      .download {
-        text-align: center;
-        &:hover {
-          color: v-bind(primaryColor);
-        }
-        &:first-of-type {
-          margin-top: 1em;
-        }
-        &:last-of-type {
-          margin-bottom: 1em;
-        }
-      }
-      .qrcode {
-        width: 150px;
-        height: 150px;
-        align-self: center;
-        margin: 1em 0;
-      }
-      .secret {
-        margin: 0 auto;
-        color: #c31a19;
-      }
-    }
-    .actions {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: -1rem;
-      flex-wrap: wrap;
-    }
-  }
-  .note {
-    background-color: #fffbc6;
-    padding: 0.5em 1em;
-    margin: 1em 0;
-    p {
-      white-space: pre-line;
-    }
-  }
-  .btn {
-    display: inline-block;
-    font-weight: 400;
-    text-align: center;
-    //white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid trans;
-    background-color: v-bind(primaryColor);
-    border-color: v-bind(primaryColor);
-    font-weight: 400;
-    letter-spacing: 0.01rem;
-    padding: 0.5em 2em;
-    border: 1px solid v-bind(primaryColor);
-    border-radius: 0;
-    font-size: 1.25rem;
-    color: rgb(255, 255, 255);
-    vertical-align: middle;
-    -webkit-transition: opacity 0.3s;
-    transition: opacity 0.3s;
-    width: 100%;
-    min-height: 62px;
-    margin-top: 0.5em;
-    &:hover {
-      font-weight: 600;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      //color: rgb(255, 255, 255);
-      letter-spacing: -0.0075rem;
-    }
-    @media screen and (max-width: 576px) {
-      font-size: 1rem;
-    }
-    @media screen and (min-width: $small) {
-      font-size: 1.1rem;
-      width: 350px;
-    }
-    @media screen and (min-width: $medium) {
-      font-size: 1rem;
-    }
-  }
-  .btn-state {
-    justify-self: flex-end;
-  }
-  .btn-right {
-    margin-left: auto;
-  }
-  .btn-abort {
-    background-color: transparent;
-    color: rgb(93, 93, 93);
-    border-color: rgb(93, 93, 93);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .btn-light {
-    background-color: transparent;
-    color: v-bind(primaryColor);
-    border-color: v-bind(primaryColor);
-  }
-  .btn-light:hover {
-    background-color: v-bind(primaryColor);
-    color: #fff;
-  }
-  .btn-disabled {
-    background-color: rgb(158, 158, 158);
-    border-color: rgb(158, 158, 158);
-    pointer-events: none;
-  }
-  .input-code {
-    position: relative;
-    height: 2.5em;
-    //min-width: 225px;
-    width: 250px;
-    padding: 0 20px;
-    border: 1px solid rgb(93, 93, 93);
-    border-radius: 0;
-    font-size: 1.25rem;
-    background: rgb(255, 255, 255);
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    text-overflow: ellipsis;
-    align-self: center;
-    text-align: center;
-    margin-top: 1em;
-    &:focus {
-      border-color: v-bind(primaryColor);
-      outline: 0px none;
-      -webkit-box-shadow: 0 0 0 1px v-bind(primaryColor);
-      box-shadow: 0 0 0 1px v-bind(primaryColor);
-    }
-  }
-}
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: all 0.25s ease;
-}
-.slide-up-enter-from {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-.slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.25s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-</style> -->

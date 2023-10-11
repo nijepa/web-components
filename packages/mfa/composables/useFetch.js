@@ -8,7 +8,7 @@ export const useFetch = async (url, method, data = undefined) => {
       //   "Content-type": "application/json",
       // },
     });
-    //console.log('success', response);
+    console.log('success', response);
     return response.json();
   } catch (error) {
     console.log("Error: ", error);
