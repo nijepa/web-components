@@ -719,6 +719,9 @@ hr {
   margin: 0;
   padding: 0;
 }
+.hr-new {
+  margin: 0 2.25rem;
+}
 .main {
   padding: 1em;
   display: flex;
