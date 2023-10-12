@@ -11,10 +11,10 @@ export const useFetch = async (method, data = undefined) => {
         'Content-Type': 'application/json',
       },
     });
-    console.log('success', response);
-    return response.status >= 400 ? { error: true } : response.json();
+    //console.log('success', response);
+    return response.status >= 400 ? { error: true } : response;
   } catch (error) {
-    console.error('Error: ', error);
+    //console.error('Error: ', error);
     return { error: true };
   }
 };
