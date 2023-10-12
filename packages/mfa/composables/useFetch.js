@@ -1,6 +1,7 @@
 import { store } from "../store/store";
-export const useFetch = async (url, method, data = undefined) => {
+export const useFetch = async (url, method, data = undefined, hasJson = true) => {
   try {
+    console.log('data', data)
     const response = await fetch(url, {
       method,
       body: data,
@@ -9,7 +10,7 @@ export const useFetch = async (url, method, data = undefined) => {
       // },
     });
     console.log('success', response);
-    return response.json();
+    return hasJson && response.json();
   } catch (error) {
     console.log("Error: ", error);
     store.responseMessage.isError = true;

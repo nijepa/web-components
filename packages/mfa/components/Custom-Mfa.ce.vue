@@ -208,7 +208,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { store } from '../store/store';
 import { config } from '../config/config';
-import { resolveUrl } from '../utils/resolveUrl';
+import { resolveUrl, resolveBaseUrl } from '../utils/resolveUrl';
 import { getDataURL } from '../utils/convertImage';
 import { generateNewPDF } from '../utils/generatePDF';
 import { prepareFormData } from '../utils/prepareFormData';
@@ -299,9 +299,11 @@ let footerImg = null;
 getDataURL(logo).then((base64) => {
   pdfImg = base64;
 });
-getDataURL(footerLogo.value).then((base64) => {
-  footerImg = base64;
-});
+if (props.appType === 'cips') {
+  getDataURL(footerLogo.value).then((base64) => {
+    footerImg = base64;
+  });
+}
 // focus code input
 const code = ref(null);
 const focusInput = () => {
@@ -418,21 +420,24 @@ const handleSessionExpired = (error) => {
     setTimeout(() => (window.location.href = loginUrl), 6000);
   }
 };
-function insert(str, index, value) {
-  return str.substr(0, index) + value + str.substr(index);
-}
 // actions / end-points calls
 const getMfaStatus = async () => {
-  const idx = props.mfaStatusUrl.indexOf('frontend') + 9;
-  const url = insert(props.mfaStatusUrl, idx, 'ajax/shop/');
-  const received = await useFetch(url, 'POST', prepareFormData('CHECK_STATUS'));
+  const received = await useFetch(
+    resolveBaseUrl(),
+    'POST',
+    prepareFormData('CHECK_STATUS')
+  );
   if (!received.error)
     mfaStatus.value = received.multifactorAuthenticationEnabled;
 };
 const qrCodeUrl = ref(null);
 const sharedSecret = ref(null);
 const mfaGenerateQrCode = async () => {
-  const received = await useFetch(props.mfaGenerateQrCodeUrl, 'GET');
+  const received = await useFetch(
+    resolveBaseUrl(),
+    'POST',
+    prepareFormData('GENERATE_QR_CODE')
+  );
   if (!received.error) {
     qrCodeUrl.value = received.QrCodeUrl;
     sharedSecret.value = received.sharedSecret;
@@ -445,8 +450,9 @@ const mfaGenerateQrCode = async () => {
 };
 const mfaActivate = async () => {
   const received = await useFetch(
-    props.mfaActivateUrl + `?sharedSecret=${store.sharedSecret}`,
-    'GET'
+    resolveBaseUrl() + `?sharedSecret=${store.sharedSecret}`,
+    'POST',
+    prepareFormData('ACTIVATE')
   );
   if (!received.error) {
     getMfaStatus();
@@ -458,7 +464,11 @@ const mfaActivate = async () => {
   store.sharedSecret = '';
 };
 const mfaDeactivate = async () => {
-  const received = await useFetch(props.mfaDeactivateUrl, 'GET');
+  const received = await useFetch(
+    resolveBaseUrl(),
+    'POST',
+    prepareFormData('DEACTIVATE')
+  );
   if (!received.error) {
     getMfaStatus();
     templateState.value = 'activation';
@@ -473,9 +483,12 @@ const mfaCheckVerificationCode = async () => {
     ? `?verificationCode=${verificationCode.value}&sharedSecret=${sc}`
     : `?verificationCode=${verificationCode.value}`;
   const received = await useFetch(
-    props.mfaCheckVerificationCodeUrl + path,
-    'GET'
+    resolveBaseUrl() + path,
+    'POST',
+    prepareFormData('CHECK_VERIFICATION_CODE'),
+    false
   );
+  console.log(333, received);
   if (!received.error) {
     mapStates[templateState.value].execute();
     console.log('mfa verification', received);
@@ -484,7 +497,11 @@ const mfaCheckVerificationCode = async () => {
 };
 const backupCodes = ref([]);
 const mfaDownloadBackupCodes = async () => {
-  const received = await useFetch(props.mfaDownloadBackupCodesUrl, 'GET');
+  const received = await useFetch(
+    resolveBaseUrl(),
+    'POST',
+    prepareFormData('DOWNLOAD_BACKUP_CODES')
+  );
   if (!received.error) {
     verificationCode.value = null;
     console.log('mfa download codes', received);
@@ -505,7 +522,11 @@ const mfaDownloadBackupCodes = async () => {
   handleMessages(received);
 };
 const mfaGenerateNewBackupCodes = async () => {
-  const received = await useFetch(props.mfaGenerateNewBackupCodesUrl, 'GET');
+  const received = await useFetch(
+    resolveBaseUrl(),
+    'POST',
+    prepareFormData('GENERATE_NEW_BACKUP_CODES')
+  );
   if (!received.error) {
     verificationCode.value = null;
     console.log('mfa new backup codes', received);
