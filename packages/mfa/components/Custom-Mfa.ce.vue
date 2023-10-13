@@ -94,7 +94,8 @@
         <button
           v-if="isEditing && templateState === 'backup'"
           @click="changeTemplateState('deactivate')"
-          class="btn btn-state"
+          class="btn-state"
+          :class="appType !== 'cips' ? 'btn-new' : 'btn'"
         >
           {{ translate('buttons.edit_2fa') }}
         </button>
@@ -152,7 +153,10 @@
               v-if="getTemplates('execute').includes(templateState)"
               v-model="verificationCode"
               class="input-code"
-              :class="templateState !== 'active' && 'code-enter'"
+              :class="
+                (templateState !== 'active' && 'code-enter',
+                appType !== 'cips' && 'input-code__new')
+              "
               :maxlength="templateState !== 'generate' ? 8 : 6"
               type="text"
               name=""
@@ -165,8 +169,11 @@
         <div class="actions">
           <button
             v-if="getTemplates('leftBtn').includes(templateState)"
-            class="btn btn-abort"
-            :class="{ 'btn-light': templateState === 'backup' }"
+            class="btn-abort"
+            :class="[
+              { 'btn-light': templateState === 'backup' },
+              appType !== 'cips' ? 'btn-new' : 'btn',
+            ]"
             @click="leftButtonAction"
           >
             <svg
@@ -288,9 +295,15 @@ onMounted(() => {
   }
   let image = new Image();
   image.onload = function () {
-    ratio = +(image.width / image.height).toFixed(2);
-    ratio = +(50 / ratio).toFixed(0);
+    if(props.appType !== 'cips') {
+      ratio = +(211 / 150).toFixed(2);
+      ratio = +(50 / ratio).toFixed(0);
+    } else {
+      ratio = +(image.width / image.height).toFixed(2);
+      ratio = +(50 / ratio).toFixed(0);
+    }
   };
+  console.log(222, ratio, image.width, image.height, image)
   image.src = logo;
 });
 // convert images to base64
@@ -710,8 +723,18 @@ const mapStates = {
 .error-msg {
   color: #e80000;
 }
+.error-msg__new {
+  background-color: #e80000;
+  color: #fff;
+  border-radius: .5rem;
+}
 .success-msg {
   color: #0c7d0c;
+}
+.success-msg_new {
+  background-color: #0c7d0c;
+  color: #fff;
+  border-radius: .5rem;
 }
 .subhead {
   display: grid;
@@ -947,6 +970,9 @@ hr {
   align-self: center;
   text-align: center;
   margin-top: 1em;
+}
+.input-code__new {
+  border-radius: 0.5rem;
 }
 .input-code:focus {
   border-color: v-bind(primaryColor);

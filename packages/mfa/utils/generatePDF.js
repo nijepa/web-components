@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-export const generateNewPDF = (color, codes, image, footerImage, ratio) => {
+export const generateNewPDF = (color, codes, image, footerImage = null, ratio) => {
   let doc = new jsPDF("A4");
   // pdf header
   doc.addImage(image, "JPEG", 80, 5, 50, ratio);
@@ -27,16 +27,18 @@ export const generateNewPDF = (color, codes, image, footerImage, ratio) => {
     nr++;
   });
   // pdf footer
-  doc.setFont("helvetica", "bold");
-  doc.setDrawColor(0);
-  doc.setFillColor(50, 50, 50);
-  doc.rect(5, 260, 200, 30, "F");
-  doc.setFontSize(12);
-  doc.setTextColor(255, 255, 255);
-  doc.text("cadooz GmbH", 15, 270);
-  doc.setFont("helvetica", "normal");
-  doc.text("Osterbekstraße 90b", 15, 275);
-  doc.text("22083 Hamburg – Germany", 15, 280);
-  doc.addImage(footerImage, "JPEG", 145, 267, 55, 15);
+  if(footerImage){
+    doc.setFont("helvetica", "bold");
+    doc.setDrawColor(0);
+    doc.setFillColor(50, 50, 50);
+    doc.rect(5, 260, 200, 30, "F");
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255);
+    doc.text("cadooz GmbH", 15, 270);
+    doc.setFont("helvetica", "normal");
+    doc.text("Osterbekstraße 90b", 15, 275);
+    doc.text("22083 Hamburg – Germany", 15, 280);
+    doc.addImage(footerImage, "JPEG", 145, 267, 55, 15);
+  }
   doc.save("Backup_Codes.pdf");
 };
