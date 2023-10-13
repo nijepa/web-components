@@ -1,74 +1,74 @@
 <template>
   <div :class="appType !== 'cips' ? 'comp-new' : 'comp'">
-    <!-- *********************** HEADER *********************** -->
-    <div
-      :class="appType !== 'cips' ? 'header-new' : 'header'"
-      ref="header"
-      v-if="fromMfaLogin !== 'true'"
-    >
-      <template v-if="appType === 'cips'">
-        <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
-          2. {{ translate('notes.2fa_authentication') }}
-        </h1>
-        <button class="btn-edit" @click="editing(false)">
-          <svg
-            class="svg-edit"
-            viewBox="0 0 33.583 34.179"
-            x="0px"
-            y="0px"
-            width="32px"
-            height="32px"
-            stroke="rgb(255, 255, 255)"
-            stroke-width="0"
-            :style="{
-              fill: isEditing ? 'rgb(255, 255, 255)' : 'rgb(255, 255, 255)',
-            }"
-          >
-            <g transform="matrix(1.3333333,0,0,-1.3333333,0,34.179467)">
-              <g transform="translate(21.6945,25.6347)">
-                <path
-                  d="m0 0-0.855-0.856-0.619-0.619-15.054-15.053-1.26-4.791 4.772 1.316 16.509 16.509zM-2.288-3.523 0-1.239 2.255-3.494-0.033-5.777Zm-13.002-13.005 12.045 12.041 2.256-2.254-12.046-12.041z"
-                />
-              </g>
-              <g transform="translate(0,20.6298)">
-                <path
-                  d="m0 0v-20.63h19.703v11.724l-1.037-1v-9.686H1.038v18.556h9.629L11.704 0Z"
-                />
-              </g>
-            </g>
-          </svg>
-        </button>
-      </template>
-      <template v-else>
-        <h1>Zwei-Faktor-Identifizierung</h1>
-        <button class="btn-edit-new" @click="editing(false)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-pencil-square svg-edit"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-            />
-          </svg>
-        </button>
-      </template>
+    <div v-if="loading" class="loading">
+      <span class="loader"></span>
     </div>
-    <!-- *********************** CONTENT *********************** -->
-    <Transition name="slide-up" appear>
+    <template v-else>
+      <!-- *********************** HEADER *********************** -->
       <div
-        class="message"
-        v-if="responseMsg.msg"
-        :class="messageType"
+        :class="appType !== 'cips' ? 'header-new' : 'header'"
+        ref="header"
+        v-if="fromMfaLogin !== 'true'"
       >
-        <!-- <svg width="32px" height="32px" viewBox="0 0 16 16" fill="none">
+        <template v-if="appType === 'cips'">
+          <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
+            2. {{ translate('notes.2fa_authentication') }}
+          </h1>
+          <button class="btn-edit" @click="editing(false)">
+            <svg
+              class="svg-edit"
+              viewBox="0 0 33.583 34.179"
+              x="0px"
+              y="0px"
+              width="32px"
+              height="32px"
+              stroke="rgb(255, 255, 255)"
+              stroke-width="0"
+              :style="{
+                fill: isEditing ? 'rgb(255, 255, 255)' : 'rgb(255, 255, 255)',
+              }"
+            >
+              <g transform="matrix(1.3333333,0,0,-1.3333333,0,34.179467)">
+                <g transform="translate(21.6945,25.6347)">
+                  <path
+                    d="m0 0-0.855-0.856-0.619-0.619-15.054-15.053-1.26-4.791 4.772 1.316 16.509 16.509zM-2.288-3.523 0-1.239 2.255-3.494-0.033-5.777Zm-13.002-13.005 12.045 12.041 2.256-2.254-12.046-12.041z"
+                  />
+                </g>
+                <g transform="translate(0,20.6298)">
+                  <path
+                    d="m0 0v-20.63h19.703v11.724l-1.037-1v-9.686H1.038v18.556h9.629L11.704 0Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </template>
+        <template v-else>
+          <h1>Zwei-Faktor-Identifizierung</h1>
+          <button class="btn-edit-new" @click="editing(false)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-pencil-square svg-edit"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+              />
+            </svg>
+          </button>
+        </template>
+      </div>
+      <!-- *********************** CONTENT *********************** -->
+      <Transition name="slide-up" appear>
+        <div class="message" v-if="responseMsg.msg" :class="messageType">
+          <!-- <svg width="32px" height="32px" viewBox="0 0 16 16" fill="none">
           <path
             v-if="responseMsg.isError"
             fill="rgb(232, 0, 0)"
@@ -81,132 +81,136 @@
           />
         </svg>
         &nbsp; -->
-        {{ responseMsg.msg }}
-      </div>
-    </Transition>
-    <div
-      :class="appType !== 'cips' ? 'subhead-new' : 'subhead'"
-      v-if="fromMfaLogin !== 'true'"
-    >
-      <h6>{{ translate('notes.status') }}</h6>
-      <h4>{{ translateMfaStatus }}</h4>
-      <Transition name="fade" appear>
-        <button
-          v-if="isEditing && templateState === 'backup'"
-          @click="changeTemplateState('deactivate')"
-          class="btn-state"
-          :class="appType !== 'cips' ? 'btn-new' : 'btn'"
-        >
-          {{ translate('buttons.edit_2fa') }}
-        </button>
+          {{ responseMsg.msg }}
+        </div>
       </Transition>
-    </div>
-    <hr
-      v-if="isEditing && fromMfaLogin !== 'true'"
-      :class="appType !== 'cips' && 'hr-new'"
-    />
-    <Transition name="slide-up" appear>
       <div
-        class="main"
-        :class="appType !== 'cips' && 'main-new'"
-        v-if="isEditing"
+        :class="appType !== 'cips' ? 'subhead-new' : 'subhead'"
+        v-if="fromMfaLogin !== 'true'"
       >
-        <div class="content">
-          <template v-for="item in templateFields">
-            <h3 v-if="item.tag === 'h3'" :class="item.class">
-              {{ translate(item.label) }}
-            </h3>
-            <p
-              v-if="item.tag === 'p' && !item.isNote"
-              :style="item.style === 'b' && 'font-weight: bold'"
-            >
-              {{ translate(item.label) }}
-            </p>
-            <div class="note" v-if="item.isNote">
-              <p>
-                <b>{{ translate('notes.note') }}</b>
-              </p>
-              <p
-                v-if="item.isNote && item.tag === 'p' && item.style !== 'b'"
-                v-html="translate(item.label)"
-              ></p>
-            </div>
-            <p style="text-align: center; margin: 1em" v-if="item.tag === 'a'">
-              <a :href="item.href" target="_blank" class="download">{{
-                translate(item.label)
-              }}</a>
-            </p>
-            <div style="display: flex; justify-content: center">
-              <img
-                v-if="item.tag === 'img'"
-                :src="qrCodeUrl"
-                alt="qrcode"
-                class="qrcode"
-              />
-              <div class="secret" v-if="item.tag === 'sec'">
-                {{ sharedSecret }}
-              </div>
-            </div>
-          </template>
-          <template style="display: flex; justify-content: center">
-            <input
-              v-if="getTemplates('execute').includes(templateState)"
-              v-model="verificationCode"
-              class="input-code"
-              :class="
-                (templateState !== 'active' && 'code-enter',
-                appType !== 'cips' && 'input-code__new')
-              "
-              :maxlength="templateState !== 'generate' ? 8 : 6"
-              type="text"
-              name=""
-              id=""
-              ref="code"
-            />
-          </template>
-        </div>
-        <!-- *********************** BUTTONS *********************** -->
-        <div class="actions">
+        <h6>{{ translate('notes.status') }}</h6>
+        <h4>{{ translateMfaStatus }}</h4>
+        <Transition name="fade" appear>
           <button
-            v-if="getTemplates('leftBtn').includes(templateState)"
-            class="btn-abort"
-            :class="[
-              { 'btn-light': templateState === 'backup' },
-              appType !== 'cips' ? 'btn-new' : 'btn',
-            ]"
-            @click="leftButtonAction"
+            v-if="isEditing && templateState === 'backup'"
+            @click="changeTemplateState('deactivate')"
+            class="btn-state"
+            :class="appType !== 'cips' ? 'btn-new' : 'btn'"
           >
-            <svg
-              v-if="templateState !== 'backup'"
-              width="12px"
-              height="12px"
-              viewBox="0 0 1024 1024"
-              style="margin-right: 0.5em"
-            >
-              <path
-                d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
-                fill="rgb(93, 93, 93)"
-              />
-            </svg>
-            {{ translate(mapStates[templateState].leftBtn) }}
+            {{ translate('buttons.edit_2fa') }}
           </button>
-          <button
-            class="btn-right"
-            @click="handleClick"
-            :disabled="isDisabled"
-            :class="[
-              {
-                'btn-disabled': isDisabled,
-                'btn-light': templateState === 'backup',
-              },
-              appType !== 'cips' ? 'btn-new' : 'btn',
-            ]"
-          >
-            {{ getButtonLabel }}
-          </button>
-        </div>
+        </Transition>
       </div>
-    </Transition>
+      <hr
+        v-if="isEditing && fromMfaLogin !== 'true'"
+        :class="appType !== 'cips' && 'hr-new'"
+      />
+      <Transition name="slide-up" appear>
+        <div
+          class="main"
+          :class="appType !== 'cips' && 'main-new'"
+          v-if="isEditing"
+        >
+          <div class="content">
+            <template v-for="item in templateFields">
+              <h3 v-if="item.tag === 'h3'" :class="item.class">
+                {{ translate(item.label) }}
+              </h3>
+              <p
+                v-if="item.tag === 'p' && !item.isNote"
+                :style="item.style === 'b' && 'font-weight: bold'"
+              >
+                {{ translate(item.label) }}
+              </p>
+              <div class="note" v-if="item.isNote">
+                <p>
+                  <b>{{ translate('notes.note') }}</b>
+                </p>
+                <p
+                  v-if="item.isNote && item.tag === 'p' && item.style !== 'b'"
+                  v-html="translate(item.label)"
+                ></p>
+              </div>
+              <p
+                style="text-align: center; margin: 1em"
+                v-if="item.tag === 'a'"
+              >
+                <a :href="item.href" target="_blank" class="download">{{
+                  translate(item.label)
+                }}</a>
+              </p>
+              <div style="display: flex; justify-content: center">
+                <img
+                  v-if="item.tag === 'img'"
+                  :src="qrCodeUrl"
+                  alt="qrcode"
+                  class="qrcode"
+                />
+                <div class="secret" v-if="item.tag === 'sec'">
+                  {{ sharedSecret }}
+                </div>
+              </div>
+            </template>
+            <template style="display: flex; justify-content: center">
+              <input
+                v-if="getTemplates('execute').includes(templateState)"
+                v-model="verificationCode"
+                class="input-code"
+                :class="
+                  (templateState !== 'active' && 'code-enter',
+                  appType !== 'cips' && 'input-code__new')
+                "
+                :maxlength="templateState !== 'generate' ? 8 : 6"
+                type="text"
+                name=""
+                id=""
+                ref="code"
+              />
+            </template>
+          </div>
+          <!-- *********************** BUTTONS *********************** -->
+          <div class="actions">
+            <button
+              v-if="getTemplates('leftBtn').includes(templateState)"
+              class="btn-abort"
+              :class="[
+                { 'btn-light': templateState === 'backup' },
+                appType !== 'cips' ? 'btn-new' : 'btn',
+              ]"
+              @click="leftButtonAction"
+            >
+              <svg
+                v-if="templateState !== 'backup'"
+                width="12px"
+                height="12px"
+                viewBox="0 0 1024 1024"
+                style="margin-right: 0.5em"
+              >
+                <path
+                  d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
+                  fill="rgb(93, 93, 93)"
+                />
+              </svg>
+              {{ translate(mapStates[templateState].leftBtn) }}
+            </button>
+            <button
+              class="btn-right"
+              @click="handleClick"
+              :disabled="isDisabled"
+              :class="[
+                {
+                  'btn-disabled': isDisabled,
+                  'btn-light': templateState === 'backup',
+                },
+                appType !== 'cips' ? 'btn-new' : 'btn',
+              ]"
+            >
+              {{ getButtonLabel }}
+            </button>
+          </div>
+        </div>
+      </Transition>
+    </template>
   </div>
 </template>
 
@@ -284,14 +288,15 @@ const footerLogo = ref(
 );
 let logo = props.logoUrl.replace('url("', '').replace('")', '');
 const ratio = ref(1);
-const ratiow = ref(50)
+const ratiow = ref(50);
 // get status & calculate logo ratio
-onMounted(() => {
-  props.fromMfaLogin !== 'true' && props.mfaStatusUrl && getMfaStatus();
+const loading = ref(true);
+onMounted(async () => {
+  props.fromMfaLogin !== 'true' && props.mfaStatusUrl && (await getMfaStatus());
   isEditing.value = props.fromMfaHint === 'true';
   isEditing.value && editing(true);
   if (props.fromMfaLogin === 'true') {
-    mfaGenerateQrCode();
+    await mfaGenerateQrCode();
     isEditing.value = true;
   }
   let image = new Image();
@@ -299,10 +304,11 @@ onMounted(() => {
     ratio.value = +(image.width / image.height).toFixed(2);
     ratio.value = +(50 / ratio.value).toFixed(0);
     if (props.appType !== 'cips') {
-      ratiow.value = 25
+      ratiow.value = 25;
     }
   };
   image.src = logo;
+  loading.value = false;
 });
 // convert images to base64
 let pdfImg = null;
@@ -412,12 +418,12 @@ const responseMsg = computed(() => {
   return store.responseMessage;
 });
 const messageType = computed(() => {
-  if(props.appType === 'cips') {
-    return responseMsg.value.isError ? 'error-msg' : 'success-msg'
+  if (props.appType === 'cips') {
+    return responseMsg.value.isError ? 'error-msg' : 'success-msg';
   } else {
-    return responseMsg.value.isError ? 'error-msg__new' : 'success-msg__new'
+    return responseMsg.value.isError ? 'error-msg__new' : 'success-msg__new';
   }
-})
+});
 const handleMessages = (response) => {
   if (response.error) {
     response.errorMessage =
@@ -445,8 +451,11 @@ const getMfaStatus = async () => {
     'POST',
     prepareFormData('CHECK_STATUS')
   );
-  if (!received.error)
+  if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
+  } else {
+    loading.value = false;
+  }
 };
 const qrCodeUrl = ref(null);
 const sharedSecret = ref(null);
@@ -462,7 +471,9 @@ const mfaGenerateQrCode = async () => {
     store.sharedSecret = received.sharedSecret;
     templateState.value = 'active';
     focusInput();
-    console.log('mfa qrcode', received);
+    console.info('mfa qrcode', received);
+  } else {
+    loading.value = false;
   }
   handleMessages(received);
 };
@@ -476,7 +487,7 @@ const mfaActivate = async () => {
     getMfaStatus();
     templateState.value = 'code';
     verificationCode.value = null;
-    console.log('mfa activate', received);
+    console.info('mfa activate', received);
   }
   handleMessages(received);
   store.sharedSecret = '';
@@ -491,7 +502,7 @@ const mfaDeactivate = async () => {
     getMfaStatus();
     templateState.value = 'activation';
     verificationCode.value = null;
-    console.log('mfa deactivate', received);
+    console.info('mfa deactivate', received);
   }
   handleMessages(received);
 };
@@ -506,10 +517,9 @@ const mfaCheckVerificationCode = async () => {
     prepareFormData('CHECK_VERIFICATION_CODE'),
     false
   );
-  console.log(333, received);
   if (!received.error) {
     mapStates[templateState.value].execute();
-    console.log('mfa verification', received);
+    console.info('mfa verification', received);
   }
   handleMessages(received);
 };
@@ -522,7 +532,7 @@ const mfaDownloadBackupCodes = async () => {
   );
   if (!received.error) {
     verificationCode.value = null;
-    console.log('mfa download codes', received);
+    console.info('mfa download codes', received);
     backupCodes.value = received.backupCodes;
     generateNewPDF(
       props.primaryColor,
@@ -530,7 +540,7 @@ const mfaDownloadBackupCodes = async () => {
       pdfImg,
       footerImg,
       ratiow.value,
-      ratio.value/2
+      ratio.value / 2
     );
     isEditing.value = false;
     if (props.fromMfaLogin === 'true') {
@@ -548,7 +558,7 @@ const mfaGenerateNewBackupCodes = async () => {
   );
   if (!received.error) {
     verificationCode.value = null;
-    console.log('mfa new backup codes', received);
+    console.info('mfa new backup codes', received);
   }
   handleMessages(received);
 };
@@ -732,7 +742,7 @@ const mapStates = {
 .error-msg__new {
   background-color: #e80000;
   color: #fff;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
 }
 .success-msg {
@@ -741,7 +751,7 @@ const mapStates = {
 .success-msg_new {
   background-color: #0c7d0c;
   color: #fff;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 .subhead {
   display: grid;
@@ -1013,6 +1023,10 @@ hr {
   opacity: 1;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+}
 .loader {
   width: 48px;
   height: 48px;
