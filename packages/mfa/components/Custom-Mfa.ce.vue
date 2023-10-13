@@ -301,9 +301,7 @@ onMounted(() => {
     if (props.appType !== 'cips') {
       ratiow.value = 25
     }
-    console.log(88888888888, ratio.value, ratiow.value)
   };
-  console.log(222, ratio.value, image.width, image.height, image)
   image.src = logo;
 });
 // convert images to base64
@@ -685,8 +683,8 @@ const mapStates = {
   color: #fff;
 }
 .header-new h1 {
-  padding-left: 0.5em;
-  font-size: 1.75rem;
+  /* padding-left: 0.5em; */
+  font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.44444rem;
   color: #000;
@@ -756,7 +754,7 @@ const mapStates = {
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   /* margin: 0 2.25rem 1.5rem 2.25rem; */
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
 }
 @media screen and (max-width: 768px) {
   .subhead,
@@ -1012,5 +1010,39 @@ hr {
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  position: relative;
+}
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #3b3b3b;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: animloader 2s linear infinite;
+}
+.loader::after {
+  animation-delay: 1s;
+}
+
+@keyframes animloader {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 </style>
