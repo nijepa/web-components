@@ -66,7 +66,7 @@
       <div
         class="message"
         v-if="responseMsg.msg"
-        :class="responseMsg.isError ? 'error-msg' : 'success-msg'"
+        :class="messageType"
       >
         <!-- <svg width="32px" height="32px" viewBox="0 0 16 16" fill="none">
           <path
@@ -283,7 +283,8 @@ const footerLogo = ref(
   baseurl.replace('cips/a', 'images/cips/cadooz_IPS_Logo_1c.png')
 );
 let logo = props.logoUrl.replace('url("', '').replace('")', '');
-let ratio = 1;
+const ratio = ref(1);
+const ratiow = ref(50)
 // get status & calculate logo ratio
 onMounted(() => {
   props.fromMfaLogin !== 'true' && props.mfaStatusUrl && getMfaStatus();
@@ -295,15 +296,14 @@ onMounted(() => {
   }
   let image = new Image();
   image.onload = function () {
-    if(props.appType !== 'cips') {
-      ratio = +(211 / 150).toFixed(2);
-      ratio = +(50 / ratio).toFixed(0);
-    } else {
-      ratio = +(image.width / image.height).toFixed(2);
-      ratio = +(50 / ratio).toFixed(0);
+    ratio.value = +(image.width / image.height).toFixed(2);
+    ratio.value = +(50 / ratio.value).toFixed(0);
+    if (props.appType !== 'cips') {
+      ratiow.value = 25
     }
+    console.log(88888888888, ratio.value, ratiow.value)
   };
-  console.log(222, ratio, image.width, image.height, image)
+  console.log(222, ratio.value, image.width, image.height, image)
   image.src = logo;
 });
 // convert images to base64
@@ -413,6 +413,13 @@ const responseMsg = computed(() => {
   scrollToElement();
   return store.responseMessage;
 });
+const messageType = computed(() => {
+  if(props.appType === 'cips') {
+    return responseMsg.value.isError ? 'error-msg' : 'success-msg'
+  } else {
+    return responseMsg.value.isError ? 'error-msg__new' : 'success-msg__new'
+  }
+})
 const handleMessages = (response) => {
   if (response.error) {
     response.errorMessage =
@@ -524,7 +531,8 @@ const mfaDownloadBackupCodes = async () => {
       backupCodes.value,
       pdfImg,
       footerImg,
-      ratio
+      ratiow.value,
+      ratio.value/2
     );
     isEditing.value = false;
     if (props.fromMfaLogin === 'true') {

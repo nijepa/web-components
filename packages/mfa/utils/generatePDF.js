@@ -1,8 +1,8 @@
 import jsPDF from "jspdf";
-export const generateNewPDF = (color, codes, image, footerImage = null, ratio) => {
+export const generateNewPDF = (color, codes, image, footerImage = null, ratiow, ratioh) => {
   let doc = new jsPDF("A4");
   // pdf header
-  doc.addImage(image, "JPEG", 80, 5, 50, ratio);
+  doc.addImage(image, "JPEG", 80, 5, ratiow, ratioh);
   doc.setFillColor(color);
   doc.rect(5, 30, 200, 7, "F");
   doc.setFontSize(22);
