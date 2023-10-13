@@ -664,7 +664,7 @@ const mapStates = {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem;
+  padding: 1rem;
   z-index: 100;
 }
 @media screen and (min-width: 768px) {
@@ -755,7 +755,8 @@ const mapStates = {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  margin: 0 2.25rem 1.5rem 2.25rem;
+  /* margin: 0 2.25rem 1.5rem 2.25rem; */
+  padding: 1rem;
 }
 @media screen and (max-width: 768px) {
   .subhead,
@@ -789,7 +790,7 @@ hr {
   padding: 0;
 }
 .hr-new {
-  margin: 0 2.25rem;
+  margin: 0 1rem;
 }
 .main {
   padding: 1em;
@@ -798,7 +799,7 @@ hr {
   justify-content: center;
 }
 .main-new {
-  padding: 1em 2.25rem;
+  padding: 1em;
 }
 .main .content {
   padding: 1rem 1rem 1rem 0;
@@ -896,7 +897,7 @@ hr {
   border-color: v-bind(primaryColor);
   font-weight: 600;
   letter-spacing: 0.01rem;
-  padding: 1em 2em;
+  padding: 1em;
   border: 1px solid v-bind(primaryColor);
   border-radius: 0.5rem;
   font-size: 1rem;
