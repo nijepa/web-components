@@ -733,6 +733,7 @@ const mapStates = {
   background-color: #e80000;
   color: #fff;
   border-radius: .5rem;
+  margin: 0 1rem 1rem 1rem;
 }
 .success-msg {
   color: #0c7d0c;
