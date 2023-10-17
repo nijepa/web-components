@@ -82,7 +82,7 @@
         </svg>
         &nbsp; -->
           <svg
-            v-if="!responseMsg.isError && !isCips"
+            v-if="!isCips"
             fill="#fff"
             width="48px"
             height="48px"
@@ -90,18 +90,11 @@
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              v-if="!responseMsg.isError"
               d="M351.605 663.268l481.761-481.761c28.677-28.677 75.171-28.677 103.847 0s28.677 75.171 0 103.847L455.452 767.115l.539.539-58.592 58.592c-24.994 24.994-65.516 24.994-90.51 0L85.507 604.864c-28.677-28.677-28.677-75.171 0-103.847s75.171-28.677 103.847 0l162.25 162.25z"
             />
-          </svg>
-          <svg
-            v-if="responseMsg.isError && !isCips"
-            fill="#fff"
-            width="48px"
-            height="48px"
-            viewBox="0 0 1024 1024"
-            xmlns="http://www.w3.org/2000/svg"
-          >
             <path
+              v-else
               d="M512.481 421.906L850.682 84.621c25.023-24.964 65.545-24.917 90.51.105s24.917 65.545-.105 90.51L603.03 512.377 940.94 850c25.003 24.984 25.017 65.507.033 90.51s-65.507 25.017-90.51.033L512.397 602.764 174.215 940.03c-25.023 24.964-65.545 24.917-90.51-.105s-24.917-65.545.105-90.51l338.038-337.122L84.14 174.872c-25.003-24.984-25.017-65.507-.033-90.51s65.507-25.017 90.51-.033L512.48 421.906z"
             />
           </svg>
@@ -469,14 +462,14 @@ const handleSessionExpired = (error) => {
   }
 };
 // actions / end-points calls
-const isCips = props.appType === 'cips'
-const METHOD = isCips ? 'GET' : 'POST'
+const isCips = props.appType === 'cips';
+const METHOD = isCips ? 'GET' : 'POST';
 const payload = (name) => {
-  return !isCips ? prepareFormData(name) : undefined
-}
+  return !isCips ? prepareFormData(name) : undefined;
+};
 const action = (name) => {
-  return isCips ? name : undefined
-}
+  return isCips ? name : undefined;
+};
 const getMfaStatus = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.CHECK_STATUS)),
@@ -511,7 +504,8 @@ const mfaGenerateQrCode = async () => {
 };
 const mfaActivate = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.ACTIVATE)) + `?sharedSecret=${store.sharedSecret}`,
+    resolveBaseUrl(isCips, action(ACTIONS.ACTIVATE)) +
+      `?sharedSecret=${store.sharedSecret}`,
     METHOD,
     payload(ACTIONS.ACTIVATE)
   );
@@ -560,7 +554,7 @@ const mfaDownloadBackupCodes = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.DOWNLOAD_BACKUP_CODES)),
     METHOD,
-    payload(ACTIONS.DOWNLOAD_BACKUP_CODES),
+    payload(ACTIONS.DOWNLOAD_BACKUP_CODES)
   );
   if (!received.error) {
     verificationCode.value = null;
@@ -586,7 +580,7 @@ const mfaGenerateNewBackupCodes = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.GENERATE_NEW_BACKUP_CODES)),
     METHOD,
-    payload(ACTIONS.GENERATE_NEW_BACKUP_CODES),
+    payload(ACTIONS.GENERATE_NEW_BACKUP_CODES)
   );
   if (!received.error) {
     verificationCode.value = null;
@@ -781,10 +775,11 @@ const mapStates = {
 .success-msg {
   color: #0c7d0c;
 }
-.success-msg_new {
+.success-msg__new {
   background-color: #0c7d0c;
   color: #fff;
   border-radius: 0.5rem;
+  margin: 0 1rem 1rem 1rem;
 }
 .subhead {
   display: grid;
