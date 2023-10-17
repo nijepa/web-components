@@ -62,6 +62,7 @@ export const config = {
     { label: 'notes.generate_codes', tag: 'p' },
   ],
 };
+
 export const ACTIONS = {
   CHECK_STATUS,
   ACTIVATE,
