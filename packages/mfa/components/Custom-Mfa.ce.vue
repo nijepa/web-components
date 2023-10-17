@@ -82,7 +82,7 @@
         </svg>
         &nbsp; -->
           <svg
-            v-if="!responseMsg.isError"
+            v-if="!responseMsg.isError && !isCips"
             fill="#fff"
             width="48px"
             height="48px"
@@ -94,7 +94,7 @@
             />
           </svg>
           <svg
-            v-else
+            v-if="responseMsg.isError && !isCips"
             fill="#fff"
             width="48px"
             height="48px"
@@ -242,7 +242,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { store } from '../store/store';
-import { config } from '../config/config';
+import { config, ACTIONS } from '../config/config';
 import { resolveUrl, resolveBaseUrl } from '../utils/resolveUrl';
 import { getDataURL } from '../utils/convertImage';
 import { generateNewPDF } from '../utils/generatePDF';
@@ -469,11 +469,19 @@ const handleSessionExpired = (error) => {
   }
 };
 // actions / end-points calls
+const isCips = props.appType === 'cips'
+const METHOD = isCips ? 'GET' : 'POST'
+const payload = (name) => {
+  return !isCips ? prepareFormData(name) : undefined
+}
+const action = (name) => {
+  return isCips ? name : undefined
+}
 const getMfaStatus = async () => {
   const received = await useFetch(
-    resolveBaseUrl(),
-    'POST',
-    prepareFormData('CHECK_STATUS')
+    resolveBaseUrl(isCips, action(ACTIONS.CHECK_STATUS)),
+    METHOD,
+    payload(ACTIONS.CHECK_STATUS)
   );
   if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
@@ -485,9 +493,9 @@ const qrCodeUrl = ref(null);
 const sharedSecret = ref(null);
 const mfaGenerateQrCode = async () => {
   const received = await useFetch(
-    resolveBaseUrl(),
-    'POST',
-    prepareFormData('GENERATE_QR_CODE')
+    resolveBaseUrl(isCips, action(ACTIONS.GENERATE_QR_CODE)),
+    METHOD,
+    payload(ACTIONS.GENERATE_QR_CODE)
   );
   if (!received.error) {
     qrCodeUrl.value = received.QrCodeUrl;
@@ -503,9 +511,9 @@ const mfaGenerateQrCode = async () => {
 };
 const mfaActivate = async () => {
   const received = await useFetch(
-    resolveBaseUrl() + `?sharedSecret=${store.sharedSecret}`,
-    'POST',
-    prepareFormData('ACTIVATE')
+    resolveBaseUrl(isCips, action(ACTIONS.ACTIVATE)) + `?sharedSecret=${store.sharedSecret}`,
+    METHOD,
+    payload(ACTIONS.ACTIVATE)
   );
   if (!received.error) {
     getMfaStatus();
@@ -518,9 +526,9 @@ const mfaActivate = async () => {
 };
 const mfaDeactivate = async () => {
   const received = await useFetch(
-    resolveBaseUrl(),
-    'POST',
-    prepareFormData('DEACTIVATE')
+    resolveBaseUrl(isCips, action(ACTIONS.DEACTIVATE)),
+    METHOD,
+    payload(ACTIONS.DEACTIVATE)
   );
   if (!received.error) {
     getMfaStatus();
@@ -536,9 +544,9 @@ const mfaCheckVerificationCode = async () => {
     ? `?verificationCode=${verificationCode.value}&sharedSecret=${sc}`
     : `?verificationCode=${verificationCode.value}`;
   const received = await useFetch(
-    resolveBaseUrl() + path,
-    'POST',
-    prepareFormData('CHECK_VERIFICATION_CODE'),
+    resolveBaseUrl(isCips, action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
+    METHOD,
+    payload(ACTIONS.CHECK_VERIFICATION_CODE),
     false
   );
   if (!received.error) {
@@ -550,9 +558,9 @@ const mfaCheckVerificationCode = async () => {
 const backupCodes = ref([]);
 const mfaDownloadBackupCodes = async () => {
   const received = await useFetch(
-    resolveBaseUrl(),
-    'POST',
-    prepareFormData('DOWNLOAD_BACKUP_CODES')
+    resolveBaseUrl(isCips, action(ACTIONS.DOWNLOAD_BACKUP_CODES)),
+    METHOD,
+    payload(ACTIONS.DOWNLOAD_BACKUP_CODES),
   );
   if (!received.error) {
     verificationCode.value = null;
@@ -576,9 +584,9 @@ const mfaDownloadBackupCodes = async () => {
 };
 const mfaGenerateNewBackupCodes = async () => {
   const received = await useFetch(
-    resolveBaseUrl(),
-    'POST',
-    prepareFormData('GENERATE_NEW_BACKUP_CODES')
+    resolveBaseUrl(isCips, action(ACTIONS.GENERATE_NEW_BACKUP_CODES)),
+    METHOD,
+    payload(ACTIONS.GENERATE_NEW_BACKUP_CODES),
   );
   if (!received.error) {
     verificationCode.value = null;
@@ -800,7 +808,8 @@ const mapStates = {
   }
   .subhead button,
   .subhead-new button {
-    grid-column: 0.3333333333;
+    grid-column: 1/3;
+    width: 100%;
   }
 }
 .subhead h4,
