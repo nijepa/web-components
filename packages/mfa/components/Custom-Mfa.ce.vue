@@ -261,34 +261,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  mfaStatusUrl: {
-    type: String,
-    default: '',
-  },
-  mfaActivateUrl: {
-    type: String,
-    default: '',
-  },
-  mfaDeactivateUrl: {
-    type: String,
-    default: '',
-  },
-  mfaCheckVerificationCodeUrl: {
-    type: String,
-    default: '',
-  },
-  mfaDownloadBackupCodesUrl: {
-    type: String,
-    default: '',
-  },
-  mfaGenerateQrCodeUrl: {
-    type: String,
-    default: '',
-  },
-  mfaGenerateNewBackupCodesUrl: {
-    type: String,
-    default: '',
-  },
   fromMfaLogin: {
     typeof: String,
     default: '',
@@ -309,7 +281,7 @@ const ratiow = ref(50);
 // get status & calculate logo ratio
 const loading = ref(true);
 onMounted(async () => {
-  props.fromMfaLogin !== 'true' && props.mfaStatusUrl && (await getMfaStatus());
+  props.fromMfaLogin !== 'true' && (await getMfaStatus());
   isEditing.value = props.fromMfaHint === 'true';
   isEditing.value && editing(true);
   if (props.fromMfaLogin === 'true') {
