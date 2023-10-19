@@ -281,6 +281,7 @@ const ratio = ref(1);
 const ratiow = ref(50);
 // get status & calculate logo ratio
 const loading = ref(true);
+const isCips = props.appType === 'cips';
 onMounted(async () => {
   props.fromMfaLogin !== 'true' && (await getMfaStatus());
   isEditing.value = props.fromMfaHint === 'true';
@@ -293,7 +294,7 @@ onMounted(async () => {
   image.onload = function () {
     ratio.value = +(image.width / image.height).toFixed(2);
     ratio.value = +(50 / ratio.value).toFixed(0);
-    if (props.appType !== 'cips') {
+    if (!isCips) {
       ratiow.value = 25;
     }
   };
@@ -404,9 +405,9 @@ const clearMsg = (time = 15000) => {
     store.responseMessage.isError = null;
     store.responseMessage.msg = null;
   }, time);
-}
+};
 const responseMsg = computed(() => {
-  clearMsg()
+  clearMsg();
   scrollToElement();
   return store.responseMessage;
 });
@@ -438,7 +439,6 @@ const handleSessionExpired = (error) => {
   }
 };
 // actions / end-points calls
-const isCips = props.appType === 'cips';
 const METHOD = isCips ? 'GET' : 'POST';
 const payload = (name) => {
   return !isCips ? prepareFormData(name) : undefined;
