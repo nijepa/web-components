@@ -72,13 +72,6 @@ in ***CIPS*** apps for multi factor authentication
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
     font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
     "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
-    "mfa-status-url": "${link.getAction('/myprofile/mfa/checkStatus')}",
-    "mfa-generate-qr-code-url": "${link.getAction('/myprofile/mfa/generateQrCode')}",
-    "mfa-check-verification-code-url": "${link.getAction('/myprofile/mfa/checkVerificationCode')}",
-    "mfa-activate-url": "${link.getAction('/myprofile/mfa/activate')}",
-    "mfa-download-backup-codes-url": "${link.getAction('/myprofile/mfa/downloadBackupCodes')}",
-    "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
-    "mfa-generate-new-backup-codes-url": "${link.getAction('/myprofile/mfa/generateNewBackupCodes')}",
     "from-mfa-hint": document.querySelector('#islogin').innerText
   };
 
@@ -97,13 +90,6 @@ in ***CIPS*** apps for multi factor authentication
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
     font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
     "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
-    "mfa-status-url": "${link.getAction('/myprofile/mfa/checkStatus')}",
-    "mfa-generate-qr-code-url": "${link.getAction('/login/mfa/generateQrCode')}",
-    "mfa-check-verification-code-url": "${link.getAction('/login/mfa/checkVerificationCode')}",
-    "mfa-activate-url": "${link.getAction('/login/mfa/activate')}",
-    "mfa-download-backup-codes-url": "${link.getAction('/login/mfa/downloadBackupCodes')}",
-    "mfa-deactivate-url": "${link.getAction('/myprofile/mfa/deactivate')}",
-    "mfa-generate-new-backup-codes-url": "${link.getAction('/myprofile/mfa/generateNewBackupCodes')}",
     "from-mfa-login": document.querySelector('#islogin').innerText
   };
 
@@ -133,43 +119,6 @@ in ***CIPS*** apps for multi factor authentication
 - Default: "'Open Sans', sans-serif"
 
 ### **`logoUrl`**
-
-- Type: String
-- Default: ""
-
-### ***Actions url's are received from velocity actions:***
-
-### **`mfaStatusUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaGenerateQrCodeUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaCheckVerificationCodeUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaActivateUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaDownloadBackupCodesUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaDeactivateUrl`**
-
-- Type: String
-- Default: ""
-
-### **`mfaGenerateNewBackupCodesUrl`**
 
 - Type: String
 - Default: ""

@@ -68,19 +68,6 @@
       <!-- *********************** CONTENT *********************** -->
       <Transition name="slide-up" appear>
         <div class="message" v-if="responseMsg.msg" :class="messageType">
-          <!-- <svg width="32px" height="32px" viewBox="0 0 16 16" fill="none">
-          <path
-            v-if="responseMsg.isError"
-            fill="rgb(232, 0, 0)"
-            d="M6.37119,11.87271h3.2554V14H6.37119ZM6.31551,2l.37063,8.54245H9.31386L9.68449,2Z"
-          />
-          <path
-            v-else
-            fill="rgb(12, 125, 12)"
-            d="M14,4.69298L5.81846,12.87529l-3.81846-3.81846,1.63615-1.63692,2.25019,2.25019L12.43173,3.12471l1.56827,1.56827Z"
-          />
-        </svg>
-        &nbsp; -->
           <svg
             v-if="!isCips"
             @click="clearMsg(0)"
