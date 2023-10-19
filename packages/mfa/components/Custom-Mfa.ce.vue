@@ -83,9 +83,23 @@
         &nbsp; -->
           <svg
             v-if="!isCips"
+            @click="clearMsg(0)"
             fill="#fff"
-            width="48px"
-            height="48px"
+            class="close-msg"
+            width="16px"
+            height="16px"
+            viewBox="0 0 1024 1024"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M512.481 421.906L850.682 84.621c25.023-24.964 65.545-24.917 90.51.105s24.917 65.545-.105 90.51L603.03 512.377 940.94 850c25.003 24.984 25.017 65.507.033 90.51s-65.507 25.017-90.51.033L512.397 602.764 174.215 940.03c-25.023 24.964-65.545 24.917-90.51-.105s-24.917-65.545.105-90.51l338.038-337.122L84.14 174.872c-25.003-24.984-25.017-65.507-.033-90.51s65.507-25.017 90.51-.033L512.48 421.906z"
+            />
+          </svg>
+          <svg
+            v-if="!isCips"
+            fill="#fff"
+            width="32px"
+            height="32px"
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -398,11 +412,14 @@ const scrollToElement = () => {
   }
 };
 // handle error & success messages
-const responseMsg = computed(() => {
+const clearMsg = (time = 15000) => {
   setTimeout(() => {
     store.responseMessage.isError = null;
     store.responseMessage.msg = null;
-  }, 15000);
+  }, time);
+}
+const responseMsg = computed(() => {
+  clearMsg()
   scrollToElement();
   return store.responseMessage;
 });
@@ -734,6 +751,7 @@ const mapStates = {
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 .error-msg {
   color: #e80000;
@@ -752,6 +770,15 @@ const mapStates = {
   color: #fff;
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
+}
+.close-msg {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+.close-msg:hover {
+  fill: #000;
 }
 .subhead {
   display: grid;
