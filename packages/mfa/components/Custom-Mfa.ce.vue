@@ -1,16 +1,16 @@
 <template>
-  <div :class="appType !== 'cips' ? 'comp-new' : 'comp'">
+  <div :class="!isCips ? 'comp-new' : 'comp'">
     <div v-if="loading" class="loading">
       <span class="loader"></span>
     </div>
     <template v-else>
       <!-- *********************** HEADER *********************** -->
       <div
-        :class="appType !== 'cips' ? 'header-new' : 'header'"
+        :class="!isCips ? 'header-new' : 'header'"
         ref="header"
         v-if="fromMfaLogin !== 'true'"
       >
-        <template v-if="appType === 'cips'">
+        <template v-if="isCips">
           <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
             2. {{ translate('notes.2fa_authentication') }}
           </h1>
@@ -103,7 +103,7 @@
         </div>
       </Transition>
       <div
-        :class="appType !== 'cips' ? 'subhead-new' : 'subhead'"
+        :class="!isCips ? 'subhead-new' : 'subhead'"
         v-if="fromMfaLogin !== 'true'"
       >
         <h6>{{ translate('notes.status') }}</h6>
@@ -113,7 +113,7 @@
             v-if="isEditing && templateState === 'backup'"
             @click="changeTemplateState('deactivate')"
             class="btn-state"
-            :class="appType !== 'cips' ? 'btn-new' : 'btn'"
+            :class="!isCips ? 'btn-new' : 'btn'"
           >
             {{ translate('buttons.edit_2fa') }}
           </button>
@@ -121,12 +121,12 @@
       </div>
       <hr
         v-if="isEditing && fromMfaLogin !== 'true'"
-        :class="appType !== 'cips' && 'hr-new'"
+        :class="!isCips && 'hr-new'"
       />
       <Transition name="slide-up" appear>
         <div
           class="main"
-          :class="appType !== 'cips' && 'main-new'"
+          :class="!isCips && 'main-new'"
           v-if="isEditing"
         >
           <div class="content">
@@ -176,7 +176,7 @@
                 class="input-code"
                 :class="
                   (templateState !== 'active' && 'code-enter',
-                  appType !== 'cips' && 'input-code__new')
+                  !isCips && 'input-code__new')
                 "
                 :maxlength="templateState !== 'generate' ? 8 : 6"
                 type="text"
@@ -193,7 +193,7 @@
               class="btn-abort"
               :class="[
                 { 'btn-light': templateState === 'backup' },
-                appType !== 'cips' ? 'btn-new' : 'btn',
+                !isCips ? 'btn-new' : 'btn',
               ]"
               @click="leftButtonAction"
             >
@@ -220,7 +220,7 @@
                   'btn-disabled': isDisabled,
                   'btn-light': templateState === 'backup',
                 },
-                appType !== 'cips' ? 'btn-new' : 'btn',
+                !isCips ? 'btn-new' : 'btn',
               ]"
             >
               {{ getButtonLabel }}
@@ -307,7 +307,7 @@ let footerImg = null;
 getDataURL(logo).then((base64) => {
   pdfImg = base64;
 });
-if (props.appType === 'cips') {
+if (isCips) {
   getDataURL(footerLogo.value).then((base64) => {
     footerImg = base64;
   });
@@ -412,7 +412,7 @@ const responseMsg = computed(() => {
   return store.responseMessage;
 });
 const messageType = computed(() => {
-  if (props.appType === 'cips') {
+  if (isCips) {
     return responseMsg.value.isError ? 'error-msg' : 'success-msg';
   } else {
     return responseMsg.value.isError ? 'error-msg__new' : 'success-msg__new';
