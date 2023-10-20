@@ -1,0 +1,57 @@
+##################################  Testcafe ###################################
+## Page-model: ips/page-models/ips-profile-page.js
+################################################################################
+#set( $scriptVersion = "1.01" )
+#set( $template_type = "account" )
+#set( $banner_page_id = "PRF" )
+#set( $piwikCustomPageTitle = "Mein_Konto/Mein_Profil" )
+#set( $piwikCustomPageViewPath = "Mein_Konto/Mein_Profil" )
+#set( $banner_page_instance = "" )
+#set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
+<script>
+  userProfileSettings = {
+    /*fileUploadUrl: "${link.getAction('/myprofile/upload')}",
+    badgeUrl: "${link.getAction('/ajax/admin/badgeassignments/search')}",
+    saveUrl: #if( "$!ajaxProfileSaveUrl" != "" )"$ajaxProfileSaveUrl"#else"${link.getAction("/myprofile/save")}"#end*/
+  }
+</script>
+<div class="content-site">
+  <div id="islogin" style="display: none;">$mfalogin</div>
+  <div class="container-xl my-3">
+    <h3>Mein Konto</h3>
+    <div class="col-sm-12 col-md-12 px-0 mb-5">
+      #if($current_website.isMultifactorAuthenticationEnabled())
+        <p>Sie können hier die Funktionen Ihrer Zwei-Faktor-Identifizierung verwalten.</p>
+        <section id="sec_name_image" class="sub-section numbered separate editable" style="padding: 0;">
+          <custom-mfa> </custom-mfa>
+        </section>
+      #end
+    </div>
+  </div>
+</div>
+<script src="/scripts/common/threads.js?$scriptVersion"></script>
+<script src="/scripts/cips/user-profile.js?$scriptVersion"></script>
+<script async defer>
+const mfa = document.querySelector("custom-mfa");
+function setAttributes(el, attrs) {
+  for (var key in attrs) {
+    const attr =
+      typeof attrs[key] !== "string"
+        ? JSON.stringify(attrs[key])
+        : attrs[key];
+    el.setAttribute(key, attr);
+  }
+}
+const mfaProps = {
+  translations: {
+    #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
+      '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+    #end
+  },
+  "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
+  "mfa-status-url": "${link.getAction('/myprofile/mfa')}",
+  "app-type": "aldi",
+  "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
+};
+if(mfa)setAttributes(mfa, mfaProps);
+</script>

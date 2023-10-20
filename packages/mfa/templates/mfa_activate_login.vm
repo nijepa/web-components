@@ -1,0 +1,41 @@
+#set( $scriptVersion = "1.00" )
+#set( $page_title  = "Cadooz IPS: $!{messages.get('cips.labels.login')}" )
+#set( $hide_banner = "true" )
+#set( $banner_page_id = "LOG" )
+#set( $template_name = "mfalogin" )
+#set( $piwikCustomPageTitle = "MfaLogin" )
+#set( $piwikCustomPageViewPath = "MfaLogin" )
+#set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
+<section>
+<div class="container-xl my-3">
+<h1 id="islogin" class="site-title" >$mfalogin</h1>
+#if($current_website.isMultifactorAuthenticationEnabled())
+<custom-mfa></custom-mfa>
+#end
+</div>
+</section>
+<script async defer>
+const mfa = document.querySelector("custom-mfa");
+
+function setAttributes(el, attrs) {
+  for (var key in attrs) {
+    const attr =
+      typeof attrs[key] !== "string"
+        ? JSON.stringify(attrs[key])
+        : attrs[key];
+    el.setAttribute(key, attr);
+  }
+}
+const mfaProps = {
+  translations: {
+    #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
+      '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
+    #end
+  },
+  "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
+  "app-type": "aldi",
+  "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
+  "from-mfa-login": document.querySelector('#islogin').innerText
+};
+setAttributes(mfa, mfaProps);
+</script>

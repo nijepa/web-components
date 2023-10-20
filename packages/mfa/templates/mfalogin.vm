@@ -1,0 +1,80 @@
+#set( $scriptVersion = "1.00" )
+#set( $page_title  = "Cadooz IPS: $!{messages.get('cips.labels.login')}" )
+#set( $hide_banner = "true" )
+#set( $banner_page_id = "LOG" )
+#set( $template_name = "mfalogin" )
+#set( $piwikCustomPageTitle = "MfaLogin" )
+#set( $piwikCustomPageViewPath = "MfaLogin" )
+#set( $login = $basket.getAccountLogin(true) )
+<style>
+.input-code__wrapper {
+  display: flex;
+  justify-content: center;
+}
+.input-code {
+  width: auto;
+}
+.input-code__btn {
+ min-width: 12rem;
+}
+</style>
+<div class="content-site container-xl">
+  <div class="row">
+    <div class="col-xs-12 col-lg-12">
+      <section class="site">
+        <header>
+          <div class="row">
+            <div class="col-xs-12 col-lg-12">
+              <h1 class="site-title">$messages.get('cips.labels.buttons.login')</h1>
+            </div>
+          </div>
+        </header>
+        <div class="site-content">
+          <section class="sub-section">
+            <form method="post" id="cips-mfa-login-form" action="$link.getAction('/shop/login/mfa')" name="mfaloginform" autocomplete="off" class="sub-section-content" enctype="multipart/form-data">
+              <input type="hidden" id="cips-mfa-login-form-action" name="action" value="login">
+              #if("$!{hideErrorBox}" != "true" && $messages.getAll())
+                <div class="row">
+                  <div class="col-xs-12 col-lg-12 login-messages-col">
+                    #parse($helper.getTemplate("/cips/system/inline_message.vm"))
+                  </div>
+                </div>
+              #end
+                <div class="row">
+                  <div class="col-xs-12 col-lg-12">
+                    <h4 class="login-username#if($messages.hasFieldError("form.username")) danger#end">$messages.get('cips.mfa.notes.2fa_authentication')</h4>
+                    <p class="login-username#if($messages.hasFieldError("form.username")) danger#end">$messages.get('cips.mfa.success_message.received_code')</p>
+                    <p>$messages.get('cips.mfa.success_message.received_code2')</p>
+                  </div>
+                </div>
+               <div class="row">
+                  <div class="col-xs-12 col-lg-12 input-code__wrapper">
+                    #if($messages.hasFieldError("form.mfaVerificationCode"))<p class="danger">$messages.get('cips.mfa.error_message.code_incorrect')</p>#end
+                    <input class="form-control input-code" id="mfa-verification-code" type="text" name="verificationCode" value="$!helper.cleanXSS($!form.bean.verificationCode)" tabindex="1" autofocus="autofocus" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="text-align: center;" />
+                  </div>
+                </div>
+                <div class="row row-actions mt-3">
+                  <div class="col-xs-12 col-lg-6 left-col input-code__wrapper">
+                    <input type="submit" class="btn btn-primary input-code__btn" id="cancelButton" name="submit" title="test" value="$!helper.cleanXSS($messages.get('cips.mfa.buttons.abort'))" tabindex="$tabIndex"/>
+                  </div>
+                  <div class="col-xs-12 col-lg-6 right-col input-code__wrapper">
+                    <input type="submit" class="btn btn-primary btn-default right input-code__btn" id="submitButton" name="submit" title="test" value="$!helper.cleanXSS($messages.get('cips.mfa.buttons.confirm_entry'))" tabindex="$tabIndex"/>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+/*$('#submitButton').click(function(){
+    $('#cips-mfa-login-form-action').val('login');
+  });
+
+$('#cancelButton').click(function(){
+    $('#cips-mfa-login-form-action').val('cancel');
+  });*/
+</script>
