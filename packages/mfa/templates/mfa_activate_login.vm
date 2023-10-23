@@ -7,12 +7,12 @@
 #set( $piwikCustomPageViewPath = "MfaLogin" )
 #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
 <section>
-<div class="container-xl my-3">
-<h1 id="islogin" class="site-title" >$mfalogin</h1>
-#if($current_website.isMultifactorAuthenticationEnabled())
-<custom-mfa></custom-mfa>
-#end
-</div>
+  <div class="container-xl my-3">
+    <h1 id="islogin" class="site-title" >$mfalogin</h1>
+    #if($current_website.isMultifactorAuthenticationEnabled())
+      <custom-mfa></custom-mfa>
+    #end
+  </div>
 </section>
 <script async defer>
 const mfa = document.querySelector("custom-mfa");
@@ -32,8 +32,9 @@ const mfaProps = {
       '$!{resource.getKey()}': '$!{resource.getValue().replace("'", "")}',
     #end
   },
-  "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
   "app-type": "aldi",
+  font: getComputedStyle(document.querySelector('.main-nav')).fontFamily,
+  "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
   "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
   "from-mfa-login": document.querySelector('#islogin').innerText
 };
