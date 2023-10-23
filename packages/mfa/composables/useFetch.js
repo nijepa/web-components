@@ -16,7 +16,10 @@ export const useFetch = async (
       // },
     });
     console.log('success', response);
-    return hasJson && response.json();
+    const text = await response.text(); // Parse it as text
+    const result = JSON.parse(text);
+    return hasJson && result
+    //return hasJson && response.json();
   } catch (error) {
     console.log('Error: ', error);
     store.responseMessage.isError = true;

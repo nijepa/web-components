@@ -324,6 +324,13 @@ const templateState = ref(null);
 const isEditing = ref(false);
 const editing = (fromLogin = false) => {
   if (!fromLogin) isEditing.value = !isEditing.value;
+  console.log(33, templateState.value)
+  if(networkError.value) {
+    store.responseMessage.isError = true;
+    store.responseMessage.msg = 'Network Error';
+    isEditing.value = false
+    return
+  }
   templateState.value = !mfaStatus.value
     ? mapStates['activation'].template
     : mapStates['backup'].template;
@@ -379,6 +386,7 @@ watch(
 // handle mfa status/translation
 const mfaStatus = ref(null);
 const translateMfaStatus = computed(() => {
+  console.log(22, mfaStatus.value)
   const forTranslation = mfaStatus.value ? 'notes.active' : 'notes.inactive';
   return translate(forTranslation);
 });
@@ -439,6 +447,7 @@ const handleSessionExpired = (error) => {
   }
 };
 // actions / end-points calls
+const networkError = ref(false)
 const METHOD = isCips ? 'GET' : 'POST';
 const payload = (name) => {
   return !isCips ? prepareFormData(name) : undefined;
@@ -455,6 +464,7 @@ const getMfaStatus = async () => {
   if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
   } else {
+    networkError.value = true
     loading.value = false;
   }
 };
