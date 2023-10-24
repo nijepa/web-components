@@ -324,7 +324,6 @@ const templateState = ref(null);
 const isEditing = ref(false);
 const editing = (fromLogin = false) => {
   if (!fromLogin) isEditing.value = !isEditing.value;
-  console.log(33, templateState.value)
   if(networkError.value) {
     store.responseMessage.isError = true;
     store.responseMessage.msg = 'Network Error';
@@ -386,7 +385,6 @@ watch(
 // handle mfa status/translation
 const mfaStatus = ref(null);
 const translateMfaStatus = computed(() => {
-  console.log(22, mfaStatus.value)
   const forTranslation = mfaStatus.value ? 'notes.active' : 'notes.inactive';
   return translate(forTranslation);
 });
