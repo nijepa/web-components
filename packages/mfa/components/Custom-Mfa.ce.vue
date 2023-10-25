@@ -357,7 +357,7 @@ const changeTemplateState = (template = null) => {
 };
 // handle button labels & status
 const getButtonLabel = computed(() => {
-  return templateState.value ? translate(mapStates[templateState.value].label) : 'error';
+  return templateState.value ? translate(mapStates[templateState.value].label) : 'Network error';
 });
 const isDisabled = computed(() => {
   if (getTemplates('execute').includes(templateState.value)) {
