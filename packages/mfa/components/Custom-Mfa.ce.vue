@@ -85,8 +85,8 @@
           <svg
             v-if="!isCips"
             fill="#fff"
-            width="32px"
-            height="32px"
+            width="24px"
+            height="24px"
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -357,7 +357,7 @@ const changeTemplateState = (template = null) => {
 };
 // handle button labels & status
 const getButtonLabel = computed(() => {
-  return translate(mapStates[templateState.value].label);
+  return templateState.value ? translate(mapStates[templateState.value].label) : 'error';
 });
 const isDisabled = computed(() => {
   if (getTemplates('execute').includes(templateState.value)) {
