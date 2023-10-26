@@ -124,11 +124,7 @@
         :class="!isCips && 'hr-new'"
       />
       <Transition name="slide-up" appear>
-        <div
-          class="main"
-          :class="!isCips && 'main-new'"
-          v-if="isEditing"
-        >
+        <div class="main" :class="!isCips && 'main-new'" v-if="isEditing">
           <div class="content">
             <template v-for="item in templateFields">
               <h3 v-if="item.tag === 'h3'" :class="item.class">
@@ -212,6 +208,7 @@
               {{ translate(mapStates[templateState].leftBtn) }}
             </button>
             <button
+              v-if="getButtonLabel"
               class="btn-right"
               @click="handleClick"
               :disabled="isDisabled"
@@ -225,6 +222,11 @@
             >
               {{ getButtonLabel }}
             </button>
+            <div v-else class="error-msg__network">
+              <h3>Zwei-Faktor-Identifizierung</h3>
+              <p class="error-msg">Netzwerkfehler!</p> 
+              <p>Bitte versuchen Sie es später noch einmal</p> 
+            </div>
           </div>
         </div>
       </Transition>
@@ -324,11 +326,11 @@ const templateState = ref(null);
 const isEditing = ref(false);
 const editing = (fromLogin = false) => {
   if (!fromLogin) isEditing.value = !isEditing.value;
-  if(networkError.value) {
+  if (networkError.value) {
     store.responseMessage.isError = true;
     store.responseMessage.msg = 'Network Error';
-    isEditing.value = false
-    return
+    isEditing.value = false;
+    return;
   }
   templateState.value = !mfaStatus.value
     ? mapStates['activation'].template
@@ -357,7 +359,9 @@ const changeTemplateState = (template = null) => {
 };
 // handle button labels & status
 const getButtonLabel = computed(() => {
-  return templateState.value ? translate(mapStates[templateState.value].label) : 'Network error';
+  return templateState.value
+    ? translate(mapStates[templateState.value].label)
+    : false;
 });
 const isDisabled = computed(() => {
   if (getTemplates('execute').includes(templateState.value)) {
@@ -445,7 +449,7 @@ const handleSessionExpired = (error) => {
   }
 };
 // actions / end-points calls
-const networkError = ref(false)
+const networkError = ref(false);
 const METHOD = isCips ? 'GET' : 'POST';
 const payload = (name) => {
   return !isCips ? prepareFormData(name) : undefined;
@@ -462,7 +466,7 @@ const getMfaStatus = async () => {
   if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
   } else {
-    networkError.value = true
+    networkError.value = true;
     loading.value = false;
   }
 };
@@ -756,6 +760,14 @@ const mapStates = {
   color: #fff;
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
+}
+.error-msg__network {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  flex-direction: column;
+  align-items: center;
 }
 .success-msg {
   color: #0c7d0c;
