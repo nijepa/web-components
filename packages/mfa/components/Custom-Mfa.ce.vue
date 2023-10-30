@@ -528,7 +528,7 @@ const mfaCheckVerificationCode = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
     METHOD,
-    payload(ACTIONS.CHECK_VERIFICATION_CODE),
+    payload(ACTIONS.CHECK_VERIFICATION_CODE), 
     false
   );
   if (!received.error) {

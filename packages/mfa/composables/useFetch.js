@@ -5,7 +5,7 @@ export const useFetch = async (
   data = undefined,
   hasJson = true
 ) => {
-  const CONTENT_TYPE = (method === 'GET' ? 'application/json' : undefined);
+  const CONTENT_TYPE = method === 'GET' ? 'application/json' : undefined;
   try {
     console.log('data', data);
     const response = await fetch(url, {
@@ -17,13 +17,17 @@ export const useFetch = async (
     });
     console.log('success', response);
     const text = await response.text(); // Parse it as text
-    const result = JSON.parse(text);
-    return hasJson && result
+    return JSON.parse(text);
     //return hasJson && response.json();
   } catch (error) {
-    console.log('Error: ', error);
-    store.responseMessage.isError = true;
-    store.responseMessage.msg = error;
-    return { error: true };
+    console.log('Error: ', error, hasJson);
+    if (hasJson) {
+      store.responseMessage.isError = true;
+      store.responseMessage.msg = error;
+      return { error: true };
+    } else {
+      return { error: false };
+    }
+    //return { error: true };
   }
 };
