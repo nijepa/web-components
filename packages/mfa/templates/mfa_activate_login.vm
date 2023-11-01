@@ -1,5 +1,5 @@
 #set( $scriptVersion = "1.00" )
-#set( $page_title  = "Cadooz IPS: $!{messages.get('cips.labels.login')}" )
+#set( $page_title  = "ALDI: $!{messages.get('cips.labels.login')}" )
 #set( $hide_banner = "true" )
 #set( $banner_page_id = "LOG" )
 #set( $template_name = "mfalogin" )
@@ -8,7 +8,7 @@
 #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
 <section>
   <div class="container-xl my-3">
-    <h1 id="islogin" class="site-title" >$mfalogin</h1>
+    <h1 id="islogin" style="display: none">$mfalogin</h1>
     #if($current_website.isMultifactorAuthenticationEnabled())
       <custom-mfa></custom-mfa>
     #end

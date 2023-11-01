@@ -8,7 +8,7 @@
       <div
         :class="!isCips ? 'header-new' : 'header'"
         ref="header"
-        v-if="fromMfaLogin !== 'true'"
+        v-if="!isMfalogin"
       >
         <template v-if="isCips">
           <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
@@ -104,7 +104,7 @@
       </Transition>
       <div
         :class="!isCips ? 'subhead-new' : 'subhead'"
-        v-if="fromMfaLogin !== 'true'"
+        v-if="!isMfalogin"
       >
         <h6>{{ translate('notes.status') }}</h6>
         <h4>{{ translateMfaStatus }}</h4>
@@ -120,7 +120,7 @@
         </Transition>
       </div>
       <hr
-        v-if="isEditing && fromMfaLogin !== 'true'"
+        v-if="isEditing && !isMfalogin"
         :class="!isCips && 'hr-new'"
       />
       <Transition name="slide-up" appear>
@@ -273,6 +273,9 @@ const props = defineProps({
     default: '',
   },
 });
+// convert props data types
+const isMfalogin = computed(() => props.fromMfaLogin === 'true')
+const isMfaHint = computed(() => props.fromMfaHint === 'true')
 // resolve images url's
 const baseurl = resolveUrl('a');
 const footerLogo = ref(
@@ -285,10 +288,10 @@ const ratiow = ref(50);
 const loading = ref(true);
 const isCips = props.appType === 'cips';
 onMounted(async () => {
-  props.fromMfaLogin !== 'true' && (await getMfaStatus());
-  isEditing.value = props.fromMfaHint === 'true';
+  !isMfalogin.value && (await getMfaStatus());
+  isEditing.value = isMfaHint.value;
   isEditing.value && editing(true);
-  if (props.fromMfaLogin === 'true') {
+  if (isMfalogin.value) {
     await mfaGenerateQrCode();
     isEditing.value = true;
   }
@@ -557,7 +560,7 @@ const mfaDownloadBackupCodes = async () => {
       ratio.value / 2
     );
     isEditing.value = false;
-    if (props.fromMfaLogin === 'true') {
+    if (isMfalogin.value) {
       const dashboardUrl = window.location.href.replace('login', 'welcome');
       setTimeout(() => (window.location.href = dashboardUrl), 6000);
     }

@@ -11,6 +11,8 @@ export function resolveBaseUrl(cips = false, action = undefined) {
   if (!cips) {
     const idx = currentUrl.indexOf('frontend') + 9;
     url = insert(currentUrl, idx, 'ajax/');
+    // let position = url.search('login');
+    // if (position >= 0) url = url.replace('login', 'myprofile');
   }
   url = url.replace('.do', '/mfa.do');
   if (cips) url = url.replace('.do', '/' + snakeToCamel(action) + '.do');
