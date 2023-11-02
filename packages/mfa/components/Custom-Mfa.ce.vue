@@ -71,7 +71,7 @@
           <svg
             v-if="!isCips"
             @click="clearMsg(0)"
-            fill="#fff"
+            fill="#808080"
             class="close-msg"
             width="16px"
             height="16px"
@@ -84,13 +84,14 @@
           </svg>
           <svg
             v-if="!isCips"
-            fill="#fff"
+            :fill="responseMsg.isError ? '#e80000' : '#0c7d0c'"
             width="24px"
             height="24px"
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              fill="red"
               v-if="!responseMsg.isError"
               d="M351.605 663.268l481.761-481.761c28.677-28.677 75.171-28.677 103.847 0s28.677 75.171 0 103.847L455.452 767.115l.539.539-58.592 58.592c-24.994 24.994-65.516 24.994-90.51 0L85.507 604.864c-28.677-28.677-28.677-75.171 0-103.847s75.171-28.677 103.847 0l162.25 162.25z"
             />
@@ -292,8 +293,10 @@ onMounted(async () => {
   isEditing.value = isMfaHint.value;
   isEditing.value && editing(true);
   if (isMfalogin.value) {
+  setTimeout(async() => {
     await mfaGenerateQrCode();
     isEditing.value = true;
+  }, 1000)
   }
   let image = new Image();
   image.onload = function () {
@@ -413,7 +416,7 @@ const scrollToElement = () => {
   }
 };
 // handle error & success messages
-const clearMsg = (time = 15000) => {
+const clearMsg = (time = 150000) => {
   setTimeout(() => {
     store.responseMessage.isError = null;
     store.responseMessage.msg = null;
@@ -759,8 +762,9 @@ const mapStates = {
   color: #e80000;
 }
 .error-msg__new {
-  background-color: #e80000;
-  color: #fff;
+  /* background-color: #e80000; */
+  border: 1px solid #e80000;
+  /* color: #fff; */
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
 }
@@ -776,8 +780,9 @@ const mapStates = {
   color: #0c7d0c;
 }
 .success-msg__new {
-  background-color: #0c7d0c;
-  color: #fff;
+  /* background-color: #0c7d0c; */
+  border: 1px solid #0c7d0c;
+  /* color: #fff; */
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
 }
