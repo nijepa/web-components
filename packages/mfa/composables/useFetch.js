@@ -1,13 +1,18 @@
 import { store } from '../store/store';
 export const useFetch = async (url, method, data = undefined, options) => {
   const CONTENT_TYPE = method === 'GET' ? 'application/json' : undefined;
-  let queryParams = "";
-  if (options?.isMfaMandatory) queryParams = `?action=GENERATE_QR_CODE`;
+  let queryParams = '';
+  if (options?.isMfaMandatory) {
+    queryParams =
+      url.includes('?')
+        ? `&action=${data.get('action')}`
+        : `?action=${data.get('action')}`;
+  }
   try {
     console.log('data', data);
     const response = await fetch(url + queryParams, {
       method,
-      body: data
+      body: data,
       // headers: {
       //   'Content-type': 'application/json',
       // },

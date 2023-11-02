@@ -8,7 +8,7 @@
       <div
         :class="!isCips ? 'header-new' : 'header'"
         ref="header"
-        v-if="!isMfalogin"
+        v-if="!isMfaLogin"
       >
         <template v-if="isCips">
           <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
@@ -102,7 +102,7 @@
           {{ responseMsg.msg }}
         </div>
       </Transition>
-      <div :class="!isCips ? 'subhead-new' : 'subhead'" v-if="!isMfalogin">
+      <div :class="!isCips ? 'subhead-new' : 'subhead'" v-if="!isMfaLogin">
         <h6>{{ translate('notes.status') }}</h6>
         <h4>{{ translateMfaStatus }}</h4>
         <Transition name="fade" appear>
@@ -116,7 +116,7 @@
           </button>
         </Transition>
       </div>
-      <hr v-if="isEditing && !isMfalogin" :class="!isCips && 'hr-new'" />
+      <hr v-if="isEditing && !isMfaLogin" :class="!isCips && 'hr-new'" />
       <Transition name="slide-up" appear>
         <div class="main" :class="!isCips && 'main-new'" v-if="isEditing">
           <div class="content">
@@ -268,7 +268,7 @@ const props = defineProps({
   },
 });
 // convert props data types
-const isMfalogin = computed(() => props.fromMfaLogin === 'true');
+const isMfaLogin = computed(() => props.fromMfaLogin === 'true');
 const isMfaHint = computed(() => props.fromMfaHint === 'true');
 // resolve images url's
 const baseurl = resolveUrl('a');
@@ -282,10 +282,10 @@ const ratiow = ref(50);
 const loading = ref(true);
 const isCips = props.appType === 'cips';
 onMounted(async () => {
-  !isMfalogin.value && (await getMfaStatus());
+  !isMfaLogin.value && (await getMfaStatus());
   isEditing.value = isMfaHint.value;
   isEditing.value && editing(true);
-  if (isMfalogin.value) {
+  if (isMfaLogin.value) {
     await mfaGenerateQrCode(true);
     isEditing.value = true;
   }
@@ -493,7 +493,8 @@ const mfaActivate = async () => {
     resolveBaseUrl(isCips, action(ACTIONS.ACTIVATE)) +
       `?sharedSecret=${store.sharedSecret}`,
     METHOD,
-    payload(ACTIONS.ACTIVATE)
+    payload(ACTIONS.ACTIVATE),
+    { isMfaMandatory: isMfaLogin.value }
   );
   if (!received.error) {
     getMfaStatus();
@@ -527,7 +528,7 @@ const mfaCheckVerificationCode = async () => {
     resolveBaseUrl(isCips, action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
     METHOD,
     payload(ACTIONS.CHECK_VERIFICATION_CODE),
-    { hasJson: false }
+    { isMfaMandatory: isMfaLogin.value }
   );
   if (!received.error) {
     mapStates[templateState.value].execute();
@@ -540,7 +541,8 @@ const mfaDownloadBackupCodes = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.DOWNLOAD_BACKUP_CODES)),
     METHOD,
-    payload(ACTIONS.DOWNLOAD_BACKUP_CODES)
+    payload(ACTIONS.DOWNLOAD_BACKUP_CODES),
+    { isMfaMandatory: isMfaLogin.value }
   );
   if (!received.error) {
     verificationCode.value = null;
@@ -555,7 +557,7 @@ const mfaDownloadBackupCodes = async () => {
       ratio.value / 2
     );
     isEditing.value = false;
-    if (isMfalogin.value) {
+    if (isMfaLogin.value) {
       const dashboardUrl = window.location.href.replace('login', 'welcome');
       setTimeout(() => (window.location.href = dashboardUrl), 6000);
     }
