@@ -16,7 +16,6 @@
   }
 </script>
 <div class="content-site">
-  <div id="islogin" style="display: none;">$mfalogin</div>
   <div class="container-xl my-3">
     <h3>Mein Konto</h3>
     <div class="col-sm-12 col-md-12 px-0 mb-5">
@@ -42,6 +41,7 @@ function setAttributes(el, attrs) {
     el.setAttribute(key, attr);
   }
 }
+const mfaLogin = '$mfalogin'
 const mfaProps = {
   translations: {
     #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
@@ -52,6 +52,7 @@ const mfaProps = {
   font: getComputedStyle(document.querySelector('.main-nav')).fontFamily,
   "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
   "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
+  "from-mfa-hint": mfaLogin
 };
 if(mfa)setAttributes(mfa, mfaProps);
 </script>

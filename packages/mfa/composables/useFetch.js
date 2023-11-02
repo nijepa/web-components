@@ -1,18 +1,15 @@
 import { store } from '../store/store';
-export const useFetch = async (
-  url,
-  method,
-  data = undefined,
-  hasJson = true
-) => {
+export const useFetch = async (url, method, data = undefined, options) => {
   const CONTENT_TYPE = method === 'GET' ? 'application/json' : undefined;
+  let queryParams = "";
+  if (options?.isMfaMandatory) queryParams = `?action=GENERATE_QR_CODE`;
   try {
     console.log('data', data);
-    const response = await fetch(url, {
+    const response = await fetch(url + queryParams, {
       method,
-      body: data,
+      body: data
       // headers: {
-      //   'Content-type': CONTENT_TYPE,
+      //   'Content-type': 'application/json',
       // },
     });
     console.log('success', response);
@@ -20,14 +17,14 @@ export const useFetch = async (
     return JSON.parse(text);
     //return hasJson && response.json();
   } catch (error) {
-    console.log('Error: ', error, hasJson);
-    if (hasJson) {
+    console.log('Error: ', error, options?.hasJson);
+    // if (options?.hasJson) {
       store.responseMessage.isError = true;
       store.responseMessage.msg = error;
       return { error: true };
-    } else {
-      return { error: false };
-    }
+    // } else {
+    //   return { error: false };
+    // }
     //return { error: true };
   }
 };

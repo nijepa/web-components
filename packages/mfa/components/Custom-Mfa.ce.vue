@@ -91,7 +91,6 @@
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill="red"
               v-if="!responseMsg.isError"
               d="M351.605 663.268l481.761-481.761c28.677-28.677 75.171-28.677 103.847 0s28.677 75.171 0 103.847L455.452 767.115l.539.539-58.592 58.592c-24.994 24.994-65.516 24.994-90.51 0L85.507 604.864c-28.677-28.677-28.677-75.171 0-103.847s75.171-28.677 103.847 0l162.25 162.25z"
             />
@@ -103,10 +102,7 @@
           {{ responseMsg.msg }}
         </div>
       </Transition>
-      <div
-        :class="!isCips ? 'subhead-new' : 'subhead'"
-        v-if="!isMfalogin"
-      >
+      <div :class="!isCips ? 'subhead-new' : 'subhead'" v-if="!isMfalogin">
         <h6>{{ translate('notes.status') }}</h6>
         <h4>{{ translateMfaStatus }}</h4>
         <Transition name="fade" appear>
@@ -120,10 +116,7 @@
           </button>
         </Transition>
       </div>
-      <hr
-        v-if="isEditing && !isMfalogin"
-        :class="!isCips && 'hr-new'"
-      />
+      <hr v-if="isEditing && !isMfalogin" :class="!isCips && 'hr-new'" />
       <Transition name="slide-up" appear>
         <div class="main" :class="!isCips && 'main-new'" v-if="isEditing">
           <div class="content">
@@ -225,8 +218,8 @@
             </button>
             <div v-else class="error-msg__network">
               <h3>Zwei-Faktor-Identifizierung</h3>
-              <p class="error-msg">Netzwerkfehler!</p> 
-              <p>Bitte versuchen Sie es später noch einmal</p> 
+              <p class="error-msg">Netzwerkfehler!</p>
+              <p>Bitte versuchen Sie es später noch einmal</p>
             </div>
           </div>
         </div>
@@ -275,8 +268,8 @@ const props = defineProps({
   },
 });
 // convert props data types
-const isMfalogin = computed(() => props.fromMfaLogin === 'true')
-const isMfaHint = computed(() => props.fromMfaHint === 'true')
+const isMfalogin = computed(() => props.fromMfaLogin === 'true');
+const isMfaHint = computed(() => props.fromMfaHint === 'true');
 // resolve images url's
 const baseurl = resolveUrl('a');
 const footerLogo = ref(
@@ -293,10 +286,8 @@ onMounted(async () => {
   isEditing.value = isMfaHint.value;
   isEditing.value && editing(true);
   if (isMfalogin.value) {
-  setTimeout(async() => {
-    await mfaGenerateQrCode();
+    await mfaGenerateQrCode(true);
     isEditing.value = true;
-  }, 1000)
   }
   let image = new Image();
   image.onload = function () {
@@ -478,11 +469,12 @@ const getMfaStatus = async () => {
 };
 const qrCodeUrl = ref(null);
 const sharedSecret = ref(null);
-const mfaGenerateQrCode = async () => {
+const mfaGenerateQrCode = async (mfaMandatory = false) => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.GENERATE_QR_CODE)),
     METHOD,
-    payload(ACTIONS.GENERATE_QR_CODE)
+    payload(ACTIONS.GENERATE_QR_CODE),
+    { isMfaMandatory: mfaMandatory }
   );
   if (!received.error) {
     qrCodeUrl.value = received.QrCodeUrl;
@@ -534,8 +526,8 @@ const mfaCheckVerificationCode = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
     METHOD,
-    payload(ACTIONS.CHECK_VERIFICATION_CODE), 
-    false
+    payload(ACTIONS.CHECK_VERIFICATION_CODE),
+    { hasJson: false }
   );
   if (!received.error) {
     mapStates[templateState.value].execute();
