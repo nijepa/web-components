@@ -14,7 +14,7 @@ export const useFetch = async (url, method, data = undefined, options) => {
       method,
       body: data,
       // headers: {
-      //   'Content-type': 'application/json',
+      //   'Content-type': CONTENT_TYPE,
       // },
     });
     console.log('success', response);

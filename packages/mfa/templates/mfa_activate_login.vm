@@ -36,7 +36,7 @@ const mfaProps = {
   font: getComputedStyle(document.querySelector('.main-nav')).fontFamily,
   "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
   "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
-  "from-mfa-login": document.querySelector('#islogin').innerText
+  "from-mfa-login": '$mfalogin'
 };
 setAttributes(mfa, mfaProps);
 </script>

@@ -8,13 +8,6 @@
 #set( $piwikCustomPageViewPath = "Mein_Konto/Mein_Profil" )
 #set( $banner_page_instance = "" )
 #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
-<script>
-  userProfileSettings = {
-    /*fileUploadUrl: "${link.getAction('/myprofile/upload')}",
-    badgeUrl: "${link.getAction('/ajax/admin/badgeassignments/search')}",
-    saveUrl: #if( "$!ajaxProfileSaveUrl" != "" )"$ajaxProfileSaveUrl"#else"${link.getAction("/myprofile/save")}"#end*/
-  }
-</script>
 <div class="content-site">
   <div class="container-xl my-3">
     <h3>Mein Konto</h3>
@@ -28,8 +21,6 @@
     </div>
   </div>
 </div>
-<script src="/scripts/common/threads.js?$scriptVersion"></script>
-<script src="/scripts/cips/user-profile.js?$scriptVersion"></script>
 <script async defer>
 const mfa = document.querySelector("custom-mfa");
 function setAttributes(el, attrs) {
@@ -41,7 +32,6 @@ function setAttributes(el, attrs) {
     el.setAttribute(key, attr);
   }
 }
-const mfaLogin = '$mfalogin'
 const mfaProps = {
   translations: {
     #foreach($resource in ${messages.getResourcesWithPrefix('cips.mfa')})
@@ -52,7 +42,7 @@ const mfaProps = {
   font: getComputedStyle(document.querySelector('.main-nav')).fontFamily,
   "primary-color": getComputedStyle(document.querySelector('.navigation')).backgroundColor,
   "logo-url": getComputedStyle(document.querySelector('.navbar-brand')).backgroundImage,
-  "from-mfa-hint": mfaLogin
+  "from-mfa-hint": '$mfalogin'
 };
 if(mfa)setAttributes(mfa, mfaProps);
 </script>
