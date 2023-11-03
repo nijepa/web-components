@@ -458,7 +458,8 @@ const getMfaStatus = async () => {
   const received = await useFetch(
     resolveBaseUrl(isCips, action(ACTIONS.CHECK_STATUS)),
     METHOD,
-    payload(ACTIONS.CHECK_STATUS)
+    payload(ACTIONS.CHECK_STATUS),
+    { isMfaMandatory: isMfaLogin.value }
   );
   if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
