@@ -7,7 +7,7 @@ export function resolveUrl(path) {
 
 export function resolveBaseUrl(cips = false, action = undefined) {
   const currentUrl = window.location.href;
-  let url = currentUrl;
+  let url = currentUrl.split('?')[0];
   if (!cips) {
     const idx = currentUrl.indexOf('frontend') + 9;
     url = insert(currentUrl, idx, 'ajax/');
