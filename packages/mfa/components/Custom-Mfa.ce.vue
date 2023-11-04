@@ -762,6 +762,7 @@ const mapStates = {
   /* color: #fff; */
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
+  box-shadow: inset 0 0 1px 2px #e8000078;
 }
 .error-msg__network {
   width: 100%;
@@ -780,6 +781,7 @@ const mapStates = {
   /* color: #fff; */
   border-radius: 0.5rem;
   margin: 0 1rem 1rem 1rem;
+  box-shadow: inset 0 0 1px 2px #0c7d0c78;
 }
 .close-msg {
   position: absolute;
