@@ -1,4 +1,5 @@
 import { insert, snakeToCamel } from './helpers';
+import { store } from '../store/store'
 
 export function resolveUrl(path) {
   const currentUrl = window.location.href;
@@ -7,13 +8,20 @@ export function resolveUrl(path) {
 
 export function resolveBaseUrl(cips = false, action = undefined) {
   const currentUrl = window.location.href;
+  const mandatory = store.isMandatory;
   let url = currentUrl.split('?')[0];
   if (!cips) {
-    const idx = currentUrl.indexOf('frontend') + 9;
-    url = insert(currentUrl, idx, 'ajax/');
+    const idx = url.indexOf('frontend') + 9;
+    url = insert(url, idx, 'ajax/');
   }
   url = url.replace('.do', '/mfa.do');
+  if(mandatory) {
+    url = url.replace('cat/view/', 'shop/login/')
+    url = url.replace('welcome', 'login/')
+    url = url.replace('myprofile', 'login/')
+    url = url.replace('logout', 'login/')
+    url = url.replace('basket/view/', 'shop/login/')
+  }
   if (cips) url = url.replace('.do', '/' + snakeToCamel(action) + '.do');
-  console.log('url: ', url);
   return url;
 }

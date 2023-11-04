@@ -6,4 +6,5 @@ export const store = reactive({
     msg: null,
   },
   sharedSecret: "",
+  isMandatory: false
 });

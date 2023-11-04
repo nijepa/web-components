@@ -282,6 +282,7 @@ const ratiow = ref(50);
 const loading = ref(true);
 const isCips = props.appType === 'cips';
 onMounted(async () => {
+  store.isMandatory = isMfaLogin.value
   !isMfaLogin.value && (await getMfaStatus());
   isEditing.value = isMfaHint.value;
   isEditing.value && editing(true);
