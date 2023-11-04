@@ -8,14 +8,13 @@ export function resolveUrl(path) {
 
 export function resolveBaseUrl(cips = false, action = undefined) {
   const currentUrl = window.location.href;
-  const mandatory = store.isMandatory;
   let url = currentUrl.split('?')[0];
   if (!cips) {
     const idx = url.indexOf('frontend') + 9;
     url = insert(url, idx, 'ajax/');
   }
   url = url.replace('.do', '/mfa.do');
-  if(mandatory) {
+  if(store.isMandatory) {
     url = url.replace('cat/view/', 'shop/login/')
     url = url.replace('welcome', 'login/')
     url = url.replace('myprofile', 'login/')
