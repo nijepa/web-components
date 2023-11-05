@@ -73,10 +73,11 @@ export const ACTIONS = {
   GENERATE_NEW_BACKUP_CODES: "GENERATE_NEW_BACKUP_CODES",
 };
 
+const replacements = ["shop/login/", "login/"]
 export const URL_REPLACE = [
-  { origin: "cat/view/", replacement: "shop/login/" },
-  { origin: "welcome", replacement: "login/" },
-  { origin: "myprofile", replacement: "login/" },
-  { origin: "logout", replacement: "login/" },
-  { origin: "basket/view/", replacement: "shop/login/" },
+  { origin: "cat/view/", replacement: replacements[0] },
+  { origin: "welcome", replacement: replacements[1] },
+  { origin: "myprofile", replacement: replacements[1] },
+  { origin: "logout", replacement: replacements[1] },
+  { origin: "basket/view/", replacement: replacements[0] },
 ];
