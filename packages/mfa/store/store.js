@@ -3,8 +3,9 @@ import { reactive } from "vue";
 export const store = reactive({
   responseMessage: {
     isError: null,
-    msg: null,
+    msg: "",
   },
   sharedSecret: "",
-  isMandatory: false
+  isCips: false,
+  isLogin: false,
 });

@@ -8,11 +8,11 @@
       <div
         :class="!isCips ? 'header-new' : 'header'"
         ref="header"
-        v-if="!isMfaLogin"
+        v-if="!isLogin"
       >
         <template v-if="isCips">
           <h1 :style="{ 'font-weight': isEditing ? 600 : 400 }">
-            2. {{ translate('notes.2fa_authentication') }}
+            2. {{ translate("notes.2fa_authentication") }}
           </h1>
           <button class="btn-edit" @click="editing(false)">
             <svg
@@ -102,8 +102,8 @@
           {{ responseMsg.msg }}
         </div>
       </Transition>
-      <div :class="!isCips ? 'subhead-new' : 'subhead'" v-if="!isMfaLogin">
-        <h6>{{ translate('notes.status') }}</h6>
+      <div :class="!isCips ? 'subhead-new' : 'subhead'" v-if="!isLogin">
+        <h6>{{ translate("notes.status") }}</h6>
         <h4>{{ translateMfaStatus }}</h4>
         <Transition name="fade" appear>
           <button
@@ -112,11 +112,11 @@
             class="btn-state"
             :class="!isCips ? 'btn-new' : 'btn'"
           >
-            {{ translate('buttons.edit_2fa') }}
+            {{ translate("buttons.edit_2fa") }}
           </button>
         </Transition>
       </div>
-      <hr v-if="isEditing && !isMfaLogin" :class="!isCips && 'hr-new'" />
+      <hr v-if="isEditing && !isLogin" :class="!isCips && 'hr-new'" />
       <Transition name="slide-up" appear>
         <div class="main" :class="!isCips && 'main-new'" v-if="isEditing">
           <div class="content">
@@ -132,7 +132,7 @@
               </p>
               <div class="note" v-if="item.isNote">
                 <p>
-                  <b>{{ translate('notes.note') }}</b>
+                  <b>{{ translate("notes.note") }}</b>
                 </p>
                 <p
                   v-if="item.isNote && item.tag === 'p' && item.style !== 'b'"
@@ -229,14 +229,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
-import { useFetch } from '../composables/useFetch';
-import { store } from '../store/store';
-import { config, ACTIONS } from '../config/config';
-import { resolveUrl, resolveBaseUrl } from '../utils/resolveUrl';
-import { getDataURL } from '../utils/convertImage';
-import { generateNewPDF } from '../utils/generatePDF';
-import { prepareFormData } from '../utils/prepareFormData';
+import { ref, computed, onMounted, watch } from "vue";
+import { useFetch } from "../composables/useFetch";
+import { store } from "../store/store";
+import { config, ACTIONS } from "../config/config";
+import { resolveUrl, resolveBaseUrl } from "../utils/resolveUrl";
+import { getDataURL } from "../utils/convertImage";
+import { generateNewPDF } from "../utils/generatePDF";
+import { prepareFormData } from "../utils/prepareFormData";
 // setting props
 const props = defineProps({
   translations: {
@@ -244,11 +244,11 @@ const props = defineProps({
   },
   appType: {
     type: String,
-    default: 'cips',
+    default: "cips",
   },
   primaryColor: {
     type: String,
-    default: '#000',
+    default: "#000",
   },
   font: {
     type: String,
@@ -256,40 +256,32 @@ const props = defineProps({
   },
   logoUrl: {
     type: String,
-    default: '',
+    default: "",
   },
   fromMfaLogin: {
     typeof: String,
-    default: '',
+    default: "",
   },
   fromMfaHint: {
     typeof: String,
-    default: '',
+    default: "",
   },
 });
-// convert props data types
-const isMfaLogin = computed(() => props.fromMfaLogin === 'true');
-const isMfaHint = computed(() => props.fromMfaHint === 'true');
-// resolve images url's
-const baseurl = resolveUrl('a');
+// set store, handle props
+const loading = ref(true);
+store.isCips = props.appType === "cips";
+store.isLogin = props.fromMfaLogin === "true"
+const { isCips, isLogin } = store
+const isHint = props.fromMfaHint === "true";
+// resolve images url's & calculate logo ratio
+const baseurl = resolveUrl("a");
 const footerLogo = ref(
-  baseurl.replace('cips/a', 'images/cips/cadooz_IPS_Logo_1c.png')
+  baseurl.replace("cips/a", "images/cips/cadooz_IPS_Logo_1c.png")
 );
-let logo = props.logoUrl.replace('url("', '').replace('")', '');
+let logo = props.logoUrl.replace('url("', "").replace('")', "");
 const ratio = ref(1);
 const ratiow = ref(50);
-// get status & calculate logo ratio
-const loading = ref(true);
-const isCips = props.appType === 'cips';
-onMounted(async () => {
-  store.isMandatory = isMfaLogin.value
-  !isMfaLogin.value && (await getMfaStatus());
-  isEditing.value = isMfaHint.value;
-  isEditing.value && editing(true);
-  if (isMfaLogin.value) {
-    await mfaGenerateQrCode(true);
-    isEditing.value = true;
-  }
+const handleLogo = () => {
   let image = new Image();
   image.onload = function () {
     ratio.value = +(image.width / image.height).toFixed(2);
@@ -299,6 +291,17 @@ onMounted(async () => {
     }
   };
   image.src = logo;
+}
+// get status
+onMounted(async () => {
+  !isLogin && (await getMfaStatus());
+  isEditing.value = isHint;
+  isEditing.value && editing(true);
+  if (isLogin) {
+    await mfaGenerateQrCode(true);
+    isEditing.value = true;
+  }
+  handleLogo()
   loading.value = false;
 });
 // convert images to base64
@@ -326,13 +329,13 @@ const editing = (fromLogin = false) => {
   if (!fromLogin) isEditing.value = !isEditing.value;
   if (networkError.value) {
     store.responseMessage.isError = true;
-    store.responseMessage.msg = 'Network Error';
+    store.responseMessage.msg = "Network Error";
     isEditing.value = false;
     return;
   }
   templateState.value = !mfaStatus.value
-    ? mapStates['activation'].template
-    : mapStates['backup'].template;
+    ? mapStates["activation"].template
+    : mapStates["backup"].template;
 };
 const templateFields = computed(() => {
   return config[templateState.value];
@@ -346,12 +349,12 @@ const getTemplates = (prop) => {
 };
 const changeTemplateState = (template = null) => {
   if (template) {
-    templateState.value = template === 'deactivate' ? 'deactivate' : 'generate';
+    templateState.value = template === "deactivate" ? "deactivate" : "generate";
   } else {
     templateState.value =
-      mfaStatus.value && templateState.value === 'deactivate'
-        ? 'deactivation'
-        : 'download';
+      mfaStatus.value && templateState.value === "deactivate"
+        ? "deactivation"
+        : "download";
   }
   focusInput();
 };
@@ -362,7 +365,7 @@ const getButtonLabel = computed(() => {
     : false;
 });
 const isDisabled = computed(() => {
-  if (getTemplates('execute').includes(templateState.value)) {
+  if (getTemplates("execute").includes(templateState.value)) {
     return !verificationCode.value ||
       ![6, 8].includes(verificationCode.value?.length)
       ? true
@@ -372,26 +375,26 @@ const isDisabled = computed(() => {
 });
 // handle button action
 const leftButtonAction = () => {
-  templateState.value === 'backup'
-    ? changeTemplateState('generate')
-    : (templateState.value = 'backup');
+  templateState.value === "backup"
+    ? changeTemplateState("generate")
+    : (templateState.value = "backup");
 };
 // define verification codes entry rules
 const verificationCode = ref(null);
 watch(
   () => verificationCode.value,
   (newValue, oldValue) => {
-    verificationCode.value = newValue && newValue.replace(/[^0-9]/g, '');
+    verificationCode.value = newValue && newValue.replace(/[^0-9]/g, "");
   }
 );
 // handle mfa status/translation
 const mfaStatus = ref(null);
 const translateMfaStatus = computed(() => {
-  const forTranslation = mfaStatus.value ? 'notes.active' : 'notes.inactive';
+  const forTranslation = mfaStatus.value ? "notes.active" : "notes.inactive";
   return translate(forTranslation);
 });
 // return translations by keys
-const prefix = 'cips.mfa.';
+const prefix = "cips.mfa.";
 const translate = (key) => {
   return JSON.parse(props.translations)[prefix + key];
 };
@@ -404,7 +407,7 @@ const handleClick = () => {
 const header = ref(null);
 const scrollToElement = () => {
   if (header.value) {
-    header.value.scrollIntoView({ behavior: 'smooth' });
+    header.value.scrollIntoView({ behavior: "smooth" });
   }
 };
 // handle error & success messages
@@ -421,16 +424,16 @@ const responseMsg = computed(() => {
 });
 const messageType = computed(() => {
   if (isCips) {
-    return responseMsg.value.isError ? 'error-msg' : 'success-msg';
+    return responseMsg.value.isError ? "error-msg" : "success-msg";
   } else {
-    return responseMsg.value.isError ? 'error-msg__new' : 'success-msg__new';
+    return responseMsg.value.isError ? "error-msg__new" : "success-msg__new";
   }
 });
 const handleMessages = (response) => {
   if (response.error) {
     response.errorMessage =
-      !mfaStatus.value && response.errorReason !== 'session_required'
-        ? translate('error_message.code_incorrect')
+      !mfaStatus.value && response.errorReason !== "session_required"
+        ? translate("error_message.code_incorrect")
         : response.errorMessage;
   }
   store.responseMessage = {
@@ -441,14 +444,14 @@ const handleMessages = (response) => {
 };
 // session expired action
 const handleSessionExpired = (error) => {
-  if (error === 'session_required') {
-    const loginUrl = resolveUrl('login.do');
+  if (error === "session_required") {
+    const loginUrl = resolveUrl("login.do");
     setTimeout(() => (window.location.href = loginUrl), 6000);
   }
 };
 // actions / end-points calls
 const networkError = ref(false);
-const METHOD = isCips ? 'GET' : 'POST';
+const METHOD = isCips ? "GET" : "POST";
 const payload = (name) => {
   return !isCips ? prepareFormData(name) : undefined;
 };
@@ -457,10 +460,10 @@ const action = (name) => {
 };
 const getMfaStatus = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.CHECK_STATUS)),
+    resolveBaseUrl(action(ACTIONS.CHECK_STATUS)),
     METHOD,
     payload(ACTIONS.CHECK_STATUS),
-    { isMfaMandatory: isMfaLogin.value }
+    { isLogin }
   );
   if (!received.error) {
     mfaStatus.value = received.multifactorAuthenticationEnabled;
@@ -473,18 +476,18 @@ const qrCodeUrl = ref(null);
 const sharedSecret = ref(null);
 const mfaGenerateQrCode = async (mfaMandatory = false) => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.GENERATE_QR_CODE)),
+    resolveBaseUrl(action(ACTIONS.GENERATE_QR_CODE)),
     METHOD,
     payload(ACTIONS.GENERATE_QR_CODE),
-    { isMfaMandatory: mfaMandatory }
+    { isLogin: mfaMandatory }
   );
   if (!received.error) {
     qrCodeUrl.value = received.QrCodeUrl;
     sharedSecret.value = received.sharedSecret;
     store.sharedSecret = received.sharedSecret;
-    templateState.value = 'active';
+    templateState.value = "active";
     focusInput();
-    console.info('mfa qrcode', received);
+    console.info("mfa qrcode", received);
   } else {
     loading.value = false;
   }
@@ -492,32 +495,32 @@ const mfaGenerateQrCode = async (mfaMandatory = false) => {
 };
 const mfaActivate = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.ACTIVATE)) +
+    resolveBaseUrl(action(ACTIONS.ACTIVATE)) +
       `?sharedSecret=${store.sharedSecret}`,
     METHOD,
     payload(ACTIONS.ACTIVATE),
-    { isMfaMandatory: isMfaLogin.value }
+    { isLogin }
   );
   if (!received.error) {
     getMfaStatus();
-    templateState.value = 'code';
+    templateState.value = "code";
     verificationCode.value = null;
-    console.info('mfa activate', received);
+    console.info("mfa activate", received);
   }
   handleMessages(received);
-  store.sharedSecret = '';
+  store.sharedSecret = "";
 };
 const mfaDeactivate = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.DEACTIVATE)),
+    resolveBaseUrl(action(ACTIONS.DEACTIVATE)),
     METHOD,
     payload(ACTIONS.DEACTIVATE)
   );
   if (!received.error) {
     getMfaStatus();
-    templateState.value = 'activation';
+    templateState.value = "activation";
     verificationCode.value = null;
-    console.info('mfa deactivate', received);
+    console.info("mfa deactivate", received);
   }
   handleMessages(received);
 };
@@ -527,28 +530,28 @@ const mfaCheckVerificationCode = async () => {
     ? `?verificationCode=${verificationCode.value}&sharedSecret=${sc}`
     : `?verificationCode=${verificationCode.value}`;
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
+    resolveBaseUrl(action(ACTIONS.CHECK_VERIFICATION_CODE)) + path,
     METHOD,
     payload(ACTIONS.CHECK_VERIFICATION_CODE),
-    { isMfaMandatory: isMfaLogin.value }
+    { isLogin }
   );
   if (!received.error) {
     mapStates[templateState.value].execute();
-    console.info('mfa verification', received);
+    console.info("mfa verification", received);
   }
   handleMessages(received);
 };
 const backupCodes = ref([]);
 const mfaDownloadBackupCodes = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.DOWNLOAD_BACKUP_CODES)),
+    resolveBaseUrl(action(ACTIONS.DOWNLOAD_BACKUP_CODES)),
     METHOD,
     payload(ACTIONS.DOWNLOAD_BACKUP_CODES),
-    { isMfaMandatory: isMfaLogin.value }
+    { isLogin }
   );
   if (!received.error) {
     verificationCode.value = null;
-    console.info('mfa download codes', received);
+    console.info("mfa download codes", received);
     backupCodes.value = received.backupCodes;
     generateNewPDF(
       props.primaryColor,
@@ -559,8 +562,8 @@ const mfaDownloadBackupCodes = async () => {
       ratio.value / 2
     );
     isEditing.value = false;
-    if (isMfaLogin.value) {
-      const dashboardUrl = window.location.href.replace('login', 'welcome');
+    if (isLogin) {
+      const dashboardUrl = window.location.href.replace("login", "welcome");
       setTimeout(() => (window.location.href = dashboardUrl), 6000);
     }
   }
@@ -568,70 +571,70 @@ const mfaDownloadBackupCodes = async () => {
 };
 const mfaGenerateNewBackupCodes = async () => {
   const received = await useFetch(
-    resolveBaseUrl(isCips, action(ACTIONS.GENERATE_NEW_BACKUP_CODES)),
+    resolveBaseUrl(action(ACTIONS.GENERATE_NEW_BACKUP_CODES)),
     METHOD,
     payload(ACTIONS.GENERATE_NEW_BACKUP_CODES)
   );
   if (!received.error) {
     verificationCode.value = null;
-    console.info('mfa new backup codes', received);
+    console.info("mfa new backup codes", received);
   }
   handleMessages(received);
 };
 // define all views, translations, actions
 const mapStates = {
   active: {
-    template: 'active',
-    label: 'buttons.activate_2fa',
+    template: "active",
+    label: "buttons.activate_2fa",
     action: mfaCheckVerificationCode,
     execute: mfaActivate,
   },
   activation: {
-    template: 'activation',
-    label: 'buttons.activate_2fa',
+    template: "activation",
+    label: "buttons.activate_2fa",
     action: mfaGenerateQrCode,
   },
   code: {
-    template: 'code',
-    label: 'buttons.download_save_codes',
+    template: "code",
+    label: "buttons.download_save_codes",
     action: mfaDownloadBackupCodes,
   },
   backup: {
-    template: 'backup',
-    label: 'buttons.download_save_codes',
+    template: "backup",
+    label: "buttons.download_save_codes",
     action: changeTemplateState,
-    leftBtn: 'buttons.generate_codes',
+    leftBtn: "buttons.generate_codes",
   },
   deactivate: {
-    template: 'deactivate',
-    label: 'buttons.2fa_disable',
+    template: "deactivate",
+    label: "buttons.2fa_disable",
     action: changeTemplateState,
   },
   inputs: {
-    template: 'inputs',
-    label: 'buttons.confirm_entry',
+    template: "inputs",
+    label: "buttons.confirm_entry",
     action: mfaCheckVerificationCode,
-    leftBtn: 'buttons.abort',
+    leftBtn: "buttons.abort",
   },
   generate: {
-    template: 'generate',
-    label: 'buttons.confirm_entry',
+    template: "generate",
+    label: "buttons.confirm_entry",
     action: mfaCheckVerificationCode,
-    leftBtn: 'buttons.abort',
+    leftBtn: "buttons.abort",
     execute: mfaGenerateNewBackupCodes,
   },
   download: {
-    template: 'download',
-    label: 'buttons.confirm_entry',
+    template: "download",
+    label: "buttons.confirm_entry",
     action: mfaCheckVerificationCode,
-    leftBtn: 'buttons.abort',
+    leftBtn: "buttons.abort",
     execute: mfaDownloadBackupCodes,
   },
   deactivation: {
-    template: 'deactivation',
-    label: 'buttons.confirm_entry',
+    template: "deactivation",
+    label: "buttons.confirm_entry",
     action: mfaCheckVerificationCode,
-    leftBtn: 'buttons.abort',
+    leftBtn: "buttons.abort",
     execute: mfaDeactivate,
   },
 };
@@ -1076,7 +1079,7 @@ hr {
 }
 .loader::after,
 .loader::before {
-  content: '';
+  content: "";
   box-sizing: border-box;
   width: 48px;
   height: 48px;
