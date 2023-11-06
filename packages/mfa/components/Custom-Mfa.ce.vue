@@ -232,7 +232,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { store } from '../store/store';
-import { config, ACTIONS } from '../config/config';
+import { config, TEMPLATES, ACTIONS } from '../config/config';
 import { resolveUrl, resolveBaseUrl } from '../utils/resolveUrl';
 import { getDataURL } from '../utils/convertImage';
 import { generateNewPDF } from '../utils/generatePDF';
@@ -334,8 +334,8 @@ const editing = (fromLogin = false) => {
     return;
   }
   templateState.value = !mfaStatus.value
-    ? mapStates['activation'].template
-    : mapStates['backup'].template;
+    ? mapStates[TEMPLATES.ACTIVATION].template
+    : mapStates[TEMPLATES.BACKUP].template;
 };
 const templateFields = computed(() => {
   return config[templateState.value];
@@ -349,12 +349,12 @@ const getTemplates = (prop) => {
 };
 const changeTemplateState = (template = null) => {
   if (template) {
-    templateState.value = template === 'deactivate' ? 'deactivate' : 'generate';
+    templateState.value = template === TEMPLATES.DEACTIVATE ? TEMPLATES.DEACTIVATE : TEMPLATES.GENARATE;
   } else {
     templateState.value =
-      mfaStatus.value && templateState.value === 'deactivate'
-        ? 'deactivation'
-        : 'download';
+      mfaStatus.value && templateState.value === TEMPLATES.DEACTIVATE
+        ? TEMPLATES.DEACTIVATION
+        : TEMPLATES.DOWNLOAD;
   }
   focusInput();
 };
@@ -375,12 +375,12 @@ const isDisabled = computed(() => {
 });
 // handle button action
 const leftButtonAction = () => {
-  if (templateState.value === 'active') {
+  if (templateState.value === TEMPLATES.ACTIVE) {
     mfaCancel();
   } else {
-    templateState.value === 'backup'
-      ? changeTemplateState('generate')
-      : (templateState.value = 'backup');
+    templateState.value === TEMPLATES.BACKUP
+      ? changeTemplateState(TEMPLATES.GENARATE)
+      : (templateState.value = TEMPLATES.BACKUP);
   }
 };
 // define verification codes entry rules
@@ -596,30 +596,30 @@ const mfaCancel = () => {
 // define all views, translations, actions
 const mapStates = {
   active: {
-    template: 'active',
+    template: TEMPLATES.ACTIVE,
     label: 'buttons.activate_2fa',
     action: mfaCheckVerificationCode,
     execute: mfaActivate,
     leftBtn: 'buttons.abort',
   },
   activation: {
-    template: 'activation',
+    template: TEMPLATES.ACTIVATION,
     label: 'buttons.activate_2fa',
     action: mfaGenerateQrCode,
   },
   code: {
-    template: 'code',
+    template: TEMPLATES.CODE,
     label: 'buttons.download_save_codes',
     action: mfaDownloadBackupCodes,
   },
   backup: {
-    template: 'backup',
+    template: TEMPLATES.BACKUP,
     label: 'buttons.download_save_codes',
     action: changeTemplateState,
     leftBtn: 'buttons.generate_codes',
   },
   deactivate: {
-    template: 'deactivate',
+    template: TEMPLATES.DEACTIVATE,
     label: 'buttons.2fa_disable',
     action: changeTemplateState,
   },
@@ -630,21 +630,21 @@ const mapStates = {
     leftBtn: 'buttons.abort',
   },
   generate: {
-    template: 'generate',
+    template: TEMPLATES.GENARATE,
     label: 'buttons.confirm_entry',
     action: mfaCheckVerificationCode,
     leftBtn: 'buttons.abort',
     execute: mfaGenerateNewBackupCodes,
   },
   download: {
-    template: 'download',
+    template: TEMPLATES.DOWNLOAD,
     label: 'buttons.confirm_entry',
     action: mfaCheckVerificationCode,
     leftBtn: 'buttons.abort',
     execute: mfaDownloadBackupCodes,
   },
   deactivation: {
-    template: 'deactivation',
+    template: TEMPLATES.DEACTIVATION,
     label: 'buttons.confirm_entry',
     action: mfaCheckVerificationCode,
     leftBtn: 'buttons.abort',

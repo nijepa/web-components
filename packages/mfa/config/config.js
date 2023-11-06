@@ -1,3 +1,14 @@
+export const TEMPLATES = {
+  ACTIVATION: 'activation',
+  ACTIVE: 'active',
+  CODE: 'code',
+  BACKUP: 'backup',
+  DEACTIVATE: 'deactivate',
+  GENARATE: 'generate',
+  DOWNLOAD: 'download',
+  DEACTIVATION: 'deactivation',
+}
+
 export const config = {
   activation: [
     { label: 'notes.important_note_title', tag: 'h3', class: 'content-title' },
