@@ -18,11 +18,6 @@ export function resolveBaseUrl(action = undefined) {
   if (store.isLogin) {
     const found = URL_REPLACE.find((val) => url.includes(val.origin));
     url = url.replace(found.origin, found.replacement);
-    // url = url.replace('cat/view/', 'shop/login/')
-    // url = url.replace('welcome', 'login/')
-    // url = url.replace('myprofile', 'login/')
-    // url = url.replace('logout', 'login/')
-    // url = url.replace('basket/view/', 'shop/login/')
   }
   if (store.isCips)
     url = url.replace(".do", "/" + snakeToCamel(action) + ".do");

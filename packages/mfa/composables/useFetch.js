@@ -19,16 +19,10 @@ export const useFetch = async (url, method, data = undefined, options) => {
     console.log("success", response);
     const text = await response.text(); // Parse it as text
     return JSON.parse(text);
-    //return hasJson && response.json();
   } catch (error) {
     console.log("Error: ", error);
-    // if (options?.hasJson) {
     store.responseMessage.isError = true;
     store.responseMessage.msg = error;
     return { error: true };
-    // } else {
-    //   return { error: false };
-    // }
-    //return { error: true };
   }
 };
