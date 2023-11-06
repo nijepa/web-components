@@ -1,11 +1,11 @@
-import { reactive } from "vue";
+import { reactive } from 'vue';
 
 export const store = reactive({
   responseMessage: {
     isError: null,
-    msg: "",
+    msg: '',
   },
-  sharedSecret: "",
+  sharedSecret: '',
   isCips: false,
   isLogin: false,
 });
