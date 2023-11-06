@@ -1,11 +1,12 @@
 #set( $scriptVersion = "1.00" )
-#set( $page_title  = "Cadooz IPS: $!{messages.get('cips.labels.login')}" )
+#set( $page_title  = "ALDI: $!{messages.get('cips.labels.login')}" )
 #set( $hide_banner = "true" )
 #set( $banner_page_id = "LOG" )
 #set( $template_name = "mfalogin" )
 #set( $piwikCustomPageTitle = "MfaLogin" )
 #set( $piwikCustomPageViewPath = "MfaLogin" )
 #set( $login = $basket.getAccountLogin(true) )
+#set( $mfa = true )
 <style>
 .input-code__wrapper {
   display: flex;
@@ -55,7 +56,7 @@
                 </div>
                 <div class="row row-actions mt-3">
                   <div class="col-xs-12 col-lg-6 left-col input-code__wrapper">
-                    <input type="submit" class="btn btn-primary input-code__btn" id="cancelButton" name="submit" title="test" value="$!helper.cleanXSS($messages.get('cips.mfa.buttons.abort'))" tabindex="$tabIndex"/>
+                    <a href="$link.getAction('/shop/login/mfa.do?action=cancel')" class="btn btn-primary input-code__btn" id="cancelButton" name="submit" title="test" >$!helper.cleanXSS($messages.get('cips.mfa.buttons.abort'))></a>
                   </div>
                   <div class="col-xs-12 col-lg-6 right-col input-code__wrapper">
                     <input type="submit" class="btn btn-primary btn-default right input-code__btn" id="submitButton" name="submit" title="test" value="$!helper.cleanXSS($messages.get('cips.mfa.buttons.confirm_entry'))" tabindex="$tabIndex"/>

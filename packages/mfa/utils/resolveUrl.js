@@ -7,10 +7,11 @@ export function resolveUrl(path) {
   return currentUrl.slice(0, currentUrl.search('/cips/') + 6) + path;
 }
 
-export function resolveBaseUrl(action = undefined) {
+export function resolveBaseUrl(action = undefined, options = false) {
   const currentUrl = window.location.href;
+  console.log(333, options)
   let url = currentUrl.split('?')[0];
-  if (!store.isCips) {
+  if (!store.isCips && !options) {
     const idx = url.indexOf('frontend') + 9;
     url = insert(url, idx, 'ajax/');
   }
@@ -19,7 +20,9 @@ export function resolveBaseUrl(action = undefined) {
     const found = URL_REPLACE.find((val) => url.includes(val.origin));
     if (found) url = url.replace(found.origin, found.replacement);
   }
-  if (store.isCips)
+  if (store.isCips) {
     url = url.replace('.do', '/' + snakeToCamel(action) + '.do');
+    url = url.replace('/cancel', "")
+  }
   return url;
 }

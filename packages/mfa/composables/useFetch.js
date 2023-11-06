@@ -2,7 +2,7 @@ import { store } from '../store/store';
 export const useFetch = async (url, method, data = undefined, options) => {
   const CONTENT_TYPE = method === 'GET' ? 'application/json' : undefined;
   let queryParams = '';
-  if (options?.isLogin) {
+  if (options?.isLogin && !store.isCips) {
     queryParams = url.includes('?')
       ? `&action=${data.get('action')}`
       : `?action=${data.get('action')}`;
