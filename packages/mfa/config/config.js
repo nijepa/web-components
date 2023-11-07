@@ -10,7 +10,7 @@ export const TEMPLATES = {
 }
 
 export const config = {
-  activation: [
+  [TEMPLATES.ACTIVATION]: [
     { label: 'notes.important_note_title', tag: 'h3', class: 'content-title' },
     { label: 'notes.mfa_info_01', tag: 'p' },
     { label: 'notes.mfa_info_011', tag: 'p' },
@@ -18,7 +18,7 @@ export const config = {
     { label: 'notes.mfa_info_013', tag: 'p' },
     { label: 'notes.mfa_info_014', tag: 'p', style: 'b' },
   ],
-  active: [
+  [TEMPLATES.ACTIVE]: [
     { label: 'buttons.activate_2fa', tag: 'h3', class: 'content-title' },
     { label: 'notes.mfa_info_02', tag: 'p', isNote: true },
     { label: 'notes.installation_instruction', tag: 'p' },
@@ -38,19 +38,19 @@ export const config = {
     { label: '', tag: 'sec' },
     { label: 'notes.installation_steps3', tag: 'p' },
   ],
-  code: [
+  [TEMPLATES.CODE]: [
     { label: 'notes.important_note_title', tag: 'h3', class: 'content-title' },
     { label: 'notes.download_code_info', tag: 'p', isNote: true },
     { label: 'notes.backup_codes', tag: 'p' },
     { label: 'notes.backup_codes_info', tag: 'p' },
     { label: 'notes.backup_codes_info2', tag: 'p', style: 'b' },
   ],
-  backup: [
+  [TEMPLATES.BACKUP]: [
     { label: 'notes.backup_codes', tag: 'h3', class: 'content-title' },
     { label: 'notes.important_codes_info', tag: 'p' },
     { label: 'notes.backup_codes_info2', tag: 'p', style: 'b' },
   ],
-  deactivate: [
+  [TEMPLATES.DEACTIVATE]: [
     { label: 'notes.disable_2fa', tag: 'h3', class: 'content-title' },
     { label: 'notes.mfa_info_02', tag: 'p', isNote: true },
     { label: 'notes.change_device', tag: 'p', style: 'b' },
@@ -59,16 +59,16 @@ export const config = {
     { label: 'notes.disable_2fa', tag: 'p', style: 'b' },
     { label: 'notes.confirm_disable_2fa', tag: 'p' },
   ],
-  generate: [
+  [TEMPLATES.GENARATE]: [
     { label: 'notes.enter_code', tag: 'h3', class: 'content-title' },
     { label: 'notes.generate_codes', tag: 'p' },
   ],
-  download: [
+  [TEMPLATES.DOWNLOAD]: [
     { label: 'notes.save_codes', tag: 'h3', class: 'content-title' },
     { label: 'notes.received_codes_info', tag: 'p' },
     { label: 'notes.received_codes_info2', tag: 'p' },
   ],
-  deactivation: [
+  [TEMPLATES.DEACTIVATION]: [
     { label: 'notes.deactivate', tag: 'h3', class: 'content-title' },
     { label: 'notes.generate_codes', tag: 'p' },
   ],

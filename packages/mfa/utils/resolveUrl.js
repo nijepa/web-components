@@ -9,7 +9,6 @@ export function resolveUrl(path) {
 
 export function resolveBaseUrl(action = undefined, options = false) {
   const currentUrl = window.location.href;
-  console.log(333, options)
   let url = currentUrl.split('?')[0];
   if (!store.isCips && !options) {
     const idx = url.indexOf('frontend') + 9;

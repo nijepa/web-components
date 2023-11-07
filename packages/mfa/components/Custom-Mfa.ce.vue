@@ -415,7 +415,7 @@ const scrollToElement = () => {
   }
 };
 // handle error & success messages
-const clearMsg = (time = 150000) => {
+const clearMsg = (time = 15000) => {
   setTimeout(() => {
     store.responseMessage.isError = null;
     store.responseMessage.msg = null;
