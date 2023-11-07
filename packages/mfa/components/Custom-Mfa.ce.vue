@@ -489,7 +489,7 @@ const mfaGenerateQrCode = async (mfaMandatory = false) => {
     qrCodeUrl.value = received.QrCodeUrl;
     sharedSecret.value = received.sharedSecret;
     store.sharedSecret = received.sharedSecret;
-    templateState.value = 'active';
+    templateState.value = TEMPLATES.ACTIVE;
     focusInput();
     console.info('mfa qrcode', received);
   } else {
@@ -507,7 +507,7 @@ const mfaActivate = async () => {
   );
   if (!received.error) {
     getMfaStatus();
-    templateState.value = 'code';
+    templateState.value = TEMPLATES.CODE;
     verificationCode.value = null;
     console.info('mfa activate', received);
   }
@@ -522,7 +522,7 @@ const mfaDeactivate = async () => {
   );
   if (!received.error) {
     getMfaStatus();
-    templateState.value = 'activation';
+    templateState.value = TEMPLATES.ACTIVATION;
     verificationCode.value = null;
     console.info('mfa deactivate', received);
   }
