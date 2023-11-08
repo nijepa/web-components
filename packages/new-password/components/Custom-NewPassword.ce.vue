@@ -1,14 +1,33 @@
 <template>
-  <div key="1" class="center-screen" v-if="loading === constants.LOADING.INIT">
+  <div key="1" class="center-screen" v-if="loading === constants.LOADING.INIT && !isMsg">
     <span class="loader"></span>
   </div>
 
-  <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR">
+  <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR && !isMsg">
     {{ apiError.message }}
   </div>
 
+  <Transition name="slide-fall" appear>
+    <div class="success" v-if="isMsg">
+      <svg
+        width="48"
+        height="48"
+        fill="rgb(110, 181, 49)"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+        />
+        <path
+          d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"
+        />
+      </svg>
+      <h3>grrrrrrrrrrrr</h3>
+    </div>
+  </Transition>
+
   <Transition name="slide-fade" mode="out-in">
-    <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS">
+    <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS && !isMsg">
       <svg
         width="48"
         height="48"
@@ -27,7 +46,7 @@
   </Transition>
 
   <Transition name="slide-fade">
-    <div key="4" v-if="loading === constants.LOADING.DONE">
+    <div key="4" v-if="loading === constants.LOADING.DONE && !isMsg">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
           <div
@@ -233,8 +252,12 @@ const props = defineProps({
     type: String,
     default: 'HCAPTCHA',
   },
+  isOnlyMessage: {
+    type: String,
+    default: 'false'
+  }
 });
-
+const isMsg = props.isOnlyMessage === 'true'
 // TODO prepare translations
 // const $tr = JSON.parse(props.translations);
 // console.log('translations', $tr);
@@ -616,6 +639,17 @@ pre {
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: scaleY(0);
+  opacity: 0;
+}
+.slide-fall-enter-active {
+  transition: all 1s ease;
+}
+.slide-fall-leave-active {
+  //transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fall-enter-from,
+.slide-fall-leave-to {
+  transform: translateY(-200px);
   opacity: 0;
 }
 </style>
