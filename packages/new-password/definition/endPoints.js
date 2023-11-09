@@ -37,4 +37,11 @@ export const endPoints = new Map([
       },
     },
   ],
+  [
+    'requestEmail',
+    {
+      method: 'POST',
+      url: `/reset/websites/website_uuid/users/user_uuid`,
+    },
+  ],
 ]);

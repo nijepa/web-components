@@ -7,7 +7,8 @@ export function resolveUrl(context, path) {
 
 export function getAttr() {
   // FIXME remove when live/testing and pass prop in function instead
-  const currentUrl ='https://employee-benefit-club.cadooztest.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
+  //const currentUrl ='https://employee-benefit-club.cadooztest.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
+  const currentUrl = window.location.href
   const url = new URL(currentUrl)
   const params1 = new URLSearchParams(url.search);
   const returnUrl = decodeURIComponent(params1.get('attr'));
@@ -20,8 +21,9 @@ export function getAppID() {
 }
 
 export function genarateRedirectUrl(appType) {
-  const currentUrl =
-    'https://employee-benefit-club.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
+  const currentUrl = window.location.href
+  // const currentUrl =
+  //   'https://employee-benefit-club.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
   let url = currentUrl.slice(0, currentUrl.search(/\./) + 4);
   if (appConfig.get(appType).hasFrontendUrl) {
     url = url + 'frontend/';

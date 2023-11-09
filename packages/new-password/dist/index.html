@@ -102,13 +102,15 @@
           <label for="secondary">Secondary</label>
         </div>
       </div>
+      <button id="dataid"  onclick="getId()">click</button>
     </div>
-
+<button onclick="resetPassword">qqqq</button>
     <div id="app">
       <custom-new-password
         app-type="taxfreenoncashbenefit"
         component-type="new"
         language="en"
+
       >
       </custom-new-password>
     </div>
@@ -137,6 +139,19 @@
       const selectSecondary = (e) => {
         pass.setAttribute('secondary-color', e.value);
       };
+      const id = document.querySelector('#dataid')
+      const getId = () => {
+        setTimeout(() => {
+          id.value = 1
+        }, 1000)
+        
+      }
+      
+      console.log(id)
+      id.addEventListener('click', (e) => {
+        console.log(e.target.value)
+        alert(e.target.value)
+      })
     </script>
   </body>
 </html>

@@ -1,20 +1,23 @@
 <template>
-  <div key="1" class="center-screen" v-if="loading === constants.LOADING.INIT && !isMsg">
+  <div
+    key="1"
+    class="center-screen"
+    v-if="loading === constants.LOADING.INIT && !isMsg"
+  >
     <span class="loader"></span>
   </div>
 
-  <div key="2" class="general-error" v-if="loading === constants.LOADING.ERROR && !isMsg">
+  <div
+    key="2"
+    class="general-error"
+    v-if="loading === constants.LOADING.ERROR && !isMsg"
+  >
     {{ apiError.message }}
   </div>
 
   <Transition name="slide-fall" appear>
-    <div class="success" v-if="isMsg">
-      <svg
-        width="48"
-        height="48"
-        fill="rgb(110, 181, 49)"
-        viewBox="0 0 16 16"
-      >
+    <div class="msg" v-if="isMsg && msgText">
+      <svg width="16" height="16" fill="rgb(110, 181, 49)" viewBox="0 0 16 16">
         <path
           d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
         />
@@ -22,18 +25,17 @@
           d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"
         />
       </svg>
-      <h3>grrrrrrrrrrrr</h3>
+      <h3>{{ msgText }}</h3>
     </div>
   </Transition>
 
   <Transition name="slide-fade" mode="out-in">
-    <div key="3" class="success" v-if="loading === constants.LOADING.SUCCESS && !isMsg">
-      <svg
-        width="48"
-        height="48"
-        fill="rgb(110, 181, 49)"
-        viewBox="0 0 16 16"
-      >
+    <div
+      key="3"
+      class="success"
+      v-if="loading === constants.LOADING.SUCCESS && !isMsg"
+    >
+      <svg width="48" height="48" fill="rgb(110, 181, 49)" viewBox="0 0 16 16">
         <path
           d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
         />
@@ -254,13 +256,40 @@ const props = defineProps({
   },
   isOnlyMessage: {
     type: String,
-    default: 'false'
-  }
-});
-const isMsg = props.isOnlyMessage === 'true'
+    default: 'false',
+  },
+});repositoryUri
+const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
+const msgText = ref('');
 // TODO prepare translations
 // const $tr = JSON.parse(props.translations);
 // console.log('translations', $tr);
+
+const resetPassword = (uid, wid) => {
+  setTimeout(()=> {
+    msgText.value = ""
+  }, 6000)
+  let url = endPoints.get(constants.API_TYPES.REQUEST).url.replace('website_uuid', wid)
+  url = url.replace('user_uuid', uid)
+  useFetch({url:'api.srv-test05.cadooz.systems/password/rest/v1'+url, method: 'POST'}).then((response) => {
+      if (response.status >= 200 && response.status <= 300) {
+        console.log(response)
+      }
+      if (response.status >= 400) {
+        console.log(400, response)
+        loading.value = constants.LOADING.ERROR;
+      }
+      if (response.error) {
+        console.log('error', response)
+        apiError.value = response.errorMsg;
+        loading.value = constants.LOADING.ERROR;
+      }
+      msgText.value = response;
+    });
+  
+  console.log('ihaaaaaaaa!!!');
+};
+defineExpose({ resetPassword });
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
@@ -494,21 +523,21 @@ const getInitData = () => {
   passwordLength.value.max = 10;
 
   if (environment === 'production') {
-  useFetch(endPoint).then((response) => {
-    if (response.status === 200) {
-      userUuid.value = response.user_uuid;
-      passwordLength.value.min = response.minimum_length;
-      passwordLength.value.max = response.maximum_length;
-    }
-    if (response.status >= 400) {
-      loading.value = constants.LOADING.ERROR;
-    }
-    if (response.error) {
-      apiError.value = response.errorMsg;
-      loading.value = constants.LOADING.ERROR;
-    }
-  });
-}
+    useFetch(endPoint).then((response) => {
+      if (response.status === 200) {
+        userUuid.value = response.user_uuid;
+        passwordLength.value.min = response.minimum_length;
+        passwordLength.value.max = response.maximum_length;
+      }
+      if (response.status >= 400) {
+        loading.value = constants.LOADING.ERROR;
+      }
+      if (response.error) {
+        apiError.value = response.errorMsg;
+        loading.value = constants.LOADING.ERROR;
+      }
+    });
+  }
   //loading.value = constants.LOADING.DONE;
 };
 // handling hCaptcha
@@ -630,6 +659,21 @@ pre {
   border: none;
   margin-bottom: 0;
 }
+.msg {
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  z-index: 111;
+  background: white;
+  padding: 1rem;
+  box-shadow: 0 0.125rem 0.5rem rgba(34, 34, 34, 0.12);
+}
 .slide-fade-enter-active {
   transition: all 0.5s ease;
 }
@@ -645,11 +689,11 @@ pre {
   transition: all 1s ease;
 }
 .slide-fall-leave-active {
-  //transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 1s ease;
 }
 .slide-fall-enter-from,
 .slide-fall-leave-to {
-  transform: translateY(-200px);
+  transform: translateY(-500px);
   opacity: 0;
 }
 </style>

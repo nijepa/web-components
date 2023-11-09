@@ -8,6 +8,7 @@ export const GLOBALS = {
 export const COMP_TYPES = {
   FORGOT: 'forgot',
   NEW: 'new',
+  MESSAGE: 'msg'
 };
 export const CAPTCHA_TYPE = {
   HCAPTCHA: 'HCAPTCHA',
@@ -17,6 +18,7 @@ export const API_TYPES = {
   FORGOT: 'forgotPassword',
   VALIDATE: 'validateEmailLink',
   NEW: 'newPassword',
+  REQUEST: 'requestEmail'
 };
 export const LOADING = {
   INIT: 'init',
