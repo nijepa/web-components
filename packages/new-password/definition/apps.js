@@ -52,14 +52,23 @@ export const appConfig = new Map([
     },
   ],
   [
-    'renault',
+    "renault",
     {
-      hasCaptcha: true,
-      hasLabels: true,
       hasUsername: true,
-      hasFrontendUrl: true,
+      hasLabels: true,
+      hasCaptcha: true,
       hasAppTypeUrl: true,
-      appType: 'oip'
+      appType: "renault",
+    },
+  ],
+  [
+    "serviceapps",
+    {
+      hasUsername: true,
+      hasLabels: true,
+      hasCaptcha: true,
+      hasAppTypeUrl: true,
+      appType: "serviceapps",
     },
   ],
 ]);

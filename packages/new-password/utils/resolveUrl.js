@@ -1,10 +1,14 @@
 import { appConfig } from '../definition/apps';
 import { PREFIX, REDIRECTION } from '../config/constants';
-export function resolveUrl(context, path) {
-  const currentUrl = window.location.href;
-  return currentUrl.slice(0, currentUrl.search(`${context}/`) + 6) + path;
-}
+// export function resolveUrl(context, path) {
+//   const currentUrl = window.location.href;
+//   return currentUrl.slice(0, currentUrl.search(`${context}/`) + 6) + path;
+// }
 
+export function resolveUrl() {
+  const { hostname } = new URL(window.location.href);
+  return hostname 
+}
 export function getAttr() {
   // FIXME remove when live/testing and pass prop in function instead
   //const currentUrl ='https://employee-benefit-club.cadooztest.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
@@ -15,6 +19,10 @@ export function getAttr() {
   return returnUrl;
 }
 
+export function getSessionId() {
+  const currentUrl = window.location.href
+  return currentUrl.slice(currentUrl.search('=')+1)
+}
 export function getAppID() {
   const { hostname } = new URL(window.location.href);
   return 'https://' + hostname 

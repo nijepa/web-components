@@ -212,6 +212,7 @@ import {
   resolveUrl,
   getAppID,
   genarateRedirectUrl,
+  getSessionId
 } from '../utils/resolveUrl';
 import { appConfig } from '../definition/apps';
 import { endPoints } from '../definition/endPoints';
@@ -258,7 +259,7 @@ const props = defineProps({
     type: String,
     default: 'false',
   },
-});repositoryUri
+});
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
 const msgText = ref('');
 // TODO prepare translations
@@ -269,9 +270,12 @@ const resetPassword = (uid, wid) => {
   setTimeout(()=> {
     msgText.value = ""
   }, 6000)
-  let url = endPoints.get(constants.API_TYPES.REQUEST).url.replace('website_uuid', wid)
-  url = url.replace('user_uuid', uid)
-  useFetch({url:'api.srv-test05.cadooz.systems/password/rest/v1'+url, method: 'POST'}).then((response) => {
+  const endPoint = endPoints.get(constants.API_TYPES.REQUEST);
+  endPoint.params.jsessionid = getSessionId();
+  endPoint.url = endPoint.url.replace('website_uuid', wid)
+  endPoint.url = endPoint.url.replace('user_uuid', uid)
+  console.log(8, endPoint)
+  useFetch(endPoint).then((response) => {
       if (response.status >= 200 && response.status <= 300) {
         console.log(response)
       }
@@ -414,11 +418,12 @@ const onSubmit = () => {
       endPoint.payload.username = inputOne.value;
       endPoint.payload.email = inputTwo.value;
       endPoint.payload.language_id = props.language;
+      endPoint.payload.captcha_response = captchaToken.value;
     }
     endPoint.payload.website_uuid = props.websiteUuid;
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
-    // useFetch(endPoint);
+    useFetch(endPoint);
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
