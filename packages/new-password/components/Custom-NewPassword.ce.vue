@@ -258,7 +258,7 @@ const props = defineProps({
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
 const msgText = ref('');
 // TODO prepare translations
-// const $tr = JSON.parse(props.translations);
+const $tr = JSON.parse(props.translations);
 // console.log('translations', $tr);
 
 const resetPassword = (uid, wid) => {
@@ -267,8 +267,15 @@ const resetPassword = (uid, wid) => {
   }, 6000);
   const endPoint = endPoints.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
-  endPoint.url = endPoint.url.replace('website_uuid', wid);
-  endPoint.url = endPoint.url.replace('user_uuid', uid);
+  const replacements = {
+    website_uuid: wid,
+    user_uuid: uid
+  }
+  Object.keys(replacements).forEach((e) => {
+    endPoint = endPoint.replace(e, replacements[e])
+  })
+  // endPoint.url = endPoint.url.replace('website_uuid', wid);
+  // endPoint.url = endPoint.url.replace('user_uuid', uid);
   console.log(8, endPoint);
   useFetch(endPoint).then((response) => {
     if (response.status >= 200 && response.status <= 300) {

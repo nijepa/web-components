@@ -1,6 +1,7 @@
+import { COMP_TYPES } from '../config/constants'
 export const compDefinition = new Map([
   [
-    'forgot',
+    [COMP_TYPES.FORGOT],
     {
       config: {
         inputOneType: 'text',
@@ -13,7 +14,7 @@ export const compDefinition = new Map([
     },
   ],
   [
-    'new',
+    [COMP_TYPES.NEW],
     {
       config: {
         inputOneType: 'password',

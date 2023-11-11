@@ -11,6 +11,26 @@ export const COMP_TYPES = {
   NEW: 'new',
   MESSAGE: 'msg'
 };
+export const APPS = {
+  EBC: 'taxfreenoncashbenefit',
+  IM: 'mall',
+  CIPS: 'cips',
+  OIP: 'oip',
+  OTTO: 'otto',
+  RENAULT: 'renault',
+  SERVICE: 'serviceapps'
+}
+export const CONDITIONS = {
+  PLACEHOLDERS: 'hasPlaceholders',
+  LABELS: 'hasLabels',
+  CAPTCHA: 'hasCaptcha',
+  USERNAME: 'hasUsername',
+  ERROR_BORDER: 'hasErrorBorder',
+  INDEX: 'hasIndexUrl',
+  FRONTEND: 'hasFrontendUrl',
+  APP_TYPE: 'hasAppTypeUrl',
+  ICONS: 'hasInputIcons',
+};
 export const CAPTCHA_TYPE = {
   HCAPTCHA: 'HCAPTCHA',
   RECAPTCHA: 'RECAPTCHA'
@@ -38,17 +58,6 @@ export const PASSWORD_REGEX = (passwordLength) => {
   return new RegExp(
     `(?=.*|\d)(?=.*[0-9])(?=.*[@$!%*?&])(?=.*[a-z])(?=.*[A-Z]).{${passwordLength.min},${passwordLength.max}}`
   );
-};
-export const CONDITIONS = {
-  PLACEHOLDERS: 'hasPlaceholders',
-  LABELS: 'hasLabels',
-  CAPTCHA: 'hasCaptcha',
-  USERNAME: 'hasUsername',
-  ERROR_BORDER: 'hasErrorBorder',
-  INDEX: 'hasIndexUrl',
-  FRONTEND: 'hasFrontendUrl',
-  APP_TYPE: 'hasAppTypeUrl',
-  ICONS: 'hasInputIcons',
 };
 export const REDIRECTION = {
   INDEX: 'INDEX_URL',

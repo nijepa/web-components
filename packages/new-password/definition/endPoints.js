@@ -1,6 +1,7 @@
+import { API_TYPES } from '../config/constants';
 export const endPoints = new Map([
   [
-    'forgotPassword',
+    [API_TYPES.FORGOT],
     {
       method: 'POST',
       url: 'request_reset_password_email',
@@ -14,7 +15,7 @@ export const endPoints = new Map([
     },
   ],
   [
-    'validateEmailLink',
+    [API_TYPES.VALIDATE],
     {
       method: 'GET',
       url: 'validate_reset_password_email_link',
@@ -25,7 +26,7 @@ export const endPoints = new Map([
     },
   ],
   [
-    'newPassword',
+    [API_TYPES.NEW],
     {
       method: 'PUT',
       url: 'new_password',
@@ -39,7 +40,7 @@ export const endPoints = new Map([
     },
   ],
   [
-    'requestEmail',
+    [API_TYPES.REQUEST],
     {
       method: 'POST',
       url: `websites/website_uuid/users/user_uuid`,

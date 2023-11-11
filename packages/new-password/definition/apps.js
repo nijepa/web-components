@@ -1,71 +1,70 @@
-// TODO finish definitions for all apps
+import { APPS, CONDITIONS } from '../config/constants';
 export const appConfig = new Map([
   [
-    'mall',
+    [APPS.IM],
     {
-      hasLabels: true,
-      hasUsername: true,
-      hasErrorBorder: true,
-      hasInputIcons: true,
-      hasAppTypeUrl: true,
-      hasInputIcons: true
+      [CONDITIONS.LABELS]: true,
+      [CONDITIONS.USERNAME]: true,
+      [CONDITIONS.ERROR_BORDER]: true,
+      [CONDITIONS.ICONS]: true,
+      [CONDITIONS.APP_TYPE]: true,
     },
   ],
   [
-    'taxfreenoncashbenefit',
+    [APPS.EBC],
     {
-      hasCaptcha: true,
-      hasPlaceholders: true,
-      hasErrorBorder: true,
-      hasAppTypeUrl: true,
-      hasFrontendUrl: true,
-      hasInputIcons: true
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.PLACEHOLDERS]: true,
+      [CONDITIONS.ERROR_BORDER]: true,
+      [CONDITIONS.APP_TYPE]: true,
+      [CONDITIONS.FRONTEND]: true,
+      [CONDITIONS.ICONS]: true
     },
   ],
   [
-    'cips',
+    [APPS.CIPS],
     {
-      hasCaptcha: true,
-      hasPlaceholders: true,
-      hasUsername: true,
-      hasAppTypeUrl: true
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.PLACEHOLDERS]: true,
+      [CONDITIONS.USERNAME]: true,
+      [CONDITIONS.APP_TYPE]: true
     },
   ],
   [
-    'oip',
+    [APPS.OIP],
     {
-      hasCaptcha: true,
-      hasPlaceholders: true,
-      hasUsername: true,
-      hasIndexUrl: true,
-      hasFrontendUrl: true
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.PLACEHOLDERS]: true,
+      [CONDITIONS.USERNAME]: true,
+      [CONDITIONS.INDEX]: true,
+      [CONDITIONS.FRONTEND]: true
     },
   ],
   [
-    'otto',
+    [APPS.OTTO],
     {
-      hasCaptcha: true,
-      hasLabels: true,
-      hasFrontendUrl: true,
-      hasAppTypeUrl: true,
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.LABELS]: true,
+      [CONDITIONS.FRONTEND]: true,
+      [CONDITIONS.APP_TYPE]: true,
     },
   ],
   [
-    "renault",
+    [APPS.RENAULT],
     {
-      hasUsername: true,
-      hasLabels: true,
-      hasCaptcha: true,
-      hasAppTypeUrl: true,
+      [CONDITIONS.USERNAME]: true,
+      [CONDITIONS.LABELS]: true,
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.APP_TYPE]: true,
     },
   ],
   [
-    "serviceapps",
+    [APPS.SERVICE],
     {
-      hasUsername: true,
-      hasLabels: true,
-      hasCaptcha: true,
-      hasAppTypeUrl: true,
+      [CONDITIONS.USERNAME]: true,
+      [CONDITIONS.LABELS]: true,
+      [CONDITIONS.CAPTCHA]: true,
+      [CONDITIONS.APP_TYPE]: true,
     },
   ],
 ]);
