@@ -516,7 +516,7 @@ const getInitData = () => {
     constants.PREFIX + props.appType.toUpperCase()
   ];
   // FIXME replace when live/testing
-  userUuid.value = '12345';
+  userUuid.value = props.websiteUuid;
   passwordLength.value.min = 7;
   passwordLength.value.max = 10;
 
