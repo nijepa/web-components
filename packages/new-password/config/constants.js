@@ -4,6 +4,7 @@ export const RECAPTCHA_KEY = 'RECAPTCHA_KEY';
 export const GLOBALS = {
   BASE: 'BASE_URL',
   PART: 'PART_URL',
+  PATH: 'PATH_URL'
 };
 export const COMP_TYPES = {
   FORGOT: 'forgot',

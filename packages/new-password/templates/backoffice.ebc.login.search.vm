@@ -1,0 +1,188 @@
+#set( $page_title = "cadooz BackOffice - Mitarbeiterverwaltung" )
+#set( $welcome_url = $link.getAction("/welcome") )
+#set( $ebc_url  = $link.getMenu("/ebc/overview") ) 
+#set( $usermanagement_url  = $link.getMenu("/ebc/login/overview") )
+#set( $search_url  = $link.getAction("/ebc/login/search") )
+#set( $content_headline = "<a href='$welcome_url' onfocus='if(this.blur()){this.blur();}'>Übersicht</a> / <a href='$ebc_url' onfocus='if(this.blur()){this.blur();}'>EBC</a> / <a href='$usermanagement_url' onfocus='if(this.blur()){this.blur();}'>Mitarbeiter verwalten</a> / <a href='$search_url' onfocus='if(this.blur()){this.blur();}'>Mitarbeiter suchen</a>" )
+#set( $tip = "" )
+#set( $writeAccess = ${session.getAttribute($constants.get('SESSION_KEY_REMOTE_USER')).hasRole("role.backoffice.ebc.login.view")} )
+<script type="module" crossorigin src="/scripts/ebc/new-password.js"></script>
+<script>
+function updateDataList(inputId, hiddenId) {
+  var input = document.getElementById(inputId);
+  var hidden = document.getElementById(hiddenId);
+  if(input && hidden) {
+    var opt = document.getElementById(input.value);
+    if(opt) {
+      hidden.value = opt.getAttribute("data-value");
+      return true;
+    } else {
+      hidden.value = "0";
+      return false;
+    }
+  }
+}  
+
+let el = null
+setTimeout(() => {
+  el = document.getElementById('x1')
+  console.log(111, el) 
+},5000)
+const resetPassword = (uid, wid) => {
+  el._instance.exposed.resetPassword(uid, wid) 
+} 
+</script>
+<style type="text/css">
+table.backoffice_table td.backoffice_mask_value {
+  padding: 2px 10px;
+}
+
+table.backoffice_table td.backoffice_mask_name {
+  padding: 2px 0 2px 10px;
+}
+</style>
+
+<custom-new-password component-type="msg" id="x1"></custom-new-password>
+
+<form method="post" id="taxfreenoncashbenefitloginsearchform" name="taxfreenoncashbenefitloginsearchform" action="$search_url">
+  <table class="backoffice_table" style="border-spacing:0px;width:520px;" cellspacing="0" cellpadding="5">
+    <tr class="backoffice_table_header">
+      <th colspan="3" class="backoffice_table_header" style="text-align:center;">
+        $messages.get('backoffice.ebc.login.search.headline'):
+      </th>
+    </tr> 
+    <br/>
+    <tr class="backoffice_table_row1a">
+      <td class="backoffice_mask_name" style="height: 15px;" colspan="4"></td>
+    </tr> 
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.login.edit.username'):</td>
+      <td class="backoffice_mask_value" colspan="2">
+        <input type="text" id="bo_user_search_input_username" name="userName" id="UserNameId" tabindex="1" value="$!helper.cleanXSS($!form.bean.userName)" style="width:350px;" class="backoffice_mask_input" maxlength="50">
+      </td>
+    </tr>
+      
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.program.search.header.program'):</td>    
+      <td class="backoffice_mask_value" colspan="2">
+        #set($selectedProgram = "")
+        #set($selectedProgramId = "0")
+        <div style="float: left; width: 80%;">
+          <datalist id="ebc_programs_datalist">
+            #set($programs = $torque.getTaxFreeNonCashBenefitProgramsAsShells())
+            #foreach($programId in $programs.keySet())
+              #set($dispProgramName="${helper.convertToHTML($!programs.get($programId))}")
+              #if(${programId.equals(${form.bean.programId})})
+                #set($selectedProgram = "$dispProgramName")
+                #set($selectedProgramId = "$!programId")
+              #end
+              <option data-value="$!{programId}" value="$dispProgramName" id="$dispProgramName" />
+            #end
+          </datalist>
+          <input type="text" 
+            id="ebcProgramInputField" 
+            class="backoffice_mask_input" 
+            style="width:350px" 
+            list="ebc_programs_datalist"
+            placeholder="$messages.get('management.discount_campaign.search.datalist_placeholder')" 
+            autofocus="false"
+            tabindex="2"
+            onInput="updateDataList('ebcProgramInputField', 'ebcProgramSelectBox');"
+            value="$!helper.cleanXSS($!selectedProgram)" />
+          <input type="hidden" name="programId" id="ebcProgramSelectBox" value="$!helper.cleanXSS($!selectedProgramId)">
+        </div>
+        <div style="float:right;">
+          <img border="0" title="Eingabe Löschen" alt="Löschen" src="/images/backoffice/delete_small_button.gif" onclick="document.getElementById('ebcProgramInputField').value='';document.getElementById('ebcProgramSelectBox').value='';">
+        </div>      
+      </td>
+    </tr>
+      
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.program.search.firstname'):</td>
+      <td class="backoffice_mask_value" colspan="2">
+        <input type="text" name="firstName" id="FirstNameId" tabindex="3" value="$!helper.cleanXSS($!form.bean.firstName)" style="width:350px;" class="backoffice_mask_input" maxlength="50">
+      </td>
+    </tr>   
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.program.edit.address.lastname'):</td>
+      <td class="backoffice_mask_value" colspan="2">
+        <input type="text" id="bo_user_search_input_lastname" name="lastName" tabindex="4" value="$!helper.cleanXSS($!form.bean.lastName)" style="width:350px;" class="backoffice_mask_input" maxlength="50">
+      </td>
+    </tr>
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.program.edit.address.email'):</td>
+      <td class="backoffice_mask_value" colspan="2">
+        <input type="text" id="bo_user_search_input_lastname" name="email" tabindex="5" value="$!helper.cleanXSS($!form.bean.email)" style="width:350px;" class="backoffice_mask_input" maxlength="50">
+      </td>
+    </tr>
+    #if($form.bean.availableDebitors.size() > 1)  
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name">$messages.get('backoffice.ebc.program.search.header.debitor'):</td>    
+      <td class="backoffice_mask_value" colspan="2">
+        #set($selectedDebitor = "")
+        #set($selectedDebitorId = "0")
+        <div style="float: left; width: 80%;">
+          <datalist id="ebc_debitors_datalist">
+            #set($debitors = $form.bean.availableDebitors)
+            #foreach($debitorId in $debitors.keySet())
+              #set($dispDebitorName="${helper.convertToHTML($!debitors.get($debitorId))}")
+              #if(${debitorId.equals(${form.bean.debitorId})})
+                #set($selectedDebitor = "$dispDebitorName")
+                #set($selectedDebitorId = "$!debitorId")
+              #end
+              <option data-value="$!{debitorId}" value="$dispDebitorName" id="$dispDebitorName" />
+            #end
+          </datalist>
+          <input type="text" 
+            id="ebcDebitorInputField" 
+            class="backoffice_mask_input" 
+            style="width:350px" 
+            list="ebc_debitors_datalist"
+            placeholder="$messages.get('management.discount_campaign.search.datalist_placeholder')" 
+            autofocus="false"
+            tabindex="6"
+            onInput="updateDataList('ebcDebitorInputField', 'ebcDebitorSelectBox');"
+            value="$!helper.cleanXSS($!selectedDebitor)" />
+          <input type="hidden" name="debitorId" id="ebcDebitorSelectBox" value="$!helper.cleanXSS($!selectedDebitorId)">
+        </div>
+        <div style="float:right;">
+          <img border="0" title="Eingabe Löschen" alt="Löschen" src="/images/backoffice/delete_small_button.gif" onclick="document.getElementById('ebcDebitorInputField').value='';document.getElementById('ebcDebitorSelectBox').value='';">
+        </div>      
+      </td>
+    </tr>
+    #end
+    <tr class="backoffice_table_row">
+      <td class="backoffice_mask_name"></td>    
+      <td class="backoffice_mask_value" colspan="2">
+        #renderHTMLCheckboxTabbed("includeDeleted" $form.bean.includeDeleted "inkl. gelöschte Mitarbeiter")
+      </td>
+    </tr>
+    <tr class="backoffice_table_row">
+      <td colspan="4" style="padding:10px;" >
+        <table class="backoffice_table" style="width:100%;border-spacing:0px;margin-top:10px;margin-bottom:2px;">
+          <tr class="backoffice_table_row">
+            <td class="backoffice_mask_value" style="width:100%; padding:0px; display:flex; justify-content:space-between;">
+              <a id="bo_user_search_link_reset" href="$link.getQueryAction('/ebc/login/search','action=reset')" onfocus="if(this.blur()){this.blur();}"><img src="$link.getRedButton('button.reset')" alt="$messages.get('button.reset')" title="$messages.get('backoffice.general.title.reset_form')"/></a>
+              #if($writeAccess)
+              <a id="bo_user_search_link_adduser" href="${link.getQueryAction('/ebc/login/edit','action=new')}" title="$messages.get('backoffice.ebc.login.search.title.button.add')" onfocus="if(this.blur()){this.blur();}"><img src="${link.getGreenButton('button.add')}" alt="$messages.get('button.add')" border="0"/></a>
+              #end
+              <a title="$messages.get('backoffice.ebc.login.search.title.button.search')" alt="$messages.get('button.search')">
+                <input id="bo_user_search_input_action" type="hidden" name="action" value="search" style="text-align:right;"/>
+                <input type="image" id="bo_user_search_button_submit" style="text-align:right;" src="$link.getButton('button.search')" name="submit"  onfocus="if(this.blur()){this.blur();}"/>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  #if ($form.bean.loginSearchResult && $form.bean.loginSearchResult.getTableHeight()==0)
+    $messages.get('backoffice.ebc.login.search.empty_result')
+  #else
+  <br/>
+  #renderTable($form.bean.loginSearchResult "/ebc/login/search" "loginSearchResult" "taxfreenoncashbenefitloginsearchform")
+  #end ##end if($form.bean.loginSearchResult && $form.bean.loginSearchResult.getTableHeight()==0)
+</form>
+<script>
+document.getElementById('bo_user_search_input_username').focus();
+</script>

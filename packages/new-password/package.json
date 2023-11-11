@@ -1,13 +1,14 @@
 {
   "name": "new-password-web-component",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Nikola Pavicevic <nijepa@gmail.com>",
-  "description": "Vue3 web-component search with Vite",
+  "description": "Vue3 web-component forgot/new password",
   "keywords": [
     "Vue3",
     "web-component",
     "vite",
-    "search"
+    "forgotten password",
+    "new password"
   ],
   "repository": "https://github.oneeuronet.com/Euronet-Cadooz/PrototypeWebComponentsVue",
   "private": true,

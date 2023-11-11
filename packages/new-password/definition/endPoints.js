@@ -3,7 +3,7 @@ export const endPoints = new Map([
     'forgotPassword',
     {
       method: 'POST',
-      url: '/password/rest/v1/reset/request_reset_password_email',
+      url: 'request_reset_password_email',
       payload: {
         username: 'string',
         email: 'string',
@@ -42,7 +42,7 @@ export const endPoints = new Map([
     'requestEmail',
     {
       method: 'POST',
-      url: `/password/rest/v1/reset/websites/website_uuid/users/user_uuid`,
+      url: `websites/website_uuid/users/user_uuid`,
       params: {
         jsessionid: 'string',
       },
