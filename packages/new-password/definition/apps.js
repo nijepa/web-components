@@ -48,7 +48,6 @@ export const appConfig = new Map([
       hasLabels: true,
       hasFrontendUrl: true,
       hasAppTypeUrl: true,
-      appType: 'oip'
     },
   ],
   [
@@ -58,7 +57,6 @@ export const appConfig = new Map([
       hasLabels: true,
       hasCaptcha: true,
       hasAppTypeUrl: true,
-      appType: "renault",
     },
   ],
   [
@@ -68,7 +66,6 @@ export const appConfig = new Map([
       hasLabels: true,
       hasCaptcha: true,
       hasAppTypeUrl: true,
-      appType: "serviceapps",
     },
   ],
 ]);

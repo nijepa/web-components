@@ -204,23 +204,23 @@
 </template>
 
 <script setup>
-import eye from '../components/Eye.vue';
-import { ref, computed, watch, onMounted } from 'vue';
-import { useFetch } from '../composables/useFetch';
+import eye from "../components/Eye.vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useFetch } from "../composables/useFetch";
 import {
   getAttr,
   resolveUrl,
   getAppID,
   genarateRedirectUrl,
-  getSessionId
-} from '../utils/resolveUrl';
-import { appConfig } from '../definition/apps';
-import { endPoints } from '../definition/endPoints';
-import { compDefinition } from '../definition/comps';
-import * as constants from '../config/constants';
-import { translations as $t } from '../utils/translations';
-import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
-import { VueRecaptcha } from 'vue-recaptcha';
+  getSessionId,
+} from "../utils/resolveUrl";
+import { appConfig } from "../definition/apps";
+import { endPoints } from "../definition/endPoints";
+import { compDefinition } from "../definition/comps";
+import * as constants from "../config/constants";
+import { translations as $t } from "../utils/translations";
+import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
+import { VueRecaptcha } from "vue-recaptcha";
 
 // setting props
 const props = defineProps({
@@ -230,68 +230,62 @@ const props = defineProps({
   },
   appType: {
     type: String,
-    default: 'mall',
+    default: "mall",
   },
   websiteUuid: {
     type: String,
-    default: '',
+    default: "",
   },
   translations: {
     type: String,
   },
   primaryColor: {
     type: String,
-    default: '#ca7900',
+    default: "#ca7900",
   },
   secondaryColor: {
     type: String,
-    default: '#fac884',
+    default: "#fac884",
   },
   language: {
     type: String,
-    default: 'en',
+    default: "en",
   },
   captchaType: {
     type: String,
-    default: 'HCAPTCHA',
-  },
-  isOnlyMessage: {
-    type: String,
-    default: 'false',
+    default: "HCAPTCHA",
   },
 });
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
-const msgText = ref('');
+const msgText = ref("");
 // TODO prepare translations
 // const $tr = JSON.parse(props.translations);
 // console.log('translations', $tr);
 
 const resetPassword = (uid, wid) => {
-  setTimeout(()=> {
-    msgText.value = ""
-  }, 6000)
+  setTimeout(() => {
+    msgText.value = "";
+  }, 6000);
   const endPoint = endPoints.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
-  endPoint.url = endPoint.url.replace('website_uuid', wid)
-  endPoint.url = endPoint.url.replace('user_uuid', uid)
-  console.log(8, endPoint)
+  endPoint.url = endPoint.url.replace("website_uuid", wid);
+  endPoint.url = endPoint.url.replace("user_uuid", uid);
+  console.log(8, endPoint);
   useFetch(endPoint).then((response) => {
-      if (response.status >= 200 && response.status <= 300) {
-        console.log(response)
-      }
-      if (response.status >= 400) {
-        console.log(400, response)
-        loading.value = constants.LOADING.ERROR;
-      }
-      if (response.error) {
-        console.log('error', response)
-        apiError.value = response.errorMsg;
-        loading.value = constants.LOADING.ERROR;
-      }
-      msgText.value = response;
-    });
-  
-  console.log('ihaaaaaaaa!!!');
+    if (response.status >= 200 && response.status <= 300) {
+      console.log(response);
+    }
+    if (response.status >= 400) {
+      console.log(400, response);
+      loading.value = constants.LOADING.ERROR;
+    }
+    if (response.error) {
+      console.log("error", response);
+      apiError.value = response.errorMsg;
+      loading.value = constants.LOADING.ERROR;
+    }
+    msgText.value = response;
+  });
 };
 defineExpose({ resetPassword });
 console.log(0, genarateRedirectUrl(props.appType));
@@ -304,23 +298,23 @@ const passwordLength = ref({
   max: 10,
 });
 
-const isError = ref('');
+const isError = ref("");
 const errors = ref(null);
 const resetErrors = () => {
   errors.value = {
-    general: '',
-    fieldOne: '',
-    fieldTwo: '',
+    general: "",
+    fieldOne: "",
+    fieldTwo: "",
   };
 };
 const getSuccessMsg = computed(() => {
   return props.componentType === constants.COMP_TYPES.NEW
-    ? $tr['api.rest.password.success.new_password_saved']
-    : $tr['api.rest.password.success.reset_password_email_sent'];
+    ? $tr["api.rest.password.success.new_password_saved"]
+    : $tr["api.rest.password.success.reset_password_email_sent"];
 });
 
 const otherFieldError = (field) => {
-  return field ? field + '\n' : '';
+  return field ? field + "\n" : "";
 };
 const fieldValidation = () => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
@@ -328,20 +322,20 @@ const fieldValidation = () => {
       inputOne.value ||
       (inputTwo.value && inputTwo.value.match(constants.EMAIL_REGEX))
     ) {
-      isError.value = '';
+      isError.value = "";
       resetErrors();
       return true;
     }
     if (!inputOne.value)
       errors.value.fieldOne =
-        $tr['api.rest.password.exception.errors.username_required'];
+        $tr["api.rest.password.exception.errors.username_required"];
     if (!inputTwo.value)
       errors.value.fieldTwo =
-        $tr['api.rest.password.exception.errors.email_required'];
+        $tr["api.rest.password.exception.errors.email_required"];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
       errors.value.fieldTwo =
         otherFieldError(errors.value.fieldTwo) +
-        $tr['api.rest.password.exception.errors.email_required'];
+        $tr["api.rest.password.exception.errors.email_required"];
   } else {
     if (
       inputOne.value &&
@@ -350,22 +344,22 @@ const fieldValidation = () => {
       inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)) &&
       inputOne.value === inputTwo.value
     ) {
-      isError.value = '';
+      isError.value = "";
       return true;
     }
-    if (!inputOne.value) errors.value.fieldOne = 'error 1';
+    if (!inputOne.value) errors.value.fieldOne = "error 1";
     if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.value.fieldOne =
         otherFieldError(errors.value.fieldOne) +
-        $tr['api.rest.password.exception.errors.password_violates_policy'];
-    if (!inputTwo.value) errors.value.fieldTwo = 'error 2';
+        $tr["api.rest.password.exception.errors.password_violates_policy"];
+    if (!inputTwo.value) errors.value.fieldTwo = "error 2";
     if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.value.fieldTwo =
         otherFieldError(errors.value.fieldTwo) +
         $tr[api.rest.password.exception.errors.password_violates_policy];
     if (inputOne.value !== inputTwo.value)
       errors.value.fieldTwo =
-        otherFieldError(errors.value.fieldTwo) + 'error 2 same';
+        otherFieldError(errors.value.fieldTwo) + "error 2 same";
   }
   if (hasProperty(constants.CONDITIONS.ERROR_BORDER)) {
     isError.value = constants.CLASSES.FIELD_ERROR;
@@ -374,8 +368,8 @@ const fieldValidation = () => {
 };
 
 const inputTypes = ref({
-  fieldOneType: '',
-  fieldTwoType: '',
+  fieldOneType: "",
+  fieldTwoType: "",
 });
 const handleInputType = (e) => {
   inputTypes.value[e.field] = e.type;
@@ -401,7 +395,7 @@ const hasProperty = (prop) => {
   return appConfig.get(props.appType)[prop];
 };
 // TODO remove for live
-const environment = import.meta.env['VITE_ENV'];
+const environment = import.meta.env["VITE_ENV"];
 
 const onSubmit = () => {
   const validated = fieldValidation();
@@ -450,15 +444,15 @@ const onSubmit = () => {
 // handling dynamic css
 const css = ref(null);
 const loadStyle = async () => {
-  if (environment === 'production') {
+  if (environment === "production") {
     const response = await fetch(
       `${getAppID()}${
         import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
       }${props.appType}.css`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-type': 'text',
+          "Content-type": "text",
         },
       }
     );
@@ -467,15 +461,15 @@ const loadStyle = async () => {
     // TODO remove for live
     css.value = `../assets/${props.appType}.css`;
     const response = await fetch(css.value, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-type': 'text',
+        "Content-type": "text",
       },
     });
     return response.text();
   }
 };
-if (environment === 'local') {
+if (environment === "local") {
   watch(
     () => props.appType,
     (newValue) => {
@@ -489,30 +483,30 @@ const applyCss = async () => {
   const cssData = await loadStyle();
   // TODO remove partCss thing when live
   let partCss = null;
-  if (environment === 'local') {
+  if (environment === "local") {
     partCss = cssData.split(/\r\n|\n/)[2];
     partCss = partCss
       .slice(partCss.search('"'), partCss.length)
-      .replace(/(?:\\[rn])+/g, '')
-      .replaceAll('"', '');
+      .replace(/(?:\\[rn])+/g, "")
+      .replaceAll('"', "");
   }
-  const el = document.querySelector('custom-new-password');
+  const el = document.querySelector("custom-new-password");
   // FIXME remove when live
-  if (environment === 'production') {
-    el.shadowRoot.querySelector('style').innerHTML =
-      el.shadowRoot.querySelector('style').innerHTML + cssData;
+  if (environment === "production") {
+    el.shadowRoot.querySelector("style").innerHTML =
+      el.shadowRoot.querySelector("style").innerHTML + cssData;
   } else {
-    let lastCss = el.shadowRoot.querySelector('style').innerHTML;
-    if (lastCss.search('wrapper') >= 0) {
-      lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
+    let lastCss = el.shadowRoot.querySelector("style").innerHTML;
+    if (lastCss.search("wrapper") >= 0) {
+      lastCss = lastCss.slice(0, lastCss.search(".wrapper"));
     }
-    el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
+    el.shadowRoot.querySelector("style").innerHTML = lastCss + partCss;
     //loading.value = constants.LOADING.DONE;
   }
 };
 
 (async () => {
-  await applyCss();
+  props.appType !== constants.COMP_TYPES.MESSAGE && (await applyCss());
 })();
 
 const apiError = ref(null);
@@ -523,11 +517,11 @@ const getInitData = () => {
     constants.PREFIX + props.appType.toUpperCase()
   ];
   // FIXME replace when live/testing
-  userUuid.value = '12345';
+  userUuid.value = "12345";
   passwordLength.value.min = 7;
   passwordLength.value.max = 10;
 
-  if (environment === 'production') {
+  if (environment === "production") {
     useFetch(endPoint).then((response) => {
       if (response.status === 200) {
         userUuid.value = response.user_uuid;
@@ -559,10 +553,10 @@ const onCaptchaError = (error) => {
 };
 const onCaptchaSuccess = (token) => {
   captchaToken.value = token;
-  console.log('hchapcha token', captchaToken.value);
+  console.log("hchapcha token", captchaToken.value);
 };
 const onCaptchaExpired = async () => {
-  console.log('captcha expired');
+  console.log("captcha expired");
   captchaToken.value = null;
   await hcaptcha.value.reset();
 };
@@ -580,7 +574,7 @@ onMounted(() => {
 </script>
 <style lang="scss">
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 // FIXME add all classes for custom colors, uncoment when live/testing
 // .button-cust {
