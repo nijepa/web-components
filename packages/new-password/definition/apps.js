@@ -1,7 +1,7 @@
 import { APPS, CONDITIONS } from '../config/constants';
 export const appConfig = new Map([
   [
-    [APPS.IM],
+    APPS.IM,
     {
       [CONDITIONS.LABELS]: true,
       [CONDITIONS.USERNAME]: true,
@@ -11,7 +11,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.EBC],
+    APPS.EBC,
     {
       [CONDITIONS.CAPTCHA]: true,
       [CONDITIONS.PLACEHOLDERS]: true,
@@ -22,7 +22,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.CIPS],
+    APPS.CIPS,
     {
       [CONDITIONS.CAPTCHA]: true,
       [CONDITIONS.PLACEHOLDERS]: true,
@@ -31,7 +31,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.OIP],
+    APPS.OIP,
     {
       [CONDITIONS.CAPTCHA]: true,
       [CONDITIONS.PLACEHOLDERS]: true,
@@ -41,7 +41,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.OTTO],
+    APPS.OTTO,
     {
       [CONDITIONS.CAPTCHA]: true,
       [CONDITIONS.LABELS]: true,
@@ -50,7 +50,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.RENAULT],
+    APPS.RENAULT,
     {
       [CONDITIONS.USERNAME]: true,
       [CONDITIONS.LABELS]: true,
@@ -59,7 +59,7 @@ export const appConfig = new Map([
     },
   ],
   [
-    [APPS.SERVICE],
+    APPS.SERVICE,
     {
       [CONDITIONS.USERNAME]: true,
       [CONDITIONS.LABELS]: true,

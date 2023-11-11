@@ -258,7 +258,7 @@ const props = defineProps({
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
 const msgText = ref('');
 // TODO prepare translations
-const $tr = JSON.parse(props.translations);
+const $tr = props.translations && JSON.parse(props.translations);
 // console.log('translations', $tr);
 
 const resetPassword = (uid, wid) => {
@@ -272,11 +272,11 @@ const resetPassword = (uid, wid) => {
     user_uuid: uid
   }
   Object.keys(replacements).forEach((e) => {
-    endPoint = endPoint.replace(e, replacements[e])
+    endPoint.url = endPoint.url.replace(e, replacements[e])
   })
   // endPoint.url = endPoint.url.replace('website_uuid', wid);
   // endPoint.url = endPoint.url.replace('user_uuid', uid);
-  console.log(8, endPoint);
+  console.log('end-point', endPoint);
   useFetch(endPoint).then((response) => {
     if (response.status >= 200 && response.status <= 300) {
       console.log(response);
@@ -290,11 +290,11 @@ const resetPassword = (uid, wid) => {
       apiError.value = response.errorMsg;
       loading.value = constants.LOADING.ERROR;
     }
-    msgText.value = response;
+    msgText.value = response.message;
   });
 };
 defineExpose({ resetPassword });
-console.log(0, genarateRedirectUrl(props.appType));
+//console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
 const inputTwo = ref(null);

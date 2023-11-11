@@ -15,9 +15,9 @@ export const useFetch = async (endPoint) => {
     }
     const response = await fetch(url, requestInit);
     // TODO handle errors
-    if (response.status !== 200) {
-      return response;
-    }
+    // if (response.status !== 200) {
+    //   return response;
+    // }
     return response.json();
   } catch (error) {
     console.log('Error: ', error);
