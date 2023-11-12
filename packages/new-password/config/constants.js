@@ -66,3 +66,17 @@ export const REDIRECTION = {
 export const CLASSES = {
   FIELD_ERROR: 'field-error',
 };
+export const FIELDS = {
+  ONE: {
+    label: 'labelOne',
+    error: 'fieldOne',
+    type: 'inputOneType',
+    input: 'ONE'
+  },
+  TWO: {
+    label: 'labelTwo',
+    error: 'fieldTwo',
+    type: 'inputTwoType',
+    input: 'TWO'
+  },
+};

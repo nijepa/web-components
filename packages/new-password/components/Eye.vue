@@ -103,7 +103,7 @@ const props = defineProps({
   },
   fieldType: {
     type: String,
-    default: 'password',
+    default: 'text',
   },
 });
 const emit = defineEmits(['checked']);
