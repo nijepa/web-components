@@ -75,115 +75,6 @@
     <div key="4" v-if="loading === constants.LOADING.DONE && !isMsg">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
-          <!-- <div
-            class="form-group"
-            v-if="
-              componentType === constants.COMP_TYPES.NEW ||
-              hasProperty(constants.CONDITIONS.USERNAME)
-            "
-          >
-            <label
-              for="username"
-              v-if="
-                hasProperty(constants.CONDITIONS.LABELS) &&
-                hasProperty(constants.CONDITIONS.USERNAME)
-              "
-              >{{
-                $t[language][compDefinition.get(componentType).config.labelOne]
-              }}</label
-            >
-            <div class="field-icon">
-              <input
-                id="username"
-                :class="[
-                  'field',
-                  hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                    ? errors.fieldOne
-                      ? isError
-                      : ''
-                    : '',
-                ]"
-                autofocus="autofocus"
-                :type="
-                  inputTypes.fieldOneType ||
-                  compDefinition.get(componentType).config.inputOneType
-                "
-                :placeholder="
-                  hasProperty(constants.CONDITIONS.PLACEHOLDERS)
-                    ? $t[language][
-                        compDefinition.get(componentType).config.labelOne
-                      ]
-                    : ''
-                "
-                v-model="inputOne"
-              />
-              <eye
-                v-if="
-                  componentType === constants.COMP_TYPES.NEW &&
-                  hasProperty(constants.CONDITIONS.ICONS)
-                "
-                :field="constants.INPUTS.ONE"
-                :field-type="'password'"
-                :app-type="appType"
-                @checked="handleInputType"
-              />
-            </div>
-            <Transition name="slide-fade">
-              <div class="alert" v-if="errors.fieldOne">
-                <pre>{{ errors.fieldOne }}</pre>
-              </div>
-            </Transition>
-          </div> -->
-          <!-- <div class="form-group">
-            <label
-              for="email"
-              v-if="hasProperty(constants.CONDITIONS.LABELS)"
-              >{{
-                $t[language][compDefinition.get(componentType).config.labelTwo]
-              }}</label
-            >
-            <div class="field-icon">
-              <input
-                id="email"
-                autofocus="autofocus"
-                :class="[
-                  'field',
-                  hasProperty(constants.CONDITIONS.ERROR_BORDER)
-                    ? errors.fieldTwo
-                      ? isError
-                      : ''
-                    : '',
-                ]"
-                :type="
-                  inputTypes.fieldTwoType ||
-                  compDefinition.get(componentType).config.inputTwoType
-                "
-                :placeholder="
-                  hasProperty(constants.CONDITIONS.PLACEHOLDERS)
-                    ? $t[language][
-                        compDefinition.get(componentType).config.labelTwo
-                      ]
-                    : ''
-                "
-                v-model="inputTwo"
-              />
-              <eye
-                v-if="
-                  componentType === constants.COMP_TYPES.NEW &&
-                  hasProperty(constants.CONDITIONS.ICONS)
-                "
-                :field="constants.INPUTS.TWO"
-                :field-type="'password'"
-                :app-type="appType"
-                @checked="handleInputType"
-              />
-            </div>
-            <Transition name="slide-fade">
-              <div class="alert" v-if="errors.fieldTwo">
-                <pre>{{ errors.fieldTwo }}</pre>
-              </div>
-            </Transition>
-          </div> -->
 
           <field
             v-if="
@@ -243,7 +134,6 @@
 
 <script setup>
 import field from "../components/Field.vue";
-//import eye from "../components/Eye.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useFetch } from "../composables/useFetch";
 import {
@@ -323,8 +213,8 @@ const setFieldProps = (field) => {
   };
 };
 // TODO prepare translations
-//const $tr = props.translations && JSON.parse(props.translations);
-//console.log("translations", $tr);
+const $tr = props.translations && JSON.parse(props.translations);
+console.log("translations", $tr);
 // back-office ebc tiggers this
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
 const msgText = ref({ text: "", error: false });
@@ -358,6 +248,7 @@ const resetPassword = (uid, wid) => {
   });
 };
 defineExpose({ resetPassword });
+
 console.log(0, genarateRedirectUrl(props.appType));
 const loading = ref(constants.LOADING.INIT);
 const inputOne = ref(null);
@@ -369,14 +260,6 @@ const passwordLength = ref({
 });
 
 const isError = ref("");
-// const errors = ref(null);
-// const resetErrors = () => {
-//   errors.value = {
-//     general: "",
-//     fieldOne: "",
-//     fieldTwo: "",
-//   };
-// };
 const getSuccessMsg = computed(() => {
   // return props.componentType === constants.COMP_TYPES.NEW
   //   ? $tr["api.rest.password.success.new_password_saved"]
@@ -397,15 +280,15 @@ const fieldValidation = () => {
       return true;
     }
     if (!inputOne.value)
-      errors.fieldOne ='error1'
-        // $tr["api.rest.password.exception.errors.username_required"];
+      errors.fieldOne =
+        $tr["api.rest.password.exception.errors.username_required"];
     if (!inputTwo.value)
-      errors.fieldTwo ='error2'
-        // $tr["api.rest.password.exception.errors.email_required"];
+      errors.fieldTwo =
+        $tr["api.rest.password.exception.errors.email_required"];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
       errors.fieldTwo =
-        otherFieldError(errors.fieldTwo) + 'error23'
-        // $tr["api.rest.password.exception.errors.email_required"];
+        otherFieldError(errors.fieldTwo) + 
+        $tr["api.rest.password.exception.errors.email_required"];
   } else {
     if (
       inputOne.value &&
@@ -420,13 +303,13 @@ const fieldValidation = () => {
     if (!inputOne.value) errors.fieldOne = "error 1";
     if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.fieldOne =
-        otherFieldError(errors.fieldOne) + 'error11'
-        // $tr["api.rest.password.exception.errors.password_violates_policy"];
+        otherFieldError(errors.fieldOne) + 
+        $tr["api.rest.password.exception.errors.password_violates_policy"];
     if (!inputTwo.value) errors.fieldTwo = "error 2";
     if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.fieldTwo =
-        otherFieldError(errors.fieldTwo) +'error22'
-        // $tr[api.rest.password.exception.errors.password_violates_policy];
+        otherFieldError(errors.fieldTwo) +
+        $tr[api.rest.password.exception.errors.password_violates_policy];
     if (inputOne.value !== inputTwo.value)
       errors.fieldTwo =
         otherFieldError(errors.fieldTwo) + "error 2 same";
@@ -437,13 +320,6 @@ const fieldValidation = () => {
   return false;
 };
 
-// const inputTypes = ref({
-//   fieldOneType: "",
-//   fieldTwoType: "",
-// });
-// const handleInputType = (e) => {
-//   inputTypes.value[e.field] = e.type;
-// };
 const isButtonReady = computed(() => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
     return (
@@ -487,7 +363,7 @@ const onSubmit = () => {
     endPoint.payload.website_uuid = props.websiteUuid;
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
-    //useFetch(endPoint);
+    useFetch(endPoint);
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
