@@ -1,5 +1,5 @@
 import { API_TYPES } from '../config/constants';
-export const endPoints = new Map([
+export const endPointsDefinition = new Map([
   [
     API_TYPES.FORGOT,
     {

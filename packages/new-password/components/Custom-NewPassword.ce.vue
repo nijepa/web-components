@@ -142,8 +142,8 @@ import {
   genarateRedirectUrl,
   getSessionId,
 } from "../utils/resolveUrl";
-import { appConfig } from "../definition/apps";
-import { endPoints } from "../definition/endPoints";
+import { appDefinition } from "../definition/apps";
+import { endPointsDefinition } from "../definition/endPoints";
 import { compDefinition } from "../definition/comps";
 import * as constants from "../config/constants";
 import { translations as $t } from "../utils/translations";
@@ -222,7 +222,7 @@ const resetPassword = (uid, wid) => {
   setTimeout(() => {
     msgText.value.text = "";
   }, 6000);
-  const endPoint = endPoints.get(constants.API_TYPES.REQUEST);
+  const endPoint = endPointsDefinition.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
   const urlReplacements = {
     website_uuid: wid,
@@ -287,7 +287,7 @@ const fieldValidation = () => {
         $tr["api.rest.password.exception.errors.email_required"];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
       errors.fieldTwo =
-        otherFieldError(errors.fieldTwo) + 
+        otherFieldError(errors.fieldTwo) +
         $tr["api.rest.password.exception.errors.email_required"];
   } else {
     if (
@@ -303,7 +303,7 @@ const fieldValidation = () => {
     if (!inputOne.value) errors.fieldOne = "error 1";
     if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.fieldOne =
-        otherFieldError(errors.fieldOne) + 
+        otherFieldError(errors.fieldOne) +
         $tr["api.rest.password.exception.errors.password_violates_policy"];
     if (!inputTwo.value) errors.fieldTwo = "error 2";
     if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
@@ -338,7 +338,7 @@ const isButtonReady = computed(() => {
 });
 
 const hasProperty = (prop) => {
-  return appConfig.get(props.appType)[prop];
+  return appDefinition.get(props.appType)[prop];
 };
 // TODO remove for live
 const environment = import.meta.env["VITE_ENV"];
@@ -346,7 +346,7 @@ const environment = import.meta.env["VITE_ENV"];
 const onSubmit = () => {
   const validated = fieldValidation();
   if (validated) {
-    const endPoint = endPoints.get(
+    const endPoint = endPointsDefinition.get(
       constants.API_TYPES[props.componentType.toUpperCase()]
     );
     if (props.componentType === constants.COMP_TYPES.NEW) {
@@ -458,7 +458,7 @@ const applyCss = async () => {
 
 const apiError = ref(null);
 const getInitData = () => {
-  const endPoint = endPoints.get(constants.API_TYPES.VALIDATE);
+  const endPoint = endPointsDefinition.get(constants.API_TYPES.VALIDATE);
   endPoint.params.attr = getAttr();
   endPoint.params.website_uuid = props.websiteUuid;
   // FIXME replace when live/testing

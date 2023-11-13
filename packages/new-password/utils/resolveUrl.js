@@ -1,4 +1,4 @@
-import { appConfig } from '../definition/apps';
+import { appDefinition } from '../definition/apps';
 import { PREFIX, GLOBALS, REDIRECTION } from '../config/constants';
 
 const { hostname } = new URL(window.location.href);
@@ -36,17 +36,17 @@ export function getAppID() {
 export function genarateRedirectUrl(appType) {
   // const currentUrl = 'https://employee-benefit-club.de/frontend/taxfreenoncashbenefit/password.do?action=change_password&attr=%2BqUKqLURPvhQz6xBGgsd4DbiuCXg9RKdyGKQA2YpXFv%2Bb%2FSfL2wQkA3MZYCFB0CZYeETOlS5ad53f8PF3Df9MYcYAH4yI8ajjhym9PFXovc%3D';
   let url = currentUrl.slice(0, currentUrl.search(/\./) + 4);
-  if (appConfig.get(appType).hasFrontendUrl) {
+  if (appDefinition.get(appType).hasFrontendUrl) {
     url = url + 'frontend/';
   }
-  if (appConfig.get(appType).hasAppTypeUrl) {
+  if (appDefinition.get(appType).hasAppTypeUrl) {
     const type =
-      appConfig.get(appType).appType === undefined
+      appDefinition.get(appType).appType === undefined
         ? appType
-        : appConfig.get(appType).appType;
+        : appDefinition.get(appType).appType;
     url = url + type + '/';
   }
-  url = appConfig.get(appType).hasIndexUrl
+  url = appDefinition.get(appType).hasIndexUrl
     ? url + import.meta.env[PREFIX + REDIRECTION.INDEX]
     : url + import.meta.env[PREFIX + REDIRECTION.LOGIN];
   return url;

@@ -1,5 +1,5 @@
 import { APPS, CONDITIONS } from '../config/constants';
-export const appConfig = new Map([
+export const appDefinition= new Map([
   [
     APPS.IM,
     {
