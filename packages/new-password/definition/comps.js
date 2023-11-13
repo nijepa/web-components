@@ -1,5 +1,5 @@
 import { COMP_TYPES } from '../config/constants'
-export const compDefinition = new Map([
+export const compsDefinition = new Map([
   [
     COMP_TYPES.FORGOT,
     {

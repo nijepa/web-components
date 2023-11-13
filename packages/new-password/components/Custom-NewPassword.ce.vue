@@ -123,7 +123,7 @@
             :disabled="!isButtonReady"
             @click.prevent="onSubmit"
           >
-            {{ $t[language][compDefinition.get(componentType).config.button] }}
+            {{ $t[language][compsDefinition.get(componentType).config.button] }}
             <span class="magic-arrow" v-if="appType === 'mall'">›</span>
           </button>
         </form>
@@ -142,9 +142,9 @@ import {
   genarateRedirectUrl,
   getSessionId,
 } from "../utils/resolveUrl";
-import { appDefinition } from "../definition/apps";
+import { appsDefinition } from "../definition/apps";
 import { endPointsDefinition } from "../definition/endPoints";
-import { compDefinition } from "../definition/comps";
+import { compsDefinition } from "../definition/comps";
 import * as constants from "../config/constants";
 import { translations as $t } from "../utils/translations";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
@@ -192,17 +192,17 @@ const setFieldProps = (field) => {
     hasLabel: hasProperty(constants.CONDITIONS.LABELS),
     labelText:
       $t[props.language][
-        compDefinition.get(props.componentType).config[field.label]
+        compsDefinition.get(props.componentType).config[field.label]
       ],
     fieldClass: hasProperty(constants.CONDITIONS.ERROR_BORDER)
       ? errors[field.error]
         ? isError
         : ""
       : "",
-    fieldType: compDefinition.get(props.componentType).config[field.type],
+    fieldType: compsDefinition.get(props.componentType).config[field.type],
     placeholder: hasProperty(constants.CONDITIONS.PLACEHOLDERS)
       ? $t[props.language][
-          compDefinition.get(props.componentType).config[field.label]
+          compsDefinition.get(props.componentType).config[field.label]
         ]
       : "",
     hasEye:
@@ -338,7 +338,7 @@ const isButtonReady = computed(() => {
 });
 
 const hasProperty = (prop) => {
-  return appDefinition.get(props.appType)[prop];
+  return appsDefinition.get(props.appType)[prop];
 };
 // TODO remove for live
 const environment = import.meta.env["VITE_ENV"];
@@ -484,7 +484,7 @@ const getInitData = () => {
   }
   //loading.value = constants.LOADING.DONE;
 };
-// handling hCaptcha
+// handling captcha
 const hcaptchaKey = import.meta.env[constants.PREFIX + constants.HCAPTCHA_KEY];
 const recaptchaKey = import.meta.env[
   constants.PREFIX + constants.RECAPTCHA_KEY
