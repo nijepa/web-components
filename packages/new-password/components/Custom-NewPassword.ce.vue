@@ -75,7 +75,6 @@
     <div key="4" v-if="loading === constants.LOADING.DONE && !isMsg">
       <div class="wrapper" style="display: block">
         <form class="header-loginbox-content" autocomplete="off">
-
           <field
             v-if="
               componentType === constants.COMP_TYPES.NEW ||
@@ -133,23 +132,23 @@
 </template>
 
 <script setup>
-import field from "../components/Field.vue";
-import { ref, computed, watch, onMounted } from "vue";
-import { useFetch } from "../composables/useFetch";
+import field from '../components/Field.vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { useFetch } from '../composables/useFetch';
 import {
   getAttr,
   getAppID,
   genarateRedirectUrl,
   getSessionId,
-} from "../utils/resolveUrl";
-import { appsDefinition } from "../definition/apps";
-import { endPointsDefinition } from "../definition/endPoints";
-import { compsDefinition } from "../definition/comps";
-import * as constants from "../config/constants";
-import { translations as $t } from "../utils/translations";
-import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
-import { VueRecaptcha } from "vue-recaptcha";
-import { state, resetErrors } from '../store/state'
+} from '../utils/resolveUrl';
+import { appsDefinition } from '../definition/apps';
+import { endPointsDefinition } from '../definition/endPoints';
+import { compsDefinition } from '../definition/comps';
+import * as constants from '../config/constants';
+import { translations as $t } from '../utils/translations';
+import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
+import { VueRecaptcha } from 'vue-recaptcha';
+import { state, resetErrors } from '../store/state';
 
 // setting props
 const props = defineProps({
@@ -159,32 +158,33 @@ const props = defineProps({
   },
   appType: {
     type: String,
-    default: "mall",
+    default: 'mall',
   },
   websiteUuid: {
     type: String,
-    default: "",
+    default: '',
   },
   translations: {
     type: String,
   },
   primaryColor: {
     type: String,
-    default: "#ca7900",
+    default: '#ca7900',
   },
   secondaryColor: {
     type: String,
-    default: "#fac884",
+    default: '#fac884',
   },
   language: {
     type: String,
-    default: "en",
+    default: 'en',
   },
   captchaType: {
     type: String,
-    default: "HCAPTCHA",
+    default: 'HCAPTCHA',
   },
 });
+
 state.appType = props.appType;
 const { errors } = state;
 const setFieldProps = (field) => {
@@ -197,14 +197,14 @@ const setFieldProps = (field) => {
     fieldClass: hasProperty(constants.CONDITIONS.ERROR_BORDER)
       ? errors[field.error]
         ? isError
-        : ""
-      : "",
+        : ''
+      : '',
     fieldType: compsDefinition.get(props.componentType).config[field.type],
     placeholder: hasProperty(constants.CONDITIONS.PLACEHOLDERS)
       ? $t[props.language][
           compsDefinition.get(props.componentType).config[field.label]
         ]
-      : "",
+      : '',
     hasEye:
       props.componentType === constants.COMP_TYPES.NEW &&
       hasProperty(constants.CONDITIONS.ICONS),
@@ -214,13 +214,13 @@ const setFieldProps = (field) => {
 };
 // TODO prepare translations
 const $tr = props.translations && JSON.parse(props.translations);
-console.log("translations", $tr);
+console.log('translations', $tr);
 // back-office ebc tiggers this
 const isMsg = props.componentType === constants.COMP_TYPES.MESSAGE;
-const msgText = ref({ text: "", error: false });
+const msgText = ref({ text: '', error: false });
 const resetPassword = (uid, wid) => {
   setTimeout(() => {
-    msgText.value.text = "";
+    msgText.value.text = '';
   }, 6000);
   const endPoint = endPointsDefinition.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
@@ -231,7 +231,7 @@ const resetPassword = (uid, wid) => {
   Object.keys(urlReplacements).forEach((e) => {
     endPoint.url = endPoint.url.replace(e, urlReplacements[e]);
   });
-  console.log("end-point", endPoint);
+  console.log('end-point', endPoint);
   useFetch(endPoint).then((response) => {
     if (response.status >= 200 && response.status <= 300) {
       console.log(response);
@@ -241,7 +241,7 @@ const resetPassword = (uid, wid) => {
       msgText.value.error = true;
     }
     if (response.error) {
-      console.log("error", response);
+      console.log('error', response);
       msgText.value.error = true;
     }
     msgText.value.text = response.message;
@@ -259,15 +259,15 @@ const passwordLength = ref({
   max: 10,
 });
 
-const isError = ref("");
+const isError = ref('');
 const getSuccessMsg = computed(() => {
-  // return props.componentType === constants.COMP_TYPES.NEW
-  //   ? $tr["api.rest.password.success.new_password_saved"]
-  //   : $tr["api.rest.password.success.reset_password_email_sent"];
+  return props.componentType === constants.COMP_TYPES.NEW
+    ? $tr["api.rest.password.success.new_password_saved"]
+    : $tr["api.rest.password.success.reset_password_email_sent"];
 });
 
 const otherFieldError = (field) => {
-  return field ? field + "\n" : "";
+  return field ? field + '\n' : '';
 };
 const fieldValidation = () => {
   if (props.componentType === constants.COMP_TYPES.FORGOT) {
@@ -275,20 +275,20 @@ const fieldValidation = () => {
       inputOne.value ||
       (inputTwo.value && inputTwo.value.match(constants.EMAIL_REGEX))
     ) {
-      isError.value = "";
+      isError.value = '';
       resetErrors();
       return true;
     }
     if (!inputOne.value)
       errors.fieldOne =
-        $tr["api.rest.password.exception.errors.username_required"];
+        $tr['api.rest.password.exception.errors.username_required'];
     if (!inputTwo.value)
       errors.fieldTwo =
-        $tr["api.rest.password.exception.errors.email_required"];
+        $tr['api.rest.password.exception.errors.email_required'];
     if (!inputTwo.value.match(constants.EMAIL_REGEX))
       errors.fieldTwo =
         otherFieldError(errors.fieldTwo) +
-        $tr["api.rest.password.exception.errors.email_required"];
+        $tr['api.rest.password.exception.errors.email_required'];
   } else {
     if (
       inputOne.value &&
@@ -297,22 +297,21 @@ const fieldValidation = () => {
       inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)) &&
       inputOne.value === inputTwo.value
     ) {
-      isError.value = "";
+      isError.value = '';
       return true;
     }
-    if (!inputOne.value) errors.fieldOne = "error 1";
+    if (!inputOne.value) errors.fieldOne = 'error 1';
     if (!inputOne.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.fieldOne =
         otherFieldError(errors.fieldOne) +
-        $tr["api.rest.password.exception.errors.password_violates_policy"];
-    if (!inputTwo.value) errors.fieldTwo = "error 2";
+        $tr['api.rest.password.exception.errors.password_violates_policy'];
+    if (!inputTwo.value) errors.fieldTwo = 'error 2';
     if (!inputTwo.value.match(constants.PASSWORD_REGEX(passwordLength.value)))
       errors.fieldTwo =
         otherFieldError(errors.fieldTwo) +
         $tr[api.rest.password.exception.errors.password_violates_policy];
     if (inputOne.value !== inputTwo.value)
-      errors.fieldTwo =
-        otherFieldError(errors.fieldTwo) + "error 2 same";
+      errors.fieldTwo = otherFieldError(errors.fieldTwo) + 'error 2 same';
   }
   if (hasProperty(constants.CONDITIONS.ERROR_BORDER)) {
     isError.value = constants.CLASSES.FIELD_ERROR;
@@ -341,9 +340,9 @@ const hasProperty = (prop) => {
   return appsDefinition.get(props.appType)[prop];
 };
 // TODO remove for live
-const environment = import.meta.env["VITE_ENV"];
+const environment = import.meta.env['VITE_ENV'];
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const validated = fieldValidation();
   if (validated) {
     const endPoint = endPointsDefinition.get(
@@ -363,7 +362,7 @@ const onSubmit = () => {
     endPoint.payload.website_uuid = props.websiteUuid;
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
-    useFetch(endPoint);
+    const received = await useFetch(endPoint);
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
@@ -390,15 +389,15 @@ const onSubmit = () => {
 // handling dynamic css
 const css = ref(null);
 const loadStyle = async () => {
-  if (environment === "production") {
+  if (environment === 'production') {
     const response = await fetch(
       `${getAppID()}${
         import.meta.env[constants.PREFIX + constants.GLOBALS.PART]
       }${props.appType}.css`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-type": "text",
+          'Content-type': 'text',
         },
       }
     );
@@ -407,15 +406,15 @@ const loadStyle = async () => {
     // TODO remove for live
     css.value = `../assets/${props.appType}.css`;
     const response = await fetch(css.value, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-type": "text",
+        'Content-type': 'text',
       },
     });
     return response.text();
   }
 };
-if (environment === "local") {
+if (environment === 'local') {
   watch(
     () => props.appType,
     (newValue) => {
@@ -430,24 +429,24 @@ const applyCss = async () => {
   const cssData = await loadStyle();
   // TODO remove partCss thing when live
   let partCss = null;
-  if (environment === "local") {
+  if (environment === 'local') {
     partCss = cssData.split(/\r\n|\n/)[2];
     partCss = partCss
       .slice(partCss.search('"'), partCss.length)
-      .replace(/(?:\\[rn])+/g, "")
-      .replaceAll('"', "");
+      .replace(/(?:\\[rn])+/g, '')
+      .replaceAll('"', '');
   }
-  const el = document.querySelector("custom-new-password");
-  if (environment === "production") {
-    el.shadowRoot.querySelector("style").innerHTML =
-      el.shadowRoot.querySelector("style").innerHTML + cssData;
+  const el = document.querySelector('custom-new-password');
+  if (environment === 'production') {
+    el.shadowRoot.querySelector('style').innerHTML =
+      el.shadowRoot.querySelector('style').innerHTML + cssData;
   } else {
     // FIXME remove when live
-    let lastCss = el.shadowRoot.querySelector("style").innerHTML;
-    if (lastCss.search("wrapper") >= 0) {
-      lastCss = lastCss.slice(0, lastCss.search(".wrapper"));
+    let lastCss = el.shadowRoot.querySelector('style').innerHTML;
+    if (lastCss.search('wrapper') >= 0) {
+      lastCss = lastCss.slice(0, lastCss.search('.wrapper'));
     }
-    el.shadowRoot.querySelector("style").innerHTML = lastCss + partCss;
+    el.shadowRoot.querySelector('style').innerHTML = lastCss + partCss;
     //loading.value = constants.LOADING.DONE;
   }
 };
@@ -457,7 +456,7 @@ const applyCss = async () => {
 })();
 
 const apiError = ref(null);
-const getInitData = () => {
+const getInitData = async () => {
   const endPoint = endPointsDefinition.get(constants.API_TYPES.VALIDATE);
   endPoint.params.attr = getAttr();
   endPoint.params.website_uuid = props.websiteUuid;
@@ -466,8 +465,8 @@ const getInitData = () => {
   passwordLength.value.min = 7;
   passwordLength.value.max = 10;
 
-  if (environment === "production") {
-    useFetch(endPoint).then((response) => {
+  if (environment === 'production') {
+    await useFetch(endPoint).then((response) => {
       if (response.status === 200) {
         userUuid.value = response.user_uuid;
         passwordLength.value.min = response.minimum_length;
@@ -498,10 +497,10 @@ const onCaptchaError = (error) => {
 };
 const onCaptchaSuccess = (token) => {
   captchaToken.value = token;
-  console.log("hchapcha token", captchaToken.value);
+  console.log('hchapcha token', captchaToken.value);
 };
 const onCaptchaExpired = async () => {
-  console.log("captcha expired");
+  console.log('captcha expired');
   captchaToken.value = null;
   await hcaptcha.value.reset();
 };
@@ -519,7 +518,7 @@ onMounted(() => {
 </script>
 <style lang="scss">
 * {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 // FIXME add all classes for custom colors, uncoment when live/testing
 // .button-cust {
