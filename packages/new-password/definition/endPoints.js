@@ -43,7 +43,7 @@ export const endPointsDefinition = new Map([
     API_TYPES.REQUEST,
     {
       method: 'POST',
-      url: `websites/website_uuid/users/user_uuid`,
+      url: `websites/website_uuid/users/user_uuid/email`,
       params: {
         jsessionid: 'string',
       },

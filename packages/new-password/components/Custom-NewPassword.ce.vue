@@ -224,6 +224,7 @@ const resetPassword = (uid, wid) => {
   }, 6000);
   const endPoint = endPointsDefinition.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
+  //endPoint.url = endPoint.url + '?jsessionid=' + endPoint.params.jsessionid
   const urlReplacements = {
     website_uuid: wid,
     user_uuid: uid,
