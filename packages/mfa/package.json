@@ -1,6 +1,6 @@
 {
   "name": "mfa-web-component",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Nikola Pavicevic <nikola.pavicevic@cadooz.de>",
   "description": "Vue3 web-component for multi faktor authentication",
   "keywords": [

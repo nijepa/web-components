@@ -168,7 +168,7 @@
                   (templateState !== 'active' && 'code-enter',
                   !isCips && 'input-code__new')
                 "
-                :maxlength="templateState !== 'generate' ? 8 : 6"
+                :maxlength="8"
                 type="text"
                 name=""
                 id=""
@@ -622,6 +622,7 @@ const mapStates = {
     template: TEMPLATES.DEACTIVATE,
     label: 'buttons.2fa_disable',
     action: changeTemplateState,
+    leftBtn: 'buttons.abort',
   },
   inputs: {
     template: 'inputs',

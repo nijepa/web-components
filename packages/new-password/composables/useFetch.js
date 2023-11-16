@@ -11,7 +11,7 @@ export const useFetch = async (endPoint) => {
     };
     let url = resolveBaseUrl() + endPoint.url;
     if (endPoint.params) {
-      url = url + ';' + new URLSearchParams(endPoint.params);
+      //url = url + ';' + new URLSearchParams(endPoint.params);
     }
     const response = await fetch(url, requestInit);
     // TODO handle errors
