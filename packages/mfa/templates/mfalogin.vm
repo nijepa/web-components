@@ -16,7 +16,7 @@
   width: auto;
 }
 .input-code__btn {
- min-width: 12rem;
+  min-width: 12rem;
 }
 </style>
 <div class="content-site container-xl">
