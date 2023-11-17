@@ -18,10 +18,9 @@ export const endPointsDefinition = new Map([
     API_TYPES.VALIDATE,
     {
       method: 'GET',
-      url: 'validate_reset_password_email_link',
+      url: 'validate_reset_password_token/:reset_password_token',
       params: {
-        attr: 'string',
-        website_uuid: 'string',
+        reset_password_token: 'string',
       },
     },
   ],
@@ -29,13 +28,16 @@ export const endPointsDefinition = new Map([
     API_TYPES.NEW,
     {
       method: 'PUT',
-      url: 'new_password',
+      url: 'save_new_password/:reset_password_token',
       payload: {
-        password: 'string',
-        repeat_password: 'string',
-        user_uuid: 'string',
-        website_uuid: 'string',
-        attr: 'string',
+        newPassword: 'string',
+        newPasswordRetype: 'string',
+        languageId: 'string',
+        websiteUuid: 'string',
+        captcha_response: 'string',
+      },
+      params: {
+        reset_password_token: 'string',
       },
     },
   ],
