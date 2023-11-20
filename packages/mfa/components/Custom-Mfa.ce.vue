@@ -44,7 +44,7 @@
           </button>
         </template>
         <template v-else>
-          <h1>Zwei-Faktor-Identifizierung</h1>
+          <h1>{{ translate('notes.2fa_authentication') }}</h1>
           <button class="btn-edit-new" @click="editing(false)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
