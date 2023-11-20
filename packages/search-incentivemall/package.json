@@ -1,13 +1,14 @@
 {
   "name": "search-web-component",
-  "version": "0.1.9",
-  "author": "Nikola Pavicevic <nijepa@gmail.com>",
+  "version": "0.1.10",
+  "author": "Nikola Pavicevic <nikola.pavicevic@cadooz.de>",
   "description": "Vue3 web-component search with Vite",
   "keywords": [
     "Vue3",
     "web-component",
     "vite",
-    "search"
+    "search",
+    "incetivemall"
   ],
   "repository": "https://github.oneeuronet.com/Euronet-Cadooz/PrototypeWebComponentsVue",
   "private": true,
@@ -17,11 +18,11 @@
     "serve": "vite preview"
   },
   "devDependencies": {
-    "sass": "^1.66.1",
-    "vite": "^4.4.9"
+    "sass": "^1.69.5",
+    "vite": "^4.5.0"
   },
   "dependencies": {
-    "@vitejs/plugin-vue": "^4.3.3",
-    "vue": "^3.3.4"
+    "@vitejs/plugin-vue": "^4.4.0",
+    "vue": "^3.3.8"
   }
 }

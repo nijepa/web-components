@@ -143,7 +143,7 @@ const generateLink = (product) => {
 const search = ref(null);
 const searchString = ref(null);
 const filteredData = computed(() => {
-  console.log(receivedData.value)
+  // console.log(receivedData.value)
   return (
     searchString.value &&
     receivedData.value.length &&
@@ -181,6 +181,7 @@ const emit = defineEmits(['close-search']);
 const searchWrapper = ref(null);
 const hideSearch = () => {
   active.value = false;
+  // console.log('closed')
   searchWrapper.value.dispatchEvent(
     new CustomEvent('close-search', {
       bubbles: true,
