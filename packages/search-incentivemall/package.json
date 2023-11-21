@@ -1,6 +1,6 @@
 {
   "name": "search-web-component",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "Nikola Pavicevic <nikola.pavicevic@cadooz.de>",
   "description": "Vue3 web-component search with Vite",
   "keywords": [

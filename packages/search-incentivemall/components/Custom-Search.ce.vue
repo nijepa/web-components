@@ -60,9 +60,12 @@
           :key="item.productNumber"
         >
           <article>
-            <a class="search-card" :href="generateLink(item)">
+            <a class="search-card" @click="selectLink(item)">
               <div class="search-card__body">
-                <div class="search-product__name" v-html="item?.productName"></div>
+                <div
+                  class="search-product__name"
+                  v-html="item?.productName"
+                ></div>
                 <div class="search-product__image__container">
                   <img
                     :src="item?.giftcardImage"
@@ -139,6 +142,12 @@ const generateLink = (product) => {
       );
 };
 
+// link functionality, etracker call & redirection
+const selectLink = (prod) => {
+  addETrackerEvent();
+  window.location.href = generateLink(prod);
+};
+
 // searching/filtering data
 const search = ref(null);
 const searchString = ref(null);
@@ -152,10 +161,10 @@ const filteredData = computed(() => {
         r.productName
           .toLowerCase()
           .includes(searchString.value.toLowerCase()) ||
-          r.searchwords.some(s => {
-            return s.toLowerCase().includes(searchString.value)
-          })
-        //  r.searchwords.includes(searchString.value.toLowerCase())
+        r.searchwords.some((s) => {
+          return s.toLowerCase().includes(searchString.value);
+        })
+      //  r.searchwords.includes(searchString.value.toLowerCase())
     )
   );
 });
@@ -176,12 +185,23 @@ watch(
   }
 );
 
+// etracker search tearms entry
+const addETrackerEvent = () => {
+  const cc_attributes = {
+    etcc_med_onsite: 'Internal search',
+    etcc_cmp_onsite: !searchString.value ? 'Without result' : 'With result',
+    etcc_cu: 'onsite',
+    etcc_st_onsite: searchString.value,
+  };
+  window.etCall({ cc_attributes: cc_attributes });
+};
+
 // creating & emitting events
 const emit = defineEmits(['close-search']);
 const searchWrapper = ref(null);
 const hideSearch = () => {
   active.value = false;
-  // console.log('closed')
+  searchString.value && addETrackerEvent();
   searchWrapper.value.dispatchEvent(
     new CustomEvent('close-search', {
       bubbles: true,
