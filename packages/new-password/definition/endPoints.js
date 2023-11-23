@@ -9,7 +9,7 @@ export const endPointsDefinition = new Map([
         username: 'string',
         email: 'string',
         website_uuid: 'string',
-        language_id: 'de',
+        language: 'de',
         captcha_response: 'string',
       },
     },
