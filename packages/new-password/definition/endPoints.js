@@ -32,8 +32,8 @@ export const endPointsDefinition = new Map([
       payload: {
         newPassword: 'string',
         newPasswordRetype: 'string',
-        languageId: 'string',
-        websiteUuid: 'string',
+        language: 'string',
+        website_uuid: 'string',
         captcha_response: 'string',
       },
       params: {

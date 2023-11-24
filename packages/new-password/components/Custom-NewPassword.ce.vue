@@ -357,13 +357,14 @@ const onSubmit = async () => {
     } else {
       endPoint.payload.username = inputOne.value;
       endPoint.payload.email = inputTwo.value;
-      endPoint.payload.language_id = props.language;
+      endPoint.payload.language = props.language;
       endPoint.payload.captcha_response = captchaToken.value;
     }
     endPoint.payload.website_uuid = props.websiteUuid;
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
     const received = await useFetch(endPoint);
+    console.log('received', received)
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
