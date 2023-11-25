@@ -4,7 +4,7 @@ layout: home
 
 hero:
   image:
-    src: /cadooz_logo.svg
+    src: https://backoffice.cadooz.com/images/cadooz_logo.svg
     alt: cadooz
   name: "WEB Components"
   text: "Vue3"
