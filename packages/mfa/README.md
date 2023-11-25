@@ -3,7 +3,7 @@
 :::
 
 ::: tip usage
-in ***CIPS*** apps for multi factor authentication
+in ***CIPS*** apps & ***ALDI*** shop for multi factor authentication
 :::
 
 ## Import component
@@ -29,14 +29,12 @@ in ***CIPS*** apps for multi factor authentication
 
 ::: code-group
 
-```html [mfa_activate_login.vm]
-  #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))} )
-  <div id="islogin" style="display: none;">$mfalogin</div>
+```js [mfa_activate_login.vm]
+  const mfaLogin = '${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_REQUIRED'))}'
 ```
 
-```html [profile.vm]
-  #set( $mfalogin = ${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))} )
-  <div id="islogin" style="display: none;">$mfalogin</div>
+```js [profile.vm]
+  const mfaLogin = '${session.getAttribute($constants.get('SESSION_KEY_MULTIFACTOR_AUTHENTICATION_ACTIVATION_AFTER_LOGIN'))}'
 ```
 
 :::
@@ -72,7 +70,7 @@ in ***CIPS*** apps for multi factor authentication
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
     font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
     "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
-    "from-mfa-hint": document.querySelector('#islogin').innerText
+    "from-mfa-hint": mfaLogin
   };
 
   setAttributes(mfa, mfaProps);
@@ -90,7 +88,7 @@ in ***CIPS*** apps for multi factor authentication
     "primary-color": getComputedStyle(document.querySelector('.site-title')).color,
     font: getComputedStyle(document.querySelector('.site-title')).fontFamily,
     "logo-url": getComputedStyle(document.querySelector('.customer-logo-frame > a')).backgroundImage,
-    "from-mfa-login": document.querySelector('#islogin').innerText
+    "from-mfa-login": mfaLogin
   };
 
   setAttributes(mfa, mfaProps);
