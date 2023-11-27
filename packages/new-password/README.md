@@ -4,7 +4,7 @@
 :::
 
 ::: tip usage
-in **_cadooz_** for forgot password/new password functionality
+in **_cadooz_** for forgotten/new password functionality
 :::
 
 ## Import component
