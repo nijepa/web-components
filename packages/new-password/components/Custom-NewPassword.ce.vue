@@ -224,7 +224,7 @@ const resetPassword = (uid, wid) => {
   }, 6000);
   const endPoint = endPointsDefinition.get(constants.API_TYPES.REQUEST);
   endPoint.params.jsessionid = getSessionId();
-  endPoint.url = endPoint.url + ';jsessionid=' + endPoint.params.jsessionid
+  endPoint.url = endPoint.url + ';jsessionid=' + endPoint.params.jsessionid;
   const urlReplacements = {
     website_uuid: wid,
     user_uuid: uid,
@@ -263,8 +263,8 @@ const passwordLength = ref({
 const isError = ref('');
 const getSuccessMsg = computed(() => {
   return props.componentType === constants.COMP_TYPES.NEW
-    ? $tr["api.rest.password.success.new_password_saved"]
-    : $tr["api.rest.password.success.reset_password_email_sent"];
+    ? $tr['api.rest.password.success.new_password_saved']
+    : $tr['api.rest.password.success.reset_password_email_sent'];
 });
 
 const otherFieldError = (field) => {
@@ -364,7 +364,7 @@ const onSubmit = async () => {
     console.log(`submited ${props.componentType} : `, endPoint);
     // TODO handle response/errors
     const received = await useFetch(endPoint);
-    console.log('received', received)
+    console.log('received', received);
     // errors.value = {
     //   general: 'general error',
     //   fieldOne: '1 error',
