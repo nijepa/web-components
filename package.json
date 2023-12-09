@@ -6,12 +6,11 @@
   ],
   "type": "module",
   "devDependencies": {
-    "lerna": "^6.1.0",
+    "lerna": "^8.0.0",
     "vitepress": "^1.0.0-rc.31"
   },
   "scripts": {
-    "lerna": "lerna run build",
-    "bootstrap": "lerna bootstrap",
+    "lerna": "npx lerna run build",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
