@@ -51,10 +51,6 @@ features:
 <div class="tip-wrapper">
 
 ::: tip COMMANDS
-Update dependencies for all components:
-
-`npm run bootstrap`
-
 Compile, build all components:
 
 `npm run lerna`
